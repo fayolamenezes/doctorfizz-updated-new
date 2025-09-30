@@ -199,6 +199,28 @@ function mapRowToSchema(row) {
 }
 
 export default function Dashboard() {
+  // ---- AI SEO Matrix data (from /data/seo-new.json or /seo-new.json) ----
+  const [aiData, setAiData] = useState(null);
+  useEffect(() => {
+    const pathCandidates = ["/data/seo-data.json", "/seo-data.json"];
+    (async () => {
+      for (const path of pathCandidates) {
+        try {
+          const res = await fetch(path, { cache: "no-store" });
+          if (res.ok) {
+            const d = await res.json();
+            const arr = Array.isArray(d) ? d : (d ? [d] : []);
+            if (arr.length) {
+              setAiData(arr[0]); // pick first domain by default
+              return;
+            }
+          }
+        } catch (e) {}
+      }
+      setAiData(null);
+    })();
+  }, []);
+
   const searchParams = useSearchParams();
   const [domain, setDomain] = useState("example.com");
   const [rows, setRows] = useState(null);        // raw array from /data/seo-data.json
@@ -1249,42 +1271,62 @@ export default function Dashboard() {
             </div>
           </div>
 
-          {/* Ai SEO Matrix (unchanged demo) */}
-          <div className="rounded-[14px] border border-[var(--border)] bg-[var(--input)] p-4 shadow-sm">
-            <div className="flex items-start justify-between">
-              <div className="flex items-center gap-2">
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-[#FDE7B8] bg-[#FFF5D9] text-[#B98500]">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                    <path d="M12 3l2.2 5.1 5.6.5-4.2 3.7 1.3 5.5L12 14.9 7.1 17.8l1.3-5.5-4.2-3.7 5.6-.5L12 3z" fill="#F4B740"/>
-                  </svg>
-                </span>
-                <span className="text-[13px] text-gray-700 leading-relaxed">Ai SEO Matrix</span>
-              </div>
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--muted)]">
-                <SlidersHorizontal size={16} />
-              </span>
-            </div>
+          {/* Ai SEO Matrix (dynamic from JSON) */}
+<div className="rounded-[14px] border border-[var(--border)] bg-[var(--input)] p-4 shadow-sm">
+  <div className="flex items-start justify-between">
+    <div className="flex items-center gap-2">
+      <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-[#FDE7B8] bg-[#FFF5D9] text-[#B98500]">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M12 3l2.2 5.1 5.6.5-4.2 3.7 1.3 5.5L12 14.9 7.1 17.8l1.3-5.5-4.2-3.7 5.6-.5L12 3z" fill="#F4B740"/>
+        </svg>
+      </span>
+      <span className="text-[13px] text-gray-700 leading-relaxed">Ai SEO Matrix</span>
+    </div>
+    <span className="inline-flex h-8 w-8 items-center justify-center rounded-md border border-[var(--border)] text-[var(--muted)]">
+      <SlidersHorizontal size={16} />
+    </span>
+  </div>
 
-            <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-5">
-              {[
-                { name: "GPT",        ratio: "2/5", pages: "2.1k Pages", src: "/assets/gpt.svg" },
-                { name: "GOOGLE Ai",  ratio: "2/5", pages: "1.9k Pages", src: "/assets/google.svg" },
-                { name: "PERPLEXITY", ratio: "2/5", pages: "1.3k Pages", src: "/assets/perplexity.svg" },
-                { name: "COPILOT",    ratio: "2/5", pages: "1.8k Pages", src: "/assets/copilot.svg" },
-                { name: "GEMINI",     ratio: "2/5", pages: "2.3k Pages", src: "/assets/gemini.svg" },
-              ].map((b) => (
-                <div key={b.name} className="rounded-[12px] border border-[var(--border)] bg-[var(--input)] p-4 text-center">
-                  <Image src={b.src} alt={b.name} width={36} height={36} className="mx-auto mb-2" />
-                  <div className="text-[12px] text-[var(--muted)]">{b.name}</div>
-                  <div className="mt-1 text-[22px] font-semibold leading-none text-[var(--text)] tabular-nums">2<span className="text-[var(--muted)]">/5</span></div>
-                  <div className="mt-1 text-[11px] text-[var(--muted)]">{b.pages}</div>
-                </div>
-              ))}
-            </div>
+  {/* Formatter for big numbers */}
+  {(() => {
+    const formatNumber = (num) => {
+      if (!num && num !== 0) return "-";
+      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+      if (num >= 1_000) return (num / 1_000).toFixed(1) + "k";
+      return num;
+    };
 
-            <div className="mt-4 text-[12px] text-[var(--muted)]">AI tool visibility and optimization scores</div>
+    const tools = [
+      { name: "GPT",        rating: aiData?.GPT_Rating,        pages: aiData?.GPT_Pages,        src: "/assets/gpt.svg" },
+      { name: "Google AI",  rating: aiData?.Google_AI_Rating,  pages: aiData?.Google_AI_Pages,  src: "/assets/google.svg" },
+      { name: "Perplexity", rating: aiData?.Perplexity_Rating, pages: aiData?.Perplexity_Pages, src: "/assets/perplexity.svg" },
+      { name: "Copilot",    rating: aiData?.Copilot_Rating,    pages: aiData?.Copilot_Pages,    src: "/assets/copilot.svg" },
+      { name: "Gemini",     rating: aiData?.Gemini_Rating,     pages: aiData?.Gemini_Pages,     src: "/assets/gemini.svg" },
+    ];
+
+    return (
+      <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-5">
+        {tools.map((tool) => (
+          <div key={tool.name} className="rounded-[12px] border border-[var(--border)] bg-[var(--input)] p-4 text-center">
+            <Image src={tool.src} alt={tool.name} width={36} height={36} className="mx-auto mb-2" />
+            <div className="text-[12px] text-[var(--muted)]">{tool.name}</div>
+            <div className="mt-1 text-[22px] font-semibold leading-none text-[var(--text)] tabular-nums">
+              {tool.rating}
+              <span className="text-[var(--muted)]">/5</span>
+            </div>
+            <div className="mt-1 text-[11px] text-[var(--muted)]">{formatNumber(tool.pages)} Pages</div>
           </div>
-        </section>
+        ))}
+      </div>
+    );
+  })()}
+
+  <div className="mt-4 text-[12px] text-[var(--muted)]">
+    AI tool visibility and optimization scores
+  </div>
+</div>
+</section>
 
         {/* On-Page SEO Opportunities — cards */}
         <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">On-Page SEO Opportunities</h2>
@@ -1557,5 +1599,3 @@ export default function Dashboard() {
     </main>
   );
 }
-
-
