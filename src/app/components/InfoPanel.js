@@ -1,10 +1,84 @@
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
-import { Pin, PinOff, BarChart2 } from "lucide-react";
+import { Pin, PinOff, BarChart2, Play } from "lucide-react";
 
+/* ---------- Video helpers (ADDED) ---------- */
+const YT_URL = "https://youtube.com/shorts/_7LPvKmZkwg?si=vD25P17VltV7szZu";
+function toYouTubeEmbed(url) {
+  try {
+    const u = new URL(url);
+    // Shorts
+    if (u.hostname.includes("youtube.com") && u.pathname.startsWith("/shorts/")) {
+      const id = u.pathname.split("/")[2];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+    // Normal watch url
+    if (u.hostname.includes("youtube.com") && u.searchParams.get("v")) {
+      return `https://www.youtube.com/embed/${u.searchParams.get("v")}`;
+    }
+    return url;
+  } catch {
+    return url;
+  }
+}
 
-/* Data helpers (non-UI) */
+function VideoCard({ title, onOpen }) {
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="w-full rounded-xl border border-gray-200 bg-white dark:bg-[var(--extra-input-dark)] dark:border-[var(--extra-border-dark)] p-3 flex items-center gap-3 text-left shadow-sm hover:shadow transition group"
+    >
+      <div className="w-10 h-10 rounded-full grid place-items-center bg-[image:var(--brand-gradient)] text-white">
+        <Play className="shrink-0" size={18} />
+      </div>
+      <div className="flex-1">
+        <div className="font-medium text-gray-900 dark:text-[var(--text)]">{title}</div>
+        <div className="text-xs text-gray-500 dark:text-[var(--muted)]">Click to watch</div>
+      </div>
+      <div className="text-xs text-gray-500 group-hover:text-[#d45427]">Open</div>
+    </button>
+  );
+}
+
+function VideoModal({ open, title, url, onClose, onExpand }) {
+  if (!open) return null;
+  const embedUrl = toYouTubeEmbed(url);
+  return (
+    <div className="fixed inset-0 z-[999] bg-black/70 grid place-items-center p-4">
+      <div className="relative w-full max-w-4xl rounded-2xl bg-[var(--panel)] text-[var(--text)] shadow-lg p-4">
+        <button
+          onClick={onClose}
+          className="absolute right-3 top-3 text-[var(--muted)] hover:text-[var(--text)]"
+          aria-label="Close"
+        >
+          ✕
+        </button>
+        <div className="text-lg font-semibold mb-3">{title}</div>
+        <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
+          <iframe
+            className="w-full h-full"
+            src={embedUrl}
+            title={title}
+            allowFullScreen
+            frameBorder="0"
+          />
+        </div>
+        <div className="mt-4 flex justify-end">
+          <button
+            onClick={onExpand}
+            className="px-4 py-2 rounded-md text-white font-medium shadow bg-[image:var(--brand-gradient)]"
+          >
+            Expand in New Tab
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------- Existing helpers from your file (unchanged) ---------------- */
 function normalizeDomain(input = "") {
   try {
     const url = input.includes("://") ? new URL(input) : new URL(`https://${input}`);
@@ -14,7 +88,7 @@ function normalizeDomain(input = "") {
   } catch {
     return String(input)
       .toLowerCase()
-      .replace(/^https?:\/\/\//, "") // intentionally triple-slash? No -> correct two slashes:
+      .replace(/^https?:\/\/\//, "")
       .replace(/^https?:\/\//, "")
       .replace(/^www\./, "")
       .split("/")[0];
@@ -47,7 +121,7 @@ function formatNumber(num) {
   return String(num);
 }
 
-/* --- Reusable Website Stats card (exact same design everywhere) --- */
+/* --- Reusable Website Stats card (same as your file) --- */
 function WebsiteStatsCard({ website, stats }) {
   return (
     <div className="rounded-2xl bg-white border border-gray-200 shadow-sm p-5 dark:bg-[var(--extra-input-dark)] dark:border-[var(--extra-border-dark)]">
@@ -112,7 +186,9 @@ export default function InfoPanel({
 }) {
   const panelRef = useRef(null);
 
-  
+  /* ADDED: active video state */
+  const [activeVideo, setActiveVideo] = useState(null);
+
   /* load seo-data.json (data only; no UI changes) */
   const [rows, setRows] = useState(null);
   const [dataError, setDataError] = useState("");
@@ -138,7 +214,7 @@ export default function InfoPanel({
     const key = normalizeDomain(websiteData?.website || "");
     return rows.find(r => r.domain === key) || rows.find(r => r.domain === `www.${key}`) || null;
   }, [rows, websiteData?.website]);
-// Close on outside click (unless pinned)
+  // Close on outside click (unless pinned)
   useEffect(() => {
     function handleClickOutside(e) {
       if (isPinned) return;
@@ -199,7 +275,7 @@ export default function InfoPanel({
     <div className="space-y-6">
       <WebsiteStatsCard website={displayWebsite} stats={stats} />
 
-      {/* (unchanged) FIX THIS content */}
+      {/* FIX THIS content -> replaced rows with videos */}
       <div>
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
@@ -208,55 +284,18 @@ export default function InfoPanel({
           <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
         </div>
         <div className="place-items-center flex justify-center">
-        <div className="divider-gradient-line h-[1px] w-[100%] bg-[image:var(--brand-gradient)] my-2 mb-5"></div>
-      </div>
-
-        <div className="bg-white rounded-lg shadow-sm p-3 mb-4 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">
-                Domain Authority ({stats.domainAuthority})
-              </div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)]">Your site trust score (0–100)</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">
-                {stats.domainAuthority} = above average for SMBs
-              </div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <button className="mb-3 inline-block bg-[image:var(--infoHighlight-gradient)] text-white text-xs px-3 py-1 rounded font-medium">
-            IMPROVE : BUILT QUALITY BACKLINKS
-          </button>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-8 rounded bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-              DA
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">How to Build Domain Authority</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
+          <div className="divider-gradient-line h-[1px] w-[100%] bg-[image:var(--brand-gradient)] my-2 mb-5"></div>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm p-3 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">
-                Organic Traffic ({stats.organicTraffic})
-              </div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)]">Monthly visits from free searches.</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">{stats.organicTraffic} = visitors last month.</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="mb-3 inline-block bg-[image:var(--infoHighlight-gradient)] text-white text-xs px-3 py-1 rounded">
-            Each organic visitor costs $0 vs $2–5 for ads.
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-12 h-8 rounded bg-green-600 flex items-center justify-center text-white text-xs font-bold">
-              TR
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Turn Traffic Into Customers</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
+        <VideoCard
+          title="How to Build Domain Authority"
+          onOpen={() => setActiveVideo({ title: "How to Build Domain Authority", url: YT_URL })}
+        />
+        <div className="mt-4">
+          <VideoCard
+            title="Turn Traffic Into Customers"
+            onOpen={() => setActiveVideo({ title: "Turn Traffic Into Customers", url: YT_URL })}
+          />
         </div>
       </div>
     </div>
@@ -274,85 +313,23 @@ export default function InfoPanel({
           </div>
         </div>
 
-        {/* (unchanged) cards/content */}
-        <div className="bg-white rounded-lg border shadow-sm p-3 mb-4 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Why Industry Matters</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">• Personalized Benchmarks vs. relevant peers</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="mt-3">
-            <div className="text-xs text-gray-600 dark:text-[var(--muted)] mb-2">Keyword suggestion</div>
-            <div className="flex gap-2 flex-wrap">
-              <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded">KEYWORD-1</span>
-              <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded">KEYWORD-2</span>
-              <span className="bg-gray-200 text-gray-700 text-xs px-2 py-1 rounded">KEYWORD-3</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-              SEO
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Industry SEO Strategies</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border shadow-sm p-3 mb-4 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Business Type Impact</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">• Local vs. national focus</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)]">• Content and customer journey differences</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-green-600 flex items-center justify-center text-white text-xs font-bold">
-              DA
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">How to Build Domain Authority</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border shadow-sm p-3 mb-4 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Competitive Analysis</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">• Compare with industry leaders</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)]">• Identify content gaps</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-purple-600 flex items-center justify-center text-white text-xs font-bold">
-              CA
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Competitor Research Tools</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border shadow-sm p-3 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Content Strategy</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">• Industry-specific content ideas</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)]">• Content calendar planning</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)]">• SEO optimization tips</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-indigo-600 flex items-center justify-center text-white text-xs font-bold">
-              CS
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Content Planning Guide</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
+        <div className="space-y-4">
+          <VideoCard
+            title="Industry SEO Strategies"
+            onOpen={() => setActiveVideo({ title: "Industry SEO Strategies", url: YT_URL })}
+          />
+          <VideoCard
+            title="How to Build Domain Authority"
+            onOpen={() => setActiveVideo({ title: "How to Build Domain Authority", url: YT_URL })}
+          />
+          <VideoCard
+            title="Competitor Research Tools"
+            onOpen={() => setActiveVideo({ title: "Competitor Research Tools", url: YT_URL })}
+          />
+          <VideoCard
+            title="Content Planning Guide"
+            onOpen={() => setActiveVideo({ title: "Content Planning Guide", url: YT_URL })}
+          />
         </div>
       </div>
     </div>
@@ -363,7 +340,6 @@ export default function InfoPanel({
     <div className="space-y-6">
       <WebsiteStatsCard website={displayWebsite} stats={stats} />
 
-      {/* (unchanged) guidance content */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-4 h-4 bg-orange-500 rounded-sm flex items-center justify-center">
@@ -371,61 +347,23 @@ export default function InfoPanel({
           </div>
           <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
         </div>
-<div className="place-items-center flex justify-center">
-        <div className="divider-gradient-line h-[1px] w-[100%] bg-[image:var(--brand-gradient)] my-2 mb-5"></div>
-      </div>
-        <div className="bg-white rounded-lg border shadow-sm p-3 mb-4 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Local SEO Power</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">76% of local searches lead to store visits</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-red-600 flex items-center justify-center text-white text-xs font-bold">
-              DA
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Dominate Local Search</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
+        <div className="place-items-center flex justify-center">
+          <div className="divider-gradient-line h-[1px] w-[100%] bg-[image:var(--brand-gradient)] my-2 mb-5"></div>
         </div>
 
-        <div className="bg-white rounded-lg border shadow-sm p-3 mb-4 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Language Strategy</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">• Match customers search language</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="mb-3 inline-block bg-yellow-300 text-black text-xs px-3 py-1 rounded">
-            Less competition in non-English terms
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-blue-600 flex items-center justify-center text-white text-xs font-bold">
-              SEO
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Multi-Language SEO</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border shadow-sm p-3 dark:bg-[var(--extra-input-dark)]">
-          <div className="flex items-start justify-between mb-2">
-            <div>
-              <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)]">Location Guide</div>
-              <div className="text-xs text-gray-500 dark:text-[var(--muted)] mt-1">• Map service areas</div>
-            </div>
-            <div className="text-gray-400 dark:text-[var(--muted)] cursor-help">?</div>
-          </div>
-          <div className="flex items-center gap-3 mt-3">
-            <div className="w-12 h-8 rounded bg-green-600 flex items-center justify-center text-white text-xs font-bold">
-              LG
-            </div>
-            <div className="text-sm text-gray-700 dark:text-[var(--muted)]">Location Optimization</div>
-            <div className="text-gray-400 dark:text-[var(--muted)]">⋯</div>
-          </div>
+        <div className="space-y-4">
+          <VideoCard
+            title="Dominate Local Search"
+            onOpen={() => setActiveVideo({ title: "Dominate Local Search", url: YT_URL })}
+          />
+          <VideoCard
+            title="Multi-Language SEO"
+            onOpen={() => setActiveVideo({ title: "Multi-Language SEO", url: YT_URL })}
+          />
+          <VideoCard
+            title="Location Optimization"
+            onOpen={() => setActiveVideo({ title: "Location Optimization", url: YT_URL })}
+          />
         </div>
       </div>
 
@@ -451,7 +389,6 @@ export default function InfoPanel({
     <div className="space-y-8">
       <WebsiteStatsCard website={displayWebsite} stats={stats} />
 
-      {/* (unchanged) keyword & tips content */}
       <div>
         <div className="flex items-center gap-2 mb-3">
           <div className="w-4 h-4 bg-orange-500 rounded-sm flex items-center justify-center">
@@ -459,71 +396,29 @@ export default function InfoPanel({
           </div>
           <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
         </div>
-
         <div className="place-items-center flex justify-center">
-        <div className="divider-gradient-line h-[1px] w-[100%] bg-[image:var(--brand-gradient)] my-2 mb-5"></div>
-      </div>
-
-        <div className="bg-white rounded-lg border shadow-sm p-4 mb-4 flex items-center gap-3 dark:bg-[var(--extra-input-dark)]">
-          <div className="w-9 h-9 flex items-center justify-center rounded bg-blue-600 text-white font-bold">i</div>
-          <div className="flex-1">
-            <div className="font-medium text-gray-900 dark:text-[var(--text)]">Keyword Fundamentals</div>
-            <div className="text-xs text-gray-500 dark:text-[var(--muted)]">What keywords are &amp; why they matter</div>
-            <div className="flex flex-wrap gap-2 mb-2 my-4">
-              {keywordData.slice(0, 6).map((kw, i) => (
-                <span
-                  key={i}
-                  className="px-2 py-1 bg-white text-gray-900 border border-blue-600 rounded-sm text-xs"
-                >
-                  {kw}
-                </span>
-              ))}
-              {keywordData.length > 6 && (
-                <span className="bg-gray-200 text-gray-600 text-xs px-2 py-1 rounded">
-                  +{keywordData.length - 6} more
-                </span>
-              )}
-            </div>
-          </div>
+          <div className="divider-gradient-line h-[1px] w-[100%] bg-[image:var(--brand-gradient)] my-2 mb-5"></div>
         </div>
 
-        <div className="bg-white rounded-lg border shadow-sm p-4 mb-4 flex items-center gap-3 dark:bg-[var(--extra-input-dark)]">
-          <div className="w-9 h-9 flex items-center justify-center rounded bg-green-600 text-white font-bold">
-            &#x2261;
-          </div>
-          <div className="flex-1">
-            <div className="font-medium text-gray-900 dark:text-[var(--text)]">Volume &amp; Competition</div>
-            <div className="text-xs text-gray-500 dark:text-[var(--muted)]">
-              Match industry volume &amp; competition
-              <br />
-              <span className="font-bold text-green-600">100–1,000 searches = sweet spot</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg border shadow-sm p-4 flex items-center gap-3 dark:bg-[var(--extra-input-dark)]">
-          <div className="w-9 h-9 flex items-center justify-center rounded bg-purple-600 text-white font-bold">
-            &#x270E;
-          </div>
-          <div className="flex-1">
-            <div className="font-medium text-gray-900 dark:text-[var(--text)]">Customer Language</div>
-            <div className="text-xs text-gray-500 dark:text-[var(--muted)]">
-              Use words your customers actually search.
-              <br />
-              Think like your buyer, not like your business.
-            </div>
-            <div className="flex flex-wrap gap-2 mt-2">
-              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Language #1</span>
-              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Language #2</span>
-              <span className="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">Language #3</span>
-            </div>
-          </div>
+        <div className="space-y-4">
+          <VideoCard
+            title="Keyword Fundamentals — What keywords are & why they matter"
+            onOpen={() => setActiveVideo({ title: "Keyword Fundamentals", url: YT_URL })}
+          />
+          <VideoCard
+            title="Volume & Competition — 100–1,000 searches = sweet spot"
+            onOpen={() => setActiveVideo({ title: "Volume & Competition", url: YT_URL })}
+          />
+          <VideoCard
+            title="Customer Language — Use words your customers actually search"
+            onOpen={() => setActiveVideo({ title: "Customer Language", url: YT_URL })}
+          />
         </div>
       </div>
     </div>
   );
 
-  /* -------------------- STEP 5 (competitors list) -------------------- */
+  /* -------------------- STEP 5 (competitors list + next actions) -------------------- */
   const renderStep5Content = () => {
     const hasAny =
       (businessCompetitors && businessCompetitors.length > 0) ||
@@ -604,14 +499,16 @@ export default function InfoPanel({
             <h4 className="text-sm font-bold text-gray-800">NEXT ACTIONS</h4>
           </div>
 
-          <div className="bg-white rounded-lg border shadow-sm p-3 mb-3 dark:bg-[var(--extra-input-dark)]">
-            <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)] mb-1">Benchmark Against Competitors</div>
-            <div className="text-xs text-gray-500 dark:text-[var(--muted)]">Compare domain authority and content depth.</div>
-          </div>
-
-          <div className="bg-white rounded-lg border shadow-sm p-3 dark:bg-[var(--extra-input-dark)]">
-            <div className="text-sm font-semibold text-gray-800 dark:text-[var(--text)] mb-1">Content Gaps</div>
-            <div className="text-xs text-gray-500 dark:text-[var(--muted)]">Identify topics your competitors rank for that you don’t.</div>
+          {/* Replaced Next Actions items with videos */}
+          <div className="space-y-4">
+            <VideoCard
+              title="Benchmark Against Competitors"
+              onOpen={() => setActiveVideo({ title: "Benchmark Against Competitors", url: YT_URL })}
+            />
+            <VideoCard
+              title="Content Gaps — Identify topics competitors rank for"
+              onOpen={() => setActiveVideo({ title: "Content Gaps", url: YT_URL })}
+            />
           </div>
         </div>
       </div>
@@ -694,19 +591,19 @@ export default function InfoPanel({
       <div className="hidden dark:block fixed inset-0 -z-10 pointer-events-none bg-no-repeat bg-cover"
            style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), var(--app-gradient-strong)" }} />
       <div
-      ref={panelRef}
-      aria-hidden={!isOpen}
-      className={
-        "fixed left-[80px] top-0 h-screen w-[430px] transition-transform duration-300 ease-in-out z-40 flex flex-col " +
-        (isOpen ? "translate-x-0" : "-translate-x-full")
-      }
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between px-4 pt-6 bg-transparent">
-        <div className="flex items-center gap-3">
-          <BarChart2 className="text-[#111827]" size={26} />
-          <h3 className="text-xl font-black text-[#111827] dark:text-[var(--text)]">INFO</h3>
-        </div>
+        ref={panelRef}
+        aria-hidden={!isOpen}
+        className={
+          "fixed left-[80px] top-0 h-screen w-[430px] transition-transform duration-300 ease-in-out z-40 flex flex-col " +
+          (isOpen ? "translate-x-0" : "-translate-x-full")
+        }
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 pt-6 bg-transparent">
+          <div className="flex items-center gap-3">
+            <BarChart2 className="text-[#111827]" size={26} />
+            <h3 className="text-xl font-black text-[#111827] dark:text-[var(--text)]">INFO</h3>
+          </div>
         <button
           onClick={() => setIsPinned((p) => !p)}
           className="text-[#111827] hover:text-[#D45427] rounded font-bold dark:text-[var(--text)]"
@@ -714,31 +611,40 @@ export default function InfoPanel({
         >
           {isPinned ? <PinOff size={20}/> : <Pin size={20} />}
         </button>
-      </div>
-      <div className="place-items-center flex justify-center">
-        <div className="divider-gradient-line h-[1px] w-[92.5%] bg-[image:var(--brand-gradient)] my-2 mb-0"></div>
+        </div>
+        <div className="place-items-center flex justify-center">
+          <div className="divider-gradient-line h-[1px] w-[92.5%] bg-[image:var(--brand-gradient)] my-2 mb-0"></div>
+        </div>
+
+        {/* Body */}
+        <div
+          className="flex-1 overflow-y-auto p-4 bg-transparent"
+          style={{ height: "calc(100vh - 60px)", scrollbarWidth: "none", msOverflowStyle: "none" }}
+        >
+          <style jsx>{`div::-webkit-scrollbar{display:none}`}</style>
+
+          {currentStep === 1
+            ? renderStep1Content()
+            : currentStep === 2
+            ? renderStep2Content()
+            : currentStep === 3
+            ? renderStep3Content()
+            : currentStep === 4
+            ? renderStep4Content()
+            : currentStep === 6
+            ? renderStep5Slide2Content()
+            : renderStep5Content()}
+        </div>
       </div>
 
-      {/* Body */}
-      <div
-        className="flex-1 overflow-y-auto p-4 bg-transparent"
-        style={{ height: "calc(100vh - 60px)", scrollbarWidth: "none", msOverflowStyle: "none" }}
-      >
-        <style jsx>{`div::-webkit-scrollbar{display:none}`}</style>
-
-        {currentStep === 1
-          ? renderStep1Content()
-          : currentStep === 2
-          ? renderStep2Content()
-          : currentStep === 3
-          ? renderStep3Content()
-          : currentStep === 4
-          ? renderStep4Content()
-          : currentStep === 6
-          ? renderStep5Slide2Content()
-          : renderStep5Content()}
-      </div>
-    </div>
-      </>
+      {/* Global Video Modal (one instance for all steps) */}
+      <VideoModal
+        open={!!activeVideo}
+        title={activeVideo?.title || ""}
+        url={activeVideo?.url || YT_URL}
+        onClose={() => setActiveVideo(null)}
+        onExpand={() => window.open(activeVideo?.url || YT_URL, "_blank")}
+      />
+    </>
   );
 }
