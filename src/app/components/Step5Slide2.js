@@ -84,6 +84,7 @@ export default function Step5Slide2({
   const handleDashboard = () => {
     if (loading) return;
     setLoading(true);
+    window.dispatchEvent(new Event("dashboard:open"));
     scrollLoaderIntoView();
     dashTimer.current = setTimeout(() => onDashboard?.(), 6000);
   };

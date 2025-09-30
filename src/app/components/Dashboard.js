@@ -1,12 +1,7 @@
 // src/components/Dashboard.js
 "use client";
 import Image from "next/image";
-import {
-  ShieldCheck, Network, Link2, Activity, Gauge, RefreshCw, Check, AlertTriangle, X, Clock3,
-  ActivitySquare, Lock, TrendingUp, KeyRound, SquareArrowOutUpRight,
-  Goal, Settings, SlidersHorizontal, FileText, ChevronRight, Rocket, Monitor, Smartphone,
-  Skull, BookOpen, Eye, PencilLine, Wifi, ThumbsUp, ThumbsDown, BarChart3, Lightbulb
-} from "lucide-react";
+import { Activity, ActivitySquare, AlertTriangle, BarChart3, BookOpen, Check, ChevronRight, Clock3, Eye, FileText, Gauge, Goal, HelpCircle, KeyRound, Lightbulb, Link2, Lock, Monitor, Network, PencilLine, RefreshCw, Rocket, Settings, ShieldCheck, Skull, SlidersHorizontal, Smartphone, SquareArrowOutUpRight, ThumbsDown, ThumbsUp, TrendingUp, Wifi, X } from "lucide-react";
 import { useEffect, useRef, useState, useMemo, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -699,7 +694,7 @@ export default function Dashboard() {
     <main className="min-h-screen bg-[var(--bg-panel)] px-4 py-6 sm:px-6 lg:px-8 overflow-x-hidden">
       <div className="mx-auto max-w-[100%] mt-1">
         {/* Row 1 */}
-        <h2 className="text-[16px] font-bold text-gray-900 mb-3 ml-1">
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">
           Off-Page SEO Metrics
         </h2>
 
@@ -845,7 +840,7 @@ export default function Dashboard() {
         </section>
 
         {/* Row 2 */}
-        <h2 className="text-[16px] font-bold text-gray-900 mb-3 ml-1">
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">
           Technical SEO
         </h2>
 
@@ -1000,7 +995,7 @@ export default function Dashboard() {
         </section>
 
         {/* Row 3 */}
-        <h2 className="text-[16px] font-bold text-gray-900 mb-3 ml-1">Performance (SEO Metrics)</h2>
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">Performance (SEO Metrics)</h2>
 
         <section className="mb-4 grid grid-cols-1 gap-4 md:grid-cols-3">
           {/* Organic Traffic */}
@@ -1175,7 +1170,7 @@ export default function Dashboard() {
         </section>
 
         {/* Row 4 */}
-        <h2 className="text-[16px] font-bold text-gray-900 mb-3 ml-1">Advance SEO metrics</h2>
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">Advance SEO metrics</h2>
 
         <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* SERP feature */}
@@ -1292,59 +1287,185 @@ export default function Dashboard() {
         </section>
 
         {/* On-Page SEO Opportunities — cards */}
-        <h2 className="text-[16px] font-bold text-gray-900 mb-3 ml-1">On-Page SEO Opportunities</h2>
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">On-Page SEO Opportunities</h2>
+        {/* On-Page SEO Opportunities — cards */}
+        
+
         <section className="mb-10 grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
-          <div className="flex items-center justify-between rounded-[18px] border border-[var(--border)] bg-[var(--input)] px-4 py-3 shadow-sm">
+          {/* Card 1: Critical Issue */}
+          <div className="flex items-center justify-between rounded-[18px] border border-[#E7EAF0] bg-[var(--input)] px-4 py-3 shadow-sm">
             <div className="flex items-center gap-3 min-w-0">
-              <span className="flex shrink-0 aspect-square h-10 w-10 items-center justify-center rounded-full bg-[#EF3E5C] text-white"><Skull size={20} /></span>
+              <span className="flex shrink-0 aspect-square h-10 w-10 items-center justify-center rounded-full bg-[#EF3E5C] text-white">
+                <Skull size={20} />
+              </span>
               <div className="leading-tight">
                 <div className="text-[11px] text-[var(--muted)]">Critical Issue</div>
-                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">{oppCounts[0]}</div>
-                <div className="mt-1 text-[11px] font-medium text-[#DC2626] whitespace-nowrap">{(selected?.issues?.criticalGrowth ?? 32)}% more since last month</div>
+                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">
+                  {oppCounts[0]}
+                </div>
+                <div className="mt-1 text-[11px] font-medium text-[#DC2626] whitespace-nowrap">
+                  32% more since last month
+                </div>
               </div>
             </div>
-            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[var(--muted)] shrink-0 whitespace-nowrap">Fix Now <ChevronRight size={12} /></button>
+            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[#8D96A8] shrink-0 whitespace-nowrap">
+              Fix Now <ChevronRight size={12} />
+            </button>
           </div>
 
-          <div className="flex items-center justify-between rounded-[18px] border border-[var(--border)] bg-[var(--input)] px-4 py-3 shadow-sm">
+          {/* Card 2: Waring Issue */}
+          <div className="flex items-center justify-between rounded-[18px] border border-[#E7EAF0] bg-[var(--input)] px-4 py-3 shadow-sm">
             <div className="flex items-center gap-3 min-w-0">
-              <span className="flex shrink-0 aspect-square h-10 w-10 items-center justify-center rounded-full bg-[#F59E0B] text-white"><AlertTriangle size={20} /></span>
+              <span className="flex shrink-0 aspect-square h-10 w-10 items-center justify-center rounded-full bg-[#F59E0B] text-white">
+                <AlertTriangle size={20} />
+              </span>
               <div className="leading-tight">
                 <div className="text-[11px] text-[var(--muted)]">Waring Issue</div>
-                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">{oppCounts[1]}</div>
-                <div className="mt-1 text-[11px] font-medium text-[#DC2626] whitespace-nowrap">{(selected?.issues?.warningGrowth ?? 32)}% more since last month</div>
+                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">
+                  {oppCounts[1]}
+                </div>
+                <div className="mt-1 text-[11px] font-medium text-[#DC2626] whitespace-nowrap">
+                  32% more since last month
+                </div>
               </div>
             </div>
-            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[var(--muted)] shrink-0 whitespace-nowrap">Fix Now <ChevronRight size={12} /></button>
+            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[#8D96A8] shrink-0 whitespace-nowrap">
+              Fix Now <ChevronRight size={12} />
+            </button>
           </div>
 
-          <div className="flex items-center justify-between rounded-[18px] border border-[var(--border)] bg-[var(--input)] px-4 py-3 shadow-sm">
+          {/* Card 3: Recommendations */}
+          <div className="flex items-center justify-between rounded-[18px] border border-[#E7EAF0] bg-[var(--input)] px-4 py-3 shadow-sm">
             <div className="flex items-center gap-3 min-w-0">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#10B981] text-white"><Lightbulb size={20} /></span>
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#10B981] text-white">
+                <Lightbulb size={20} />
+              </span>
               <div className="leading-tight">
                 <div className="text-[11px] text-[var(--muted)]">Recommendations</div>
-                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">{oppCounts[2]}</div>
-                <div className="mt-1 text-[11px] font-medium text-[#16A34A] whitespace-nowrap">+23%<span className="text-[var(--muted)]"> since last month</span></div>
+                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">
+                  {oppCounts[2]}
+                </div>
+                <div className="mt-1 text-[11px] font-medium text-[#16A34A] whitespace-nowrap">
+                  +23%<span className="text-[var(--muted)]">{' '}since last month</span>
+                </div>
               </div>
             </div>
-            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[var(--muted)] shrink-0 whitespace-nowrap">View All <ChevronRight size={12} /></button>
+            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[#8D96A8] shrink-0 whitespace-nowrap">
+              View All <ChevronRight size={12} />
+            </button>
           </div>
 
-          <div className="flex items-center justify-between rounded-[18px] border border-[var(--border)] bg-[var(--input)] px-4 py-3 shadow-sm">
+          {/* Card 4: Content Opportunities */}
+          <div className="flex items-center justify-between rounded-[18px] border border-[#E7EAF0] bg-[var(--input)] px-4 py-3 shadow-sm">
             <div className="flex items-center gap-3 min-w-0">
-              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#3B82F6] text-white"><FileText size={18} /></span>
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#3B82F6] text-white">
+                <FileText size={18} />
+              </span>
               <div className="leading-tight">
                 <div className="text-[11px] text-[var(--muted)]">Content Opportunities</div>
-                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">{oppCounts[3]}</div>
-                <div className="mt-1 text-[11px] font-medium text-[#DC2626] whitespace-nowrap">-32%<span className="text-[var(--muted)]"> since last month</span></div>
+                <div className="mt-0.5 text-[20px] font-extrabold leading-none text-[var(--text)] tabular-nums">
+                  {oppCounts[3]}
+                </div>
+                <div className="mt-1 text-[11px] font-medium text-[#DC2626] whitespace-nowrap">
+                  -32%<span className="text-[var(--muted)]">{' '}since last month</span>
+                </div>
               </div>
             </div>
-            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[var(--muted)] shrink-0 whitespace-nowrap">View All <ChevronRight size={12} /></button>
+            <button className="ml-4 inline-flex items-center gap-1 text-[11px] font-medium text-[#8D96A8] shrink-0 whitespace-nowrap">
+              View All <ChevronRight size={12} />
+            </button>
           </div>
         </section>
 
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">Top On-Page Content Opportunities</h2>
+<section className="mb-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)]">
+          {/* BLOG column */}
+          <div className="grid grid-rows-[auto_1fr_auto] gap-3">
+            {/* header */}
+            <div className="flex items-center gap-2">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#E7D7FB] bg-[#F5EAFE] text-[#7C3AED]">
+                <BookOpen size={14} />
+              </span>
+              <span className="text-[12px] font-semibold tracking-wide text-[var(--text)]">BLOG</span>
+              <HelpCircle size={14} className="text-[#9AA3B2]" />
+            </div>
+
+            {/* cards */}
+            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 items-stretch">
+              <OpportunityCard
+                title="How to Improve Site Speed"
+                score={45}
+                wordCount={1250}
+                keywords={50}
+                status="Published"
+                progress={oppCardsProgress}
+                className="h-full"
+              />
+              <OpportunityCard
+                title="Complete Local SEO Guide"
+                score={72}
+                wordCount={2400}
+                keywords={3}
+                status="Draft"
+                progress={oppCardsProgress}
+                className="h-full"
+              />
+            </div>
+
+            {/* view all pinned to bottom */}
+            <div className="flex justify-end pt-1 px-4">
+              <button className="inline-flex items-center gap-2 rounded-[12px] border border-[#DDE3ED] bg-[#FAFBFD] px-3 py-2 text-[12px] font-medium text-[#566072]">
+                View all opportunity <ChevronRight size={14} />
+              </button>
+            </div>
+          </div>
+
+          {/* vertical divider */}
+          <div className="hidden lg:block w-px self-stretch bg-[#ECEFF5]" />
+
+          {/* PAGES column */}
+          <div className="grid grid-rows-[auto_1fr_auto] gap-3">
+            {/* header */}
+            <div className="flex items-center gap-2">
+              <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#FFD6E8] bg-[#FFE9F3] text-[#F43F5E]">
+                <FileText size={14} />
+              </span>
+              <span className="text-[12px] font-semibold tracking-wide text-[var(--text)]">PAGES</span>
+              <HelpCircle size={14} className="text-[#9AA3B2]" />
+            </div>
+
+            {/* cards */}
+            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+              <OpportunityCard
+                title="How to Improve Site Speed"
+                score={25}
+                wordCount={1250}
+                keywords={50}
+                status="Published"
+                progress={oppCardsProgress}
+              />
+              <OpportunityCard
+                title="Complete Local SEO Guide"
+                score={72}
+                wordCount={2400}
+                keywords={3}
+                status="Draft"
+                progress={oppCardsProgress}
+              />
+            </div>
+
+            {/* view all pinned to bottom */}
+            <div className="flex justify-end pt-1 px-4">
+              <button className="inline-flex items-center gap-2 rounded-[12px] border border-[#DDE3ED] bg-[#FAFBFD] px-3 py-2 text-[12px] font-medium text-[#566072]">
+                View all opportunity <ChevronRight size={14} />
+              </button>
+            </div>
+          </div>
+        </section>
+    
+
         {/* New on page SEO opportunity (table) */}
-        <h2 className="text-[16px] font-bold text-gray-900 mb-2 ml-1">New on page SEO opportunity</h2>
+        <h2 className="text-[16px] font-bold text-[var(--text)] mb-2 ml-1">New on page SEO opportunity</h2>
         <p className="ml-1 mb-4 text-[12px] text-[var(--muted)]">
           *While it’s highly recommended to follow the AI’s suggested plan for optimal results,
           feel free to generate content based on your personal choice.
