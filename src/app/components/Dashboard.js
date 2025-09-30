@@ -178,6 +178,16 @@ function mapRowToSchema(row) {
       newsletter: n(row["Newsletter_Signups"], undefined),
       growth: n(row["Lead_Growth_Percent"], undefined), // if present in your data
     },
+
+    // AI tool visibility (ratings & indexed pages) — per domain
+    aiTools: {
+      GPT:        { rating: n(row["GPT_Rating"], undefined),        pages: n(row["GPT_Pages"], undefined),        src: "/assets/gpt.svg" },
+      GoogleAI:   { rating: n(row["Google_AI_Rating"], undefined),  pages: n(row["Google_AI_Pages"], undefined),  src: "/assets/google.svg" },
+      Perplexity: { rating: n(row["Perplexity_Rating"], undefined), pages: n(row["Perplexity_Pages"], undefined), src: "/assets/perplexity.svg" },
+      Copilot:    { rating: n(row["Copilot_Rating"], undefined),    pages: n(row["Copilot_Pages"], undefined),    src: "/assets/copilot.svg" },
+      Gemini:     { rating: n(row["Gemini_Rating"], undefined),     pages: n(row["Gemini_Pages"], undefined),     src: "/assets/gemini.svg" },
+    },
+
     // SERP features
     serp: {
       coveragePercent: n(row["SERP_Feature_Coverage_Percent"], undefined),
@@ -202,27 +212,6 @@ function mapRowToSchema(row) {
 }
 
 export default function Dashboard() {
-  // ---- AI SEO Matrix data (from /data/seo-new.json or /seo-new.json) ----
-  const [aiData, setAiData] = useState(null);
-  useEffect(() => {
-    const pathCandidates = ["/data/seo-data.json", "/seo-data.json"];
-    (async () => {
-      for (const path of pathCandidates) {
-        try {
-          const res = await fetch(path, { cache: "no-store" });
-          if (res.ok) {
-            const d = await res.json();
-            const arr = Array.isArray(d) ? d : (d ? [d] : []);
-            if (arr.length) {
-              setAiData(arr[0]); // pick first domain by default
-              return;
-            }
-          }
-        } catch (e) {}
-      }
-      setAiData(null);
-    })();
-  }, []);
 
   const searchParams = useSearchParams();
   const [domain, setDomain] = useState("example.com");
@@ -1367,6 +1356,7 @@ export default function Dashboard() {
           </div>
 
           {/* Ai SEO Matrix (dynamic from JSON) */}
+{/* Ai SEO Matrix (dynamic from JSON) */}
 <div className="rounded-[14px] border border-[var(--border)] bg-[var(--input)] p-4 shadow-sm">
   <div className="flex items-start justify-between">
     <div className="flex items-center gap-2">
@@ -1382,35 +1372,36 @@ export default function Dashboard() {
     </span>
   </div>
 
-  {/* Formatter for big numbers */}
   {(() => {
-    const formatNumber = (num) => {
-      if (!num && num !== 0) return "-";
-      if (num >= 1_000_000_000) return (num / 1_000_000_000).toFixed(1) + "B";
-      if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
-      if (num >= 1_000) return (num / 1_000).toFixed(1) + "k";
-      return num;
+    const ai = selected?.aiTools || {};
+    const fmt = (num) => {
+      const v = Number(num);
+      if (!Number.isFinite(v)) return "—";
+      if (v >= 1_000_000_000) return (v / 1_000_000_000).toFixed(1) + "B";
+      if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
+      if (v >= 1_000) return (v / 1_000).toFixed(1) + "k";
+      return Math.round(v).toString();
     };
 
     const tools = [
-      { name: "GPT",        rating: aiData?.GPT_Rating,        pages: aiData?.GPT_Pages,        src: "/assets/gpt.svg" },
-      { name: "Google AI",  rating: aiData?.Google_AI_Rating,  pages: aiData?.Google_AI_Pages,  src: "/assets/google.svg" },
-      { name: "Perplexity", rating: aiData?.Perplexity_Rating, pages: aiData?.Perplexity_Pages, src: "/assets/perplexity.svg" },
-      { name: "Copilot",    rating: aiData?.Copilot_Rating,    pages: aiData?.Copilot_Pages,    src: "/assets/copilot.svg" },
-      { name: "Gemini",     rating: aiData?.Gemini_Rating,     pages: aiData?.Gemini_Pages,     src: "/assets/gemini.svg" },
+      { name: "GPT",        rating: ai.GPT?.rating,        pages: ai.GPT?.pages,        src: ai.GPT?.src },
+      { name: "Google AI",  rating: ai.GoogleAI?.rating,   pages: ai.GoogleAI?.pages,   src: ai.GoogleAI?.src },
+      { name: "Perplexity", rating: ai.Perplexity?.rating, pages: ai.Perplexity?.pages, src: ai.Perplexity?.src },
+      { name: "Copilot",    rating: ai.Copilot?.rating,    pages: ai.Copilot?.pages,    src: ai.Copilot?.src },
+      { name: "Gemini",     rating: ai.Gemini?.rating,     pages: ai.Gemini?.pages,     src: ai.Gemini?.src },
     ];
 
     return (
       <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-5">
         {tools.map((tool) => (
           <div key={tool.name} className="rounded-[12px] border border-[var(--border)] bg-[var(--input)] p-4 text-center">
-            <Image src={tool.src} alt={tool.name} width={36} height={36} className="mx-auto mb-2" />
+            <Image src={tool.src || "/assets/placeholder.svg"} alt={tool.name} width={36} height={36} className="mx-auto mb-2" />
             <div className="text-[12px] text-[var(--muted)]">{tool.name}</div>
             <div className="mt-1 text-[22px] font-semibold leading-none text-[var(--text)] tabular-nums">
-              {tool.rating}
+              {Number.isFinite(tool.rating) ? tool.rating : "—"}
               <span className="text-[var(--muted)]">/5</span>
             </div>
-            <div className="mt-1 text-[11px] text-[var(--muted)]">{formatNumber(tool.pages)} Pages</div>
+            <div className="mt-1 text-[11px] text-[var(--muted)]">{fmt(tool.pages)} Pages</div>
           </div>
         ))}
       </div>

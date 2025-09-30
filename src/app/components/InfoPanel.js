@@ -3,6 +3,7 @@
 import { useEffect, useRef, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { Pin, PinOff, BarChart2 } from "lucide-react";
+import Image from "next/image";
 
 /* -------------------- Video helpers -------------------- */
 const DEFAULT_VIDEO = "https://youtube.com/shorts/_7LPvKmZkwg?si=vD25P17VltV7szZu";
@@ -200,12 +201,14 @@ function VideoRow({ title, author = "@itzfizz", onOpen, poster }) {
       <div className="flex items-center gap-3">
         {/* poster thumbnail */}
         <div className="w-16 h-10 rounded-lg overflow-hidden relative bg-black/10 dark:bg-white/5 shrink-0">
-          <img
-            src={poster || "/assets/poster.png"}
-            alt={title}
-            className="absolute inset-0 w-full h-full object-cover"
-            loading="lazy"
-          />
+        <Image
+          src={poster || "/assets/poster.png"}
+          alt={title}
+          fill
+          sizes="64px"          // w-16 ≈ 64px
+          className="object-cover"
+          priority={false}
+        />
           {/* If you want a faint play overlay, uncomment:
           <div className="absolute inset-0 grid place-items-center bg-black/10">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="white" opacity="0.9">
