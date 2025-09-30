@@ -10,17 +10,15 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
   const [wavePhase, setWavePhase] = useState(0);
   const [isShaking, setIsShaking] = useState(true);
 
-  // bottom bar: input until NO is clicked; then show CTA
   const [showInput, setShowInput] = useState(true);
 
-  // fixed-height panel measuring
   const panelRef = useRef(null);
   const scrollRef = useRef(null);
   const bottomBarRef = useRef(null);
   const tailRef = useRef(null);
   const [panelHeight, setPanelHeight] = useState(null);
 
-  // Website validation
+  // ✅ Website validation
   const isValidWebsite = (url) => {
     const urlPattern =
       /^(https?:\/\/)?(www\.)?[a-zA-Z0-9-]+\.[a-zA-Z]{2,}(\.[a-zA-Z]{2,})?(\/.*)?$/;
@@ -118,7 +116,9 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
     setTimeout(() => setCurrentState("submitted"), 300);
 
     onWebsiteSubmit?.(site.trim());
-    try { localStorage.setItem('websiteData', JSON.stringify({ site: site.trim() })); } catch {}
+    try {
+      localStorage.setItem("websiteData", JSON.stringify({ site: site.trim() }));
+    } catch {}
     setSite("");
   };
 
@@ -139,18 +139,18 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent">
-      {/* Global hide scrollbar utility */}
+      {/* Hide scrollbar globally */}
       <style jsx global>{`
         .no-scrollbar {
-          -ms-overflow-style: none; /* IE & Edge */
-          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
         .no-scrollbar::-webkit-scrollbar {
-          display: none; /* Chrome, Safari, Opera */
+          display: none;
         }
       `}</style>
 
-      {/* ---------------- Fixed-height White Section ---------------- */}
+      {/* ---------------- White Section ---------------- */}
       <div className="px-6 md:px-8 pt-6 pb-3">
         <div
           ref={panelRef}
@@ -197,8 +197,8 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
                   <span className="font-bold text-gray-900">SEO dashboard</span> for you.
                 </p>
                 <p className="text-[13px] text-gray-400 mt-4">
-                  For more information please ! Go to{" "}
-                  <span className="font-semibold text-gray-700">DASHBORD</span> & click{" "}
+                  For more information please! Go to{" "}
+                  <span className="font-semibold text-gray-700">DASHBOARD</span> & click{" "}
                   <span className="font-semibold text-gray-700">INFO</span> tab
                 </p>
               </div>

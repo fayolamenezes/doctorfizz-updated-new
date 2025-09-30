@@ -1,7 +1,7 @@
 // src/components/Dashboard.js
 "use client";
 import Image from "next/image";
-import { Activity, ActivitySquare, AlertTriangle, BarChart3, BookOpen, Check, ChevronRight, Clock3, Eye, FileText, Gauge, Goal, HelpCircle, KeyRound, Lightbulb, Link2, Lock, Monitor, Network, PencilLine, RefreshCw, Rocket, Settings, ShieldCheck, Skull, SlidersHorizontal, Smartphone, SquareArrowOutUpRight, ThumbsDown, ThumbsUp, TrendingUp, Wifi, X } from "lucide-react";
+import { Activity, ActivitySquare, AlertTriangle, BarChart3, BookOpen, Check, ChevronRight, Clock3, Eye, FileText, Gauge, Goal, HelpCircle, KeyRound, Lightbulb, Link2, Lock, Monitor, Network, PencilLine, RefreshCw, Rocket, Settings, ShieldCheck, Skull, SlidersHorizontal, Smartphone, SquareArrowOutUpRight, ThumbsDown, ThumbsUp, TrendingUp, TrendingDown, Wifi, X } from "lucide-react";
 import { useEffect, useRef, useState, useMemo, useLayoutEffect } from "react";
 import { useSearchParams } from "next/navigation";
 
@@ -174,6 +174,9 @@ function mapRowToSchema(row) {
     leads: {
       monthly: n(row["Total_Leads"], undefined),
       goal: n(row["Lead_Goal_Target"], undefined),
+      contactForm: n(row["Contact_Form_Leads"], undefined),
+      newsletter: n(row["Newsletter_Signups"], undefined),
+      growth: n(row["Lead_Growth_Percent"], undefined), // if present in your data
     },
     // SERP features
     serp: {
@@ -299,8 +302,8 @@ export default function Dashboard() {
 
   const LEADS_TARGET = selected?.leads?.monthly ?? 887;
   const LEADS_GOAL   = selected?.leads?.goal ?? 1500;
-  const CF_VALUE     = 642; // not in dataset → keep demo
-  const NL_VALUE     = 245; // not in dataset → keep demo
+  const CF_VALUE     = selected?.leads?.contactForm ?? 0;
+  const NL_VALUE     = selected?.leads?.newsletter ?? 0;
   const CF_LIMIT     = 800;
   const NL_LIMIT     = 400;
 
@@ -1135,61 +1138,153 @@ export default function Dashboard() {
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-xl border border-[#FFD8C7] bg-[#FFEFE8] text-[#D14B1F]">
                   <Goal size={16} />
                 </span>
-                <span className="flex items-center gap-1 text-[13px] text-gray-700 leading-relaxed">Leads</span>
+                <span className="flex items-center gap-1 text-[13px] text-gray-700 leading-relaxed">
+                  Leads
+                </span>
               </div>
 
               <div className="flex items-center gap-2">
-                <span className="inline-flex items-center gap-1 rounded-full border border-[var(--border)] bg-[#EAF8F1] px-2 py-0.5 text-[11px] font-medium text-[#178A5D]">
-                  <TrendingUp size={14} /> + 8.4 % <TrendingUp size={14} />
-                </span>
+                {(() => {
+                  const g = selected?.leads?.growth;
+                  const isNum = typeof g === "number" && !Number.isNaN(g);
+                  const up = isNum ? g >= 0 : true;
+                  const sign = isNum ? (up ? "+" : "−") : "+";
+                  const pct = isNum ? Math.abs(g).toFixed(1) : "0.0";
+                  const badgeClasses = up
+                    ? "border border-[var(--border)] bg-[#EAF8F1] text-[#178A5D]"
+                    : "border border-[var(--border)] bg-[#FFF6F6] text-[#D12C2C]";
+                  return (
+                    <span
+                      className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${badgeClasses}`}
+                    >
+                      {up ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
+                      {sign} {pct} %
+                    </span>
+                  );
+                })()}
+
                 <span className="inline-flex h-7 w-7 items-center justify-center rounded-md border border-[var(--border)] text-[var(--muted)]">
                   <Settings size={14} />
                 </span>
               </div>
             </div>
 
-            <div className="mt-3 text-[32px] font-semibold leading-none text-[var(--text)] tabular-nums">
-              {Math.round(leadsCount)}
-            </div>
+            {(() => {
+              const formatNumber = (num) => {
+                const v = Number(num) || 0;
+                if (v >= 1_000_000_000) return (v / 1_000_000_000).toFixed(1) + "B";
+                if (v >= 1_000_000) return (v / 1_000_000).toFixed(1) + "M";
+                if (v >= 1_000) return (v / 1_000).toFixed(1) + "k";
+                return Math.round(v).toString();
+              };
 
-            <div className="mt-2 flex items-center justify-between text-[12px]">
-              <span className="text-[var(--muted)]">
-                Goals <span className="font-medium text-[var(--text)] tabular-nums">{Math.round(leadsCount)} / {LEADS_GOAL.toLocaleString()}</span>
-              </span>
-              <span className="text-[var(--muted)]">13% Remaining</span>
-            </div>
-            <div className="mt-2 h-2 w-full rounded-full bg-[var(--border)]">
-              <div className="h-2 rounded-full bg-[#22C55E]" style={{ width: `${(LEADS_TARGET / LEADS_GOAL) * 100 * leadsProg}%`, transition: "width 120ms linear" }} />
-            </div>
+              const totalLeadsAnimated = Math.max(0, Math.round(leadsCount));  // animated
+              const goalLeads = LEADS_GOAL ?? 0;
+              const cfLeads   = CF_VALUE ?? 0;
+              const nlLeads   = NL_VALUE ?? 0;
 
-            <ul className="mt-4 space-y-3 text-[13px]">
-              <li className="grid grid-cols-[1fr_auto_160px] items-center gap-3">
-                <span className="flex items-center gap-2 text-[var(--muted)]">
-                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#FAD7A5] bg-[#FFF6E7]"><span className="h-2 w-2 rounded-full bg-[#F59E0B]" /></span>
-                  Contact form
-                </span>
-                <span className="font-semibold text-[var(--text)] tabular-nums">{CF_VALUE}</span>
-                <div className="h-2 w-full rounded-full bg-[var(--border)]">
-                  <div className="h-2 rounded-full" style={{ width: `${(CF_VALUE / CF_LIMIT) * 100 * leadsProg}%`, backgroundColor: "#F59E0B", transition: "width 120ms linear" }} />
-                </div>
-              </li>
-              <li className="grid grid-cols-[1fr_auto_160px] items-center gap-3">
-                <span className="flex items-center gap-2 text-[var(--muted)]">
-                  <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--input)]"><span className="h-2 w-2 rounded-full bg-[#3B82F6]" /></span>
-                  Newsletter
-                </span>
-                <span className="font-semibold text-[var(--text)] tabular-nums">{NL_VALUE}</span>
-                <div className="h-2 w-full rounded-full bg-[var(--border)]">
-                  <div className="h-2 rounded-full" style={{ width: `${(NL_VALUE / NL_LIMIT) * 100 * leadsProg}%`, backgroundColor: "#3B82F6", transition: "width 120ms linear" }} />
-                </div>
-              </li>
-            </ul>
+              const cfPct = LEADS_TARGET ? Math.min(100, (cfLeads / LEADS_TARGET) * 100) : 0;
+              const nlPct = LEADS_TARGET ? Math.min(100, (nlLeads / LEADS_TARGET) * 100) : 0;
+              const goalPct = goalLeads ? Math.min(100, (totalLeadsAnimated / goalLeads) * 100) : 0;
+
+              return (
+                <>
+                  {/* Total Leads (animated) */}
+                  <div className="mt-3 text-[32px] font-semibold leading-none text-[var(--text)] tabular-nums">
+                    {formatNumber(totalLeadsAnimated)}
+                  </div>
+
+                  {/* Goals */}
+                  <div className="mt-2 flex items-center justify-between text-[12px]">
+                    <span className="text-[var(--muted)]">
+                      Goals{" "}
+                      <span className="font-medium text-[var(--text)] tabular-nums">
+                        {formatNumber(totalLeadsAnimated)} / {formatNumber(goalLeads)}
+                      </span>
+                    </span>
+                    {goalLeads ? (
+                      <span className="text-[var(--muted)]">
+                        {Math.max(0, 100 - Math.round((totalLeadsAnimated / goalLeads) * 100))}% Remaining
+                      </span>
+                    ) : null}
+                  </div>
+
+                  {/* Progress bar (animated via leadsProg + changing width) */}
+                  <div className="mt-2 h-2 w-full rounded-full bg-[var(--border)]">
+                    {goalLeads ? (
+                      <div
+                        className="h-2 rounded-full bg-[#22C55E]"
+                        style={{
+                          width: `${goalPct}%`,
+                          transition: "width 120ms linear",
+                        }}
+                      />
+                    ) : null}
+                  </div>
+
+                  {/* Breakdown */}
+                  <ul className="mt-4 space-y-3 text-[13px]">
+                    {/* Contact Form */}
+                    <li className="grid grid-cols-[1fr_auto_160px] items-center gap-3">
+                      <span className="flex items-center gap-2 text-[var(--muted)]">
+                        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[#FAD7A5] bg-[#FFF6E7]">
+                          <span className="h-2 w-2 rounded-full bg-[#F59E0B]" />
+                        </span>
+                        Contact form
+                      </span>
+                      <span className="font-semibold text-[var(--text)] tabular-nums">
+                        {formatNumber(cfLeads)}
+                      </span>
+                      <div className="h-2 w-full rounded-full bg-[var(--border)]">
+                        {LEADS_TARGET ? (
+                          <div
+                            className="h-2 rounded-full"
+                            style={{
+                              width: `${cfPct * (leadsProg || 1)}%`,
+                              backgroundColor: "#F59E0B",
+                              transition: "width 120ms linear",
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    </li>
+
+                    {/* Newsletter */}
+                    <li className="grid grid-cols-[1fr_auto_160px] items-center gap-3">
+                      <span className="flex items-center gap-2 text-[var(--muted)]">
+                        <span className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--input)]">
+                          <span className="h-2 w-2 rounded-full bg-[#3B82F6]" />
+                        </span>
+                        Newsletter
+                      </span>
+                      <span className="font-semibold text-[var(--text)] tabular-nums">
+                        {formatNumber(nlLeads)}
+                      </span>
+                      <div className="h-2 w-full rounded-full bg-[var(--border)]">
+                        {LEADS_TARGET ? (
+                          <div
+                            className="h-2 rounded-full"
+                            style={{
+                              width: `${nlPct * (leadsProg || 1)}%`,
+                              backgroundColor: "#3B82F6",
+                              transition: "width 120ms linear",
+                            }}
+                          />
+                        ) : null}
+                      </div>
+                    </li>
+                  </ul>
+                </>
+              );
+            })()}
 
             <div className="mt-3 text-right text-[12px] text-[var(--muted)]">
-              <button type="button" className="inline-flex items-center gap-1">Change Goals <ChevronRight size={14} /></button>
+              <button type="button" className="inline-flex items-center gap-1">
+                Change Goals <ChevronRight size={14} />
+              </button>
             </div>
           </div>
-        </section>
+          </section>
 
         {/* Row 4 */}
         <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">Advance SEO metrics</h2>
