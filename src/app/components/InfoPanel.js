@@ -112,6 +112,7 @@ export default function InfoPanel({
 }) {
   const panelRef = useRef(null);
   const LAST_STEP = 6;
+  const WEBSITE_LANDING_STEP = 1;
   const hasWebsite = Boolean(websiteData?.website && String(websiteData.website).trim());
   
   /* load seo-data.json (data only; no UI changes) */
@@ -152,10 +153,12 @@ export default function InfoPanel({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isPinned, onClose]);
 
-  // Auto-pin while navigating steps (through and including the last slide).
-  // If you prefer to stop auto-pinning *on* the last slide, change <= to < below.
   useEffect(() => {
-    if (typeof currentStep === "number" && currentStep <= LAST_STEP) {
+    if (
+      hasWebsite &&
+      typeof currentStep === "number" &&
+      currentStep <= LAST_STEP
+    ) {
       setIsPinned(true);
     }
   }, [hasWebsite, currentStep, setIsPinned]);
@@ -164,7 +167,7 @@ export default function InfoPanel({
     if (!hasWebsite) {
       setIsPinned(false);
     }
-  }, [hasWebsite, setIsPinned]);
+  }, [hasWebsite, setIsPinned]); 
 
   // Force-unpin and close when the Dashboard is opened (from Step5Slide2).
   useEffect(() => {

@@ -84,9 +84,12 @@ export default function Step5Slide2({
   const handleDashboard = () => {
     if (loading) return;
     setLoading(true);
-    window.dispatchEvent(new Event("dashboard:open"));
     scrollLoaderIntoView();
-    dashTimer.current = setTimeout(() => onDashboard?.(), 6000);
+    dashTimer.current = setTimeout(() => {
+      // Now the dashboard is actually opening — close Info panel
+      window.dispatchEvent(new Event("dashboard:open"));
+      onDashboard?.();
+    }, 6000);
   };
 
   useEffect(() => () => clearTimeout(dashTimer.current), []);
