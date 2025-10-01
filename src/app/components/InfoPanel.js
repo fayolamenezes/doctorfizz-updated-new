@@ -473,6 +473,12 @@ export default function InfoPanel({
   const renderStep3Content = () => (
     <div className="space-y-6">
       <WebsiteStatsCard website={displayWebsite} stats={stats} />
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
+          <span className="text-white text-xs">!</span>
+        </div>
+        <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
+      </div>
       <div className="space-y-4">
         <ContentCard
           title="Local SEO Power"
@@ -504,6 +510,12 @@ export default function InfoPanel({
   const renderStep4Content = () => (
     <div className="space-y-6">
       <WebsiteStatsCard website={displayWebsite} stats={stats} />
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
+          <span className="text-white text-xs">!</span>
+        </div>
+        <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
+      </div>
       <div className="space-y-4">
         <ContentCard
           title="Keyword Fundamentals"
@@ -564,7 +576,12 @@ export default function InfoPanel({
     return (
       <div className="space-y-6">
         <WebsiteStatsCard website={displayWebsite} stats={stats} />
-
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
+          <span className="text-white text-xs">!</span>
+        </div>
+        <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
+      </div>
         {hasAny ? (
           <>
             {businessCompetitors.length > 0 && (
