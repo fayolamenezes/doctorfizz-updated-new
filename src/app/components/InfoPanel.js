@@ -165,12 +165,12 @@ function WebsiteStatsCard({ website, stats }) {
             ["Organic Traffic", stats.organicTraffic],
             ["Organic Keyword", stats.organicKeyword],
           ].map(([label, value], idx) => (
-            <div key={idx} className="flex-1 px-6 text-center">
+            <div key={idx} className="flex-1 px-5 text-center">
               <div className="text-[13px] leading-[16px] text-gray-600 dark:text-[var(--muted)] font-medium">
                 {label}
               </div>
               <div className="mt-2 mb-1.5 flex items-center justify-center gap-2">
-                <div className="text-[28px] leading-none font-extrabold text-gray-900 dark:text-[var(--text)]">
+                <div className="text-[clamp(20px,3vw,23px)] leading-tight font-extrabold text-gray-900 dark:text-[var(--text)]">
                   {Number.isFinite(value) ? formatNumber(value) : "--"}
                 </div>
                 {value >= 70 ? (
