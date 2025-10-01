@@ -151,7 +151,7 @@ export default function Steps({ currentStep = 1 }) {
                   ${
                     isActive
                       ? "bg-[image:var(--infoHighlight-gradient)] text-white scale-105 shadow-sm pulse"
-                      : "bg-gray-200 text-gray-600 "
+                      : "bg-gray-200 text-gray-600 step-circle--inactive"
                   }`}
               >
                 {isCompleted ? (
@@ -188,7 +188,7 @@ export default function Steps({ currentStep = 1 }) {
                     />
                   </svg>
                 ) : (
-                  <span className="font-semibold text-sm transition-colors duration-300">
+                  <span className="font-semibold text-sm transition-colors duration-300 text-[#303030] dark:text-white">
                     {step.id}
                   </span>
                 )}

@@ -144,3 +144,12 @@ html.dark {
   --extra-input-dark: #15191d;
   --extra-border-dark: #2a2d31;
 }
+
+/* Inactive step circle background control */
+html:not(.dark) .step-circle--inactive {
+  background-color: #e5e7eb; /* Tailwind's bg-gray-200 */
+}
+
+html.dark .step-circle--inactive {
+  background-color: #303030 !important; /* Dark background */
+}
