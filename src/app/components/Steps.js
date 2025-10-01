@@ -151,7 +151,7 @@ export default function Steps({ currentStep = 1 }) {
                   ${
                     isActive
                       ? "bg-[image:var(--infoHighlight-gradient)] text-white scale-105 shadow-sm pulse"
-                      : "bg-gray-200 text-gray-600 step-circle--inactive"
+                      : "bg-gray-200 step-circle--inactive"
                   }`}
               >
                 {isCompleted ? (

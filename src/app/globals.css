@@ -145,11 +145,20 @@ html.dark {
   --extra-border-dark: #2a2d31;
 }
 
-/* Inactive step circle background control */
+/* Inactive step circle background per mode */
 html:not(.dark) .step-circle--inactive {
-  background-color: #e5e7eb; /* Tailwind's bg-gray-200 */
+  background-color: #e5e7eb !important; /* Tailwind bg-gray-200 */
 }
 
 html.dark .step-circle--inactive {
-  background-color: #303030 !important; /* Dark background */
+  background-color: #303030 !important;
+}
+
+/* Make absolutely sure the number color is correct per mode */
+html:not(.dark) .step-circle--inactive > span {
+  color: #303030 !important;
+}
+
+html.dark .step-circle--inactive > span {
+  color: #ffffff !important;
 }
