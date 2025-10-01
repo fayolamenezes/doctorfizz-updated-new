@@ -444,6 +444,12 @@ export default function InfoPanel({
   const renderStep2Content = () => (
     <div className="space-y-6">
       <WebsiteStatsCard website={displayWebsite} stats={stats} />
+      <div className="flex items-center gap-2">
+        <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
+          <span className="text-white text-xs">!</span>
+        </div>
+        <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
+      </div>
       <div className="space-y-4">
         <ContentCard
           title="Why Industry Matters"
