@@ -174,7 +174,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col bg-transparent">
+    <div className="w-full h-full flex flex-col bg-transparent slides-accent">
       {/* ---------------- Fixed-height white section (same chrome as Step1Slide1) ---------------- */}
       <div className="px-6 md:px-8 pt-6">
         <div
@@ -238,7 +238,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                     <button
                       onClick={() => handleDropdownToggle("industry")}
                       type="button"
-                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-[var(--border)] focus:outline-none focus:border-blue-500 transition-colors"
+                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-[var(--border)] focus:outline-none focus:border-[var(--border)] transition-colors"
                     >
                       <span className={selectedIndustry ? "text-[var(--text)]" : "text-[var(--muted)]"}>
                         {selectedIndustry || "Industry Sector"}
@@ -259,7 +259,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                             key={ind}
                             onClick={() => handleIndustrySelect(ind)}
                             type="button"
-                            className="w-full text-left px-4 py-3 hover:bg-blue-50 text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none focus:bg-blue-100 transition-colors"
+                            className="w-full text-left px-4 py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
                           >
                             {ind}
                           </button>
@@ -273,7 +273,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                         placeholder="Describe your sector"
                         value={customIndustry}
                         onChange={(e) => setCustomIndustry(e.target.value)}
-                        className="w-full mt-2 bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] outline-none focus:border-blue-500"
+                        className="w-full mt-2 bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] outline-none focus:border-[var(--border)]"
                       />
                     )}
                   </div>
@@ -289,7 +289,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                       type="button"
                       className={`w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between focus:outline-none transition-colors ${
                         selectedIndustry
-                          ? "hover:border-[var(--border)] cursor-pointer focus:border-blue-500"
+                          ? "hover:border-[var(--border)] cursor-pointer focus:border-[var(--border)]"
                           : "opacity-50 cursor-not-allowed"
                       }`}
                     >
@@ -312,7 +312,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                             key={off}
                             onClick={() => handleOfferingSelect(off)}
                             type="button"
-                            className="w-full text-left px-4 py-3 hover:bg-blue-50 text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none focus:bg-blue-100 transition-colors"
+                            className="w-full text-left px-4 py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
                           >
                             {off}
                           </button>
@@ -332,7 +332,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                       type="button"
                       className={`w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between focus:outline-none transition-colors ${
                         selectedOffering
-                          ? "hover:border-[var(--border)] cursor-pointer focus:border-blue-500"
+                          ? "hover:border-[var(--border)] cursor-pointer focus:border-[var(--border)]"
                           : "opacity-50 cursor-not-allowed"
                       }`}
                     >
@@ -356,7 +356,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                             key={cat}
                             onClick={() => handleCategorySelect(cat)}
                             type="button"
-                            className="w-full text-left px-4 py-3 hover:bg-blue-50 text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none focus:bg-blue-100 transition-colors"
+                            className="w-full text-left px-4 py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
                           >
                             {cat}
                           </button>
@@ -370,7 +370,7 @@ export default function StepSlide2({ onNext, onBack, onBusinessDataSubmit }) {
                         placeholder="Describe your service"
                         value={customCategory}
                         onChange={(e) => setCustomCategory(e.target.value)}
-                        className="w-full mt-2 bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] outline-none focus:border-blue-500"
+                        className="w-full mt-2 bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-[var(--text)] placeholder:text-[var(--muted)] outline-none focus:border-[var(--border)]"
                       />
                     )}
                   </div>

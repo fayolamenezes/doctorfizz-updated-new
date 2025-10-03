@@ -124,7 +124,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col bg-transparent">
+    <div className="w-full h-full flex flex-col bg-transparent slides-accent">
       {/* ---------------- Fixed-height section (matches StepSlide2 final) ---------------- */}
       <div className="px-6 md:px-8 pt-6">
         <div
@@ -184,7 +184,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
                     <button
                       onClick={() => handleDropdownToggle("lang")}
                       type="button"
-                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-[var(--border)] focus:outline-none focus:border-[var(--border)] transition-colors"
                     >
                       <span className={selectedLanguage ? "text-[var(--text)]" : "text-[var(--muted)]"}>
                         {selectedLanguage || "Select Language"}
@@ -202,7 +202,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
                             key={l}
                             onClick={() => { setSelectedLanguage(l); setOpenDropdown(null); }}
                             type="button"
-                            className="w-full text-left px-4 py-3 hover:bg-blue-50 text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none focus:bg-blue-100 transition-colors"
+                            className="w-full text-left px-4 py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
                           >
                             {l}
                           </button>
@@ -219,7 +219,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
                     <button
                       onClick={() => handleDropdownToggle("loc")}
                       type="button"
-                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-gray-400 focus:outline-none focus:border-blue-500 transition-colors"
+                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-3 text-left flex items-center justify-between hover:border-[var(--border)] focus:outline-none focus:border-[var(--border)] transition-colors"
                     >
                       <span className={selectedLocation ? "text-[var(--text)]" : "text-[var(--muted)]"}>
                         {selectedLocation || "Select Location"}
@@ -237,7 +237,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
                             key={c}
                             onClick={() => { setSelectedLocation(c); setOpenDropdown(null); }}
                             type="button"
-                            className="w-full text-left px-4 py-3 hover:bg-blue-50 text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none focus:bg-blue-100 transition-colors"
+                            className="w-full text-left px-4 py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
                           >
                             {c}
                           </button>

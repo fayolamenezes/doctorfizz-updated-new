@@ -162,3 +162,27 @@ html:not(.dark) .step-circle--inactive > span {
 html.dark .step-circle--inactive > span {
   color: #ffffff !important;
 }
+
+/* DELETE/COMMENT this global override */
+/* Scoped accent ONLY for the Step slides */
+.slides-accent {
+  --input: var(--panel);        /* keep using your existing panel color */
+  --border: #ca5223;            /* brand border */
+  --text: var(--text);          /* inherit existing */
+  --muted: var(--muted);
+
+  /* item hover/focus using brand tints */
+  --menuHover: #fdf2ef;
+  --menuFocus: #fbe5df;
+}
+
+html.dark .slides-accent {
+  --input: var(--panel);
+  --border: #ca5223;
+  --text: var(--text);
+  --muted: var(--muted);
+
+  --menuHover: rgba(202, 82, 35, 0.25);
+  --menuFocus: rgba(202, 82, 35, 0.4);
+}
+
