@@ -746,7 +746,7 @@ export default function Dashboard() {
             <div className="mt-3 text-[12px] text-[var(--muted)]">Trust score</div>
             <div className="mt-2 h-2 w-full overflow-hidden rounded-full bg-[var(--border)]">
               <div
-                className="h-2 rounded-full bg-[#1CC88A] transition-[width] duration-100 ease-linear"
+                className="h-2 rounded-full bg-[#1CC88A]"
                 style={{ width: `${drWidth}%` }}
               />
             </div>
