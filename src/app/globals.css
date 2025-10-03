@@ -186,3 +186,19 @@ html.dark .slides-accent {
   --menuFocus: rgba(202, 82, 35, 0.4);
 }
 
+/* Force brand-dark text color in light mode */
+.text-brand-strong {
+  color: #1f2121 !important;
+}
+
+/* Reusable chip style: light = #F6F8FB + #1f2121, dark = #303030 + dark gray text */
+.seo-chip {
+  background-color: #F6F8FB !important;
+  color: #1f2121 !important;
+  border-color: var(--border) !important;
+}
+
+.dark .seo-chip {
+  background-color: #303030 !important;
+  color: #9AA3B2 !important; /* dark gray text */
+}

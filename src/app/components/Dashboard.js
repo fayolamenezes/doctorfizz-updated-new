@@ -1374,173 +1374,174 @@ const seoTableProg = prog;
           </div>
         </section>
 
-        <h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">Top On-Page Content Opportunities</h2>
+<h2 className="text-[16px] font-bold text-[var(--text)] mb-3 ml-1">Top On-Page Content Opportunities</h2>
 <section className="mb-10 grid grid-cols-1 items-start gap-8 lg:grid-cols-[minmax(0,1fr)_1px_minmax(0,1fr)]">
-          {/* BLOG column */}
-          <div className="grid grid-rows-[auto_1fr_auto] gap-3">
-            {/* header */}
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#E7D7FB] bg-[#F5EAFE] text-[#7C3AED]">
-                <BookOpen size={14} />
-              </span>
-              <span className="text-[12px] font-semibold tracking-wide text-[var(--text)]">BLOG</span>
-              <HelpCircle size={14} className="text-[#9AA3B2]" />
-            </div>
+  {/* BLOG column */}
+  <div className="grid grid-rows-[auto_1fr_auto] gap-3">
+    {/* header */}
+    <div className="flex items-center gap-2">
+      <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#E7D7FB] bg-[#F5EAFE] text-[#7C3AED]">
+        <BookOpen size={14} />
+      </span>
+      <span className="text-[12px] font-semibold tracking-wide text-[var(--text)]">BLOG</span>
+      <HelpCircle size={14} className="text-[#9AA3B2]" />
+    </div>
 
-            {/* cards */}
-            <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 items-stretch">
-              
-              {blogCards.slice(0, 2).map((b, i) => (
-                <OpportunityCard
-                  key={`blog-${i}`}
-                  title={b.title}
-                  score={b.score ?? 0}
-                  wordCount={b.wordCount ?? 0}
-                  keywords={b.keywords ?? 0}
-                  status={b.status ?? "Draft"}
-                  progress={oppCardsProgress}
-                  className="h-full"
-                />
-              ))}
-            </div>
-            {/* view all pinned to bottom */}
-            <div className="flex justify-end pt-1 px-4">
-              <button className="inline-flex items-center gap-2 rounded-[12px] border border-[#DDE3ED] bg-[#FAFBFD] px-3 py-2 text-[12px] font-medium text-[#566072]">
-                View all opportunity <ChevronRight size={14} />
-              </button>
-            </div>
-          </div>
+    {/* cards */}
+    <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 items-stretch">
+      {blogCards.slice(0, 2).map((b, i) => (
+        <OpportunityCard
+          key={`blog-${i}`}
+          title={b.title}
+          score={b.score ?? 0}
+          wordCount={b.wordCount ?? 0}
+          keywords={b.keywords ?? 0}
+          status={b.status ?? "Draft"}
+          progress={oppCardsProgress}
+          className="h-full"
+        />
+      ))}
+    </div>
 
-          {/* vertical divider */}
-          <div className="hidden lg:block w-px self-stretch bg-[#ECEFF5]" />
+    {/* view all pinned to bottom */}
+    <div className="flex justify-end pt-1 px-4">
+      <button className="inline-flex items-center gap-2 rounded-[12px] border px-3 py-2 text-[12px] font-medium seo-chip">
+        View all opportunity <ChevronRight size={14} />
+      </button>
+    </div>
+  </div>
 
-          {/* PAGES column */}
-          <div className="grid grid-rows-[auto_1fr_auto] gap-3">
-            {/* header */}
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#FFD6E8] bg-[#FFE9F3] text-[#F43F5E]">
-                <FileText size={14} />
-              </span>
-              <span className="text-[12px] font-semibold tracking-wide text-[var(--text)]">PAGES</span>
-              <HelpCircle size={14} className="text-[#9AA3B2]" />
-            </div>
+  {/* vertical divider */}
+  <div className="hidden lg:block w-px self-stretch bg-[#ECEFF5]" />
 
-            {/* cards */}
-            <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-              
-              {pageCards.slice(0, 2).map((p, i) => (
-                <OpportunityCard
-                  key={`page-${i}`}
-                  title={p.title}
-                  score={p.score ?? 0}
-                  wordCount={p.wordCount ?? 0}
-                  keywords={p.keywords ?? 0}
-                  status={p.status ?? "Draft"}
-                  progress={oppCardsProgress}
-                  className="h-full"
-                />
-              ))}
-            </div>
+  {/* PAGES column */}
+  <div className="grid grid-rows-[auto_1fr_auto] gap-3">
+    {/* header */}
+    <div className="flex items-center gap-2">
+      <span className="inline-flex h-6 w-6 items-center justify-center rounded-md border border-[#FFD6E8] bg-[#FFE9F3] text-[#F43F5E]">
+        <FileText size={14} />
+      </span>
+      <span className="text-[12px] font-semibold tracking-wide text-[var(--text)]">PAGES</span>
+      <HelpCircle size={14} className="text-[#9AA3B2]" />
+    </div>
 
-            {/* view all pinned to bottom */}
-            <div className="flex justify-end pt-1 px-4">
-              <button className="inline-flex items-center gap-2 rounded-[12px] border border-[#DDE3ED] bg-[#FAFBFD] px-3 py-2 text-[12px] font-medium text-[#566072]">
-                View all opportunity <ChevronRight size={14} />
-              </button>
-            </div>
-          </div>
-        </section>
+    {/* cards */}
+    <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+      {pageCards.slice(0, 2).map((p, i) => (
+        <OpportunityCard
+          key={`page-${i}`}
+          title={p.title}
+          score={p.score ?? 0}
+          wordCount={p.wordCount ?? 0}
+          keywords={p.keywords ?? 0}
+          status={p.status ?? "Draft"}
+          progress={oppCardsProgress}
+          className="h-full"
+        />
+      ))}
+    </div>
+
+    {/* view all pinned to bottom */}
+    <div className="flex justify-end pt-1 px-4">
+      <button className="inline-flex items-center gap-2 rounded-[12px] border px-3 py-2 text-[12px] font-medium seo-chip">
+        View all opportunity <ChevronRight size={14} />
+      </button>
+    </div>
+  </div>
+</section>
+
     
 
-        {/* New on page SEO opportunity (table) */}
-        <h2 className="text-[16px] font-bold text-[var(--text)] mb-2 ml-1">New on page SEO opportunity</h2>
-        <p className="ml-1 mb-4 text-[12px] text-[var(--muted)]">
-          *While it’s highly recommended to follow the AI’s suggested plan for optimal results,
-          feel free to generate content based on your personal choice.
-        </p>
+{/* New on page SEO opportunity (table) */}
+<h2 className="text-[16px] font-bold text-[var(--text)] mb-2 ml-1">New on page SEO opportunity</h2>
+<p className="ml-1 mb-4 text-[12px] text-[var(--muted)]">
+  *While it’s highly recommended to follow the AI’s suggested plan for optimal results,
+  feel free to generate content based on your personal choice.
+</p>
 
-        <div className="overflow-hidden rounded-[16px] border border-[var(--border)] bg-[var(--input)] shadow-sm">
-          <div className="hidden md:grid grid-cols-[2.1fr_1.4fr_1.2fr_1.5fr_1.3fr_1fr_1fr_1.8fr] items-center px-4 py-3 text-[12px] font-semibold text-[var(--muted)] bg-[var(--input)] text-center">
-            <div className="text-left">Keywords</div>
-            <div>Type <span className="opacity-50">↑↓</span></div>
-            <div>Search Volume</div>
-            <div>SEO Difficulty</div>
-            <div>Suggested topic</div>
-            <div>Blog</div>
-            <div>Page</div>
-            <div>Preference</div>
-          </div>
+<div className="overflow-hidden rounded-[16px] border border-[var(--border)] bg-[var(--input)] shadow-sm">
+  <div className="hidden md:grid grid-cols-[2.1fr_1.4fr_1.2fr_1.5fr_1.3fr_1fr_1fr_1.8fr] items-center px-4 py-3 text-[12px] font-semibold text-[var(--muted)] bg-[var(--input)] text-center">
+    <div className="text-left">Keywords</div>
+    <div>Type <span className="opacity-50">↑↓</span></div>
+    <div>Search Volume</div>
+    <div>SEO Difficulty</div>
+    <div>Suggested topic</div>
+    <div>Blog</div>
+    <div>Page</div>
+    <div>Preference</div>
+  </div>
 
-          <ul className="divide-y divide-[#ECEFF5]">
-            {(seoRowsFromData ?? [
-              { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 98 },
-              { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 88 },
-              { keyword: "How to fix slow Wi-Fi", type: "Transactional", volume: 7032, difficulty: 98 },
-              { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 28 },
-              { keyword: "How to fix slow Wi-Fi", type: "Transactional", volume: 7032, difficulty: 28 },
-              { keyword: "How to fix slow Wi-Fi", type: "Transactional", volume: 7032, difficulty: 68 },
-              { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 48 },
-            ]).map((row, i) => (
-              <li
-                key={i}
-                className="grid grid-cols-1 md:grid-cols-[2.1fr_1.4fr_1.2fr_1.5fr_1.3fr_1fr_1fr_1.8fr] items-center gap-3 px-4 py-3 text-[13px] hover:bg-[var(--input)] text-center"
-              >
-                <div className="flex items-center gap-2 text-[var(--text)] justify-start">
-                  <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--input)] text-[var(--muted)]">
-                    <Wifi size={14} />
-                  </span>
-                  <span className="truncate">{row.keyword}</span>
-                </div>
-
-                <div>
-                  <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[#F6F8FB] px-2 py-0.5 text-[11px] text-[var(--muted)] dark:bg-[#303030] dark:text-white">
-                    {row.type === "Informational" ? <FileText size={12} /> : <Link2 size={12} />}
-                    {row.type}
-                  </span>
-                </div>
-
-                <div className="tabular-nums text-[var(--text)]">
-                  {Number(row.volume).toLocaleString()}
-                </div>
-
-                <div className="flex items-center gap-2 text-[var(--text)] justify-start">
-                  <span className="tabular-nums">{row.difficulty}%</span>
-                  <DifficultyBar value={row.difficulty} progress={seoTableProg} />
-                </div>
-
-                <div className="text-[var(--text)] truncate text-center">
-                  {row.suggested ?? "—"}
-                </div>
-
-                <div className="flex justify-center">
-                  <button className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--input)] px-4 py-1.5 text-[12px] font-semibold text-[#3178C6]">
-                    Generate
-                  </button>
-                </div>
-
-                <div className="flex justify-center">
-                  <button className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--input)] px-4 py-1.5 text-[12px] font-semibold text-[#3178C6]">
-                    Generate
-                  </button>
-                </div>
-
-                <div className="flex items-center justify-center gap-3 text-[var(--muted)]">
-                  <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[#F6F8FB] px-2 py-0.5 text-[11px]">
-                    {row.preference ?? "—"}
-                  </span>
-                  {/* replaced plain icons with interactive LikeDislike */}
-                  <LikeDislike />
-                </div>
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex justify-end border-t border-[var(--border)] bg-[var(--input)] px-4 py-3">
-            <button className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--input)] px-3 py-1.5 text-[12px] text-[var(--muted)] hover:bg-[var(--input)]">
-              View all page issue <ChevronRight size={14} />
-            </button>
-          </div>
+  <ul className="divide-y divide-[#ECEFF5]">
+    {(seoRowsFromData ?? [
+      { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 98 },
+      { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 88 },
+      { keyword: "How to fix slow Wi-Fi", type: "Transactional", volume: 7032, difficulty: 98 },
+      { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 28 },
+      { keyword: "How to fix slow Wi-Fi", type: "Transactional", volume: 7032, difficulty: 28 },
+      { keyword: "How to fix slow Wi-Fi", type: "Transactional", volume: 7032, difficulty: 68 },
+      { keyword: "How to fix slow Wi-Fi", type: "Informational", volume: 7032, difficulty: 48 },
+    ]).map((row, i) => (
+      <li
+        key={i}
+        className="grid grid-cols-1 md:grid-cols-[2.1fr_1.4fr_1.2fr_1.5fr_1.3fr_1fr_1fr_1.8fr] items-center gap-3 px-4 py-3 text-[13px] hover:bg-[var(--input)] text-center"
+      >
+        <div className="flex items-center gap-2 text-[var(--text)] justify-start">
+          <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[var(--input)] text-[var(--muted)]">
+            <Wifi size={14} />
+          </span>
+          <span className="truncate">{row.keyword}</span>
         </div>
+
+        <div>
+          <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] px-2 py-0.5 text-[11px] seo-badge-light">
+            {row.type === "Informational" ? <FileText size={12} /> : <Link2 size={12} />}
+            {row.type}
+          </span>
+        </div>
+
+        <div className="tabular-nums text-[var(--text)]">
+          {Number(row.volume).toLocaleString()}
+        </div>
+
+        <div className="flex items-center gap-2 text-[var(--text)] justify-start">
+          <span className="tabular-nums">{row.difficulty}%</span>
+          <DifficultyBar value={row.difficulty} progress={seoTableProg} />
+        </div>
+
+        <div className="text-[var(--text)] truncate text-center">
+          {row.suggested ?? "—"}
+        </div>
+
+        <div className="flex justify-center">
+          <button className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--input)] px-4 py-1.5 text-[12px] font-semibold text-[#3178C6]">
+            Generate
+          </button>
+        </div>
+
+        <div className="flex justify-center">
+          <button className="inline-flex items-center justify-center rounded-full border border-[var(--border)] bg-[var(--input)] px-4 py-1.5 text-[12px] font-semibold text-[#3178C6]">
+            Generate
+          </button>
+        </div>
+
+        <div className="flex items-center justify-center gap-3 text-[var(--muted)]">
+          <span className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] px-2 py-0.5 text-[11px] seo-badge-light">
+            {row.preference ?? "—"}
+          </span>
+          {/* replaced plain icons with interactive LikeDislike */}
+          <LikeDislike />
+        </div>
+      </li>
+    ))}
+  </ul>
+
+  <div className="flex justify-end border-t border-[var(--border)] bg-[var(--input)] px-4 py-3">
+    <button className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--input)] px-3 py-1.5 text-[12px] text-[var(--muted)] hover:bg-[var(--input)]">
+      View all page issue <ChevronRight size={14} />
+    </button>
+  </div>
+</div>
+
       </div>
     </main>
   );
