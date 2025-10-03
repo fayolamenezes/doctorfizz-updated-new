@@ -134,8 +134,48 @@ function mapRowToSchema(row) {
   const top100= n(row["Top_100_Keywords"], undefined);
 
   return {
-    domain: normalizeDomain(s(row["Domain/Website"], "")),
+    domain: normalizeDomain(s(row["Domain/Website"], s(row["Domain"], ""))),
     dateAnalyzed: s(row["Date_Analyzed"], ""),
+    // ---- On-page content opportunities (Blogs & Pages) ----
+    content: {
+      blog: [
+        {
+          title: s(row["Blog1_Title"], "Untitled"),
+          priority: s(row["Blog1_Priority"], "Medium Priority"),
+          wordCount: n(row["Blog1_Word_Count"], 0),
+          keywords: n(row["Blog1_Num_Keywords"], 0),
+          score: n(row["Blog1_Score"], 0),
+          status: s(row["Blog1_Status"], "Draft"),
+        },
+        {
+          title: s(row["Blog2_Title"], "Untitled"),
+          priority: s(row["Blog2_Priority"], "Medium Priority"),
+          wordCount: n(row["Blog2_Word_Count"], 0),
+          keywords: n(row["Blog2_Num_Keywords"], 0),
+          score: n(row["Blog2_Score"], 0),
+          status: s(row["Blog2_Status"], "Draft"),
+        },
+      ].filter(Boolean),
+      pages: [
+        {
+          title: s(row["Page1_Title"], "Untitled"),
+          priority: s(row["Page1_Priority"], "Medium Priority"),
+          wordCount: n(row["Page1_Word_Count"], 0),
+          keywords: n(row["Page1_Num_Keywords"], 0),
+          score: n(row["Page1_Score"], 0),
+          status: s(row["Page1_Status"], "Draft"),
+        },
+        {
+          title: s(row["Page2_Title"], "Untitled"),
+          priority: s(row["Page2_Priority"], "Medium Priority"),
+          wordCount: n(row["Page2_Word_Count"], 0),
+          keywords: n(row["Page2_Num_Keywords"], 0),
+          score: n(row["Page2_Score"], 0),
+          status: s(row["Page2_Status"], "Draft"),
+        },
+      ].filter(Boolean),
+    },
+
     // Off-page
     domainRating: n(row["Domain_Rating"], undefined),
     industryAvgDR: n(row["Industry_Average_DR"], undefined),
@@ -366,6 +406,11 @@ const oppCounts = [
 
 const oppCardsProgress = prog;
 const seoTableProg = prog;
+
+  // On-page content opportunities (pulled from seo-data.json)
+  const blogCards = selected?.content?.blog ?? [];
+  const pageCards = selected?.content?.pages ?? [];
+
 
 // ====== Small UI helpers (unchanged, except table rows can be dataset-driven) ======
 // ====== Small UI helpers (unchanged, except table rows can be dataset-driven) ======
@@ -1344,26 +1389,20 @@ const seoTableProg = prog;
 
             {/* cards */}
             <div className="grid grid-cols-1 gap-4 xl:grid-cols-2 items-stretch">
-              <OpportunityCard
-                title="How to Improve Site Speed"
-                score={45}
-                wordCount={1250}
-                keywords={50}
-                status="Published"
-                progress={oppCardsProgress}
-                className="h-full"
-              />
-              <OpportunityCard
-                title="Complete Local SEO Guide"
-                score={72}
-                wordCount={2400}
-                keywords={3}
-                status="Draft"
-                progress={oppCardsProgress}
-                className="h-full"
-              />
+              
+              {blogCards.slice(0, 2).map((b, i) => (
+                <OpportunityCard
+                  key={`blog-${i}`}
+                  title={b.title}
+                  score={b.score ?? 0}
+                  wordCount={b.wordCount ?? 0}
+                  keywords={b.keywords ?? 0}
+                  status={b.status ?? "Draft"}
+                  progress={oppCardsProgress}
+                  className="h-full"
+                />
+              ))}
             </div>
-
             {/* view all pinned to bottom */}
             <div className="flex justify-end pt-1 px-4">
               <button className="inline-flex items-center gap-2 rounded-[12px] border border-[#DDE3ED] bg-[#FAFBFD] px-3 py-2 text-[12px] font-medium text-[#566072]">
@@ -1388,22 +1427,19 @@ const seoTableProg = prog;
 
             {/* cards */}
             <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
-              <OpportunityCard
-                title="How to Improve Site Speed"
-                score={25}
-                wordCount={1250}
-                keywords={50}
-                status="Published"
-                progress={oppCardsProgress}
-              />
-              <OpportunityCard
-                title="Complete Local SEO Guide"
-                score={72}
-                wordCount={2400}
-                keywords={3}
-                status="Draft"
-                progress={oppCardsProgress}
-              />
+              
+              {pageCards.slice(0, 2).map((p, i) => (
+                <OpportunityCard
+                  key={`page-${i}`}
+                  title={p.title}
+                  score={p.score ?? 0}
+                  wordCount={p.wordCount ?? 0}
+                  keywords={p.keywords ?? 0}
+                  status={p.status ?? "Draft"}
+                  progress={oppCardsProgress}
+                  className="h-full"
+                />
+              ))}
             </div>
 
             {/* view all pinned to bottom */}
