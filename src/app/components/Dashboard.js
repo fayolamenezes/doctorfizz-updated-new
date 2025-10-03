@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import { Activity, ActivitySquare, AlertTriangle, BarChart3, BookOpen, Check, ChevronRight, Clock3, Eye, FileText, Gauge, Goal, HelpCircle, KeyRound, Lightbulb, Link2, Lock, Monitor, Network, PencilLine, RefreshCw, Rocket, Settings, ShieldCheck, Skull, SlidersHorizontal, Smartphone, SquareArrowOutUpRight, ThumbsDown, ThumbsUp, TrendingUp, TrendingDown, Wifi, X } from "lucide-react";
-import { useEffect, useRef, useState, useMemo, useLayoutEffect } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 
 /** Normalize a domain string -> "example.com" */
@@ -307,244 +307,68 @@ export default function Dashboard() {
 
   const seoRowsFromData = selected?.seoRows?.length ? selected.seoRows : null;
 
-  // ====== Animations (unchanged) ======
-  const DURATION = 800;
-  const [drValue, setDrValue] = useState(0);
-  const [drWidth, setDrWidth] = useState(0);
-  const rafRef = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / DURATION);
-      const ease = Math.max(0, Math.min(1, 1 - Math.pow(1 - t, 3)));
-      setDrValue(DR_TARGET * ease);
-      setDrWidth(DR_BAR * ease);
-      if (t < 1) rafRef.current = requestAnimationFrame(step);
-    };
-    rafRef.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, [DR_TARGET, DR_BAR]);
+  // ====== Animation Orchestrator (all widgets sync) ======
+const MASTER_MS = 1000;                 // single duration for everything
+const [prog, setProg] = useState(0);    // 0 → 1 (eased)
 
-  const RD_DURATION = 900;
-  const [rdValue, setRdValue] = useState(0);
-  const [rdP, setRdP] = useState(0);
-  const rdRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / RD_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setRdValue(RD_TARGET * ease);
-      setRdP(ease);
-      if (t < 1) rdRaf.current = requestAnimationFrame(step);
-    };
-    rdRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rdRaf.current);
-  }, [RD_TARGET]);
+useEffect(() => {
+  if (!rows) return;                    // gate on data to avoid "second wave"
+  let raf;
+  const start = performance.now();
+  const tick = (now) => {
+    const t = Math.min(1, (now - start) / MASTER_MS);
+    const ease = 1 - Math.pow(1 - t, 3); // cubic-out
+    setProg(ease);
+    if (t < 1) raf = requestAnimationFrame(tick);
+  };
+  raf = requestAnimationFrame(tick);
+  return () => cancelAnimationFrame(raf);
+}, [rows]);
 
-  const TB_DURATION = 800;
-  const [tbValue, setTbValue] = useState(0);
-  const tbRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / TB_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setTbValue(TB_TARGET * ease);
-      if (t < 1) tbRaf.current = requestAnimationFrame(step);
-    };
-    tbRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(tbRaf.current);
-  }, [TB_TARGET]);
+// ---- Derived animated values (no per-widget RAFs) ----
+const drValue = DR_TARGET * prog;
+const drWidth = DR_BAR * prog;
 
-  const SH_DURATION = 900;
-  const [shValue, setShValue] = useState(0);
-  const [pagesScanned, setPagesScanned] = useState(0);
-  const [redirects, setRedirects] = useState(0);
-  const [broken, setBroken] = useState(0);
-  const shRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / SH_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setShValue(SH_SCORE * ease);
-      setPagesScanned(Math.round(SH_PAGES * ease));
-      setRedirects(Math.round(SH_REDIRECT * ease));
-      setBroken(Math.round(SH_BROKEN * ease));
-      if (t < 1) shRaf.current = requestAnimationFrame(step);
-    };
-    shRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(shRaf.current);
-  }, [SH_SCORE, SH_PAGES, SH_REDIRECT, SH_BROKEN]);
+const rdValue = RD_TARGET * prog;
+const rdP = prog;  // reuse for quality bars
 
-  const CWV_DURATION = 900;
-  const [lcp, setLcp] = useState(0);
-  const [inp, setInp] = useState(0);
-  const [cls, setCls] = useState(0);
-  const cwvRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / CWV_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setLcp(LCP_TARGET * ease);
-      setInp(INP_TARGET * ease);
-      setCls(CLS_TARGET * ease);
-      if (t < 1) cwvRaf.current = requestAnimationFrame(step);
-    };
-    cwvRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(cwvRaf.current);
-  }, [LCP_TARGET, INP_TARGET, CLS_TARGET]);
+const tbValue = TB_TARGET * prog;
 
-  const PS_DURATION = 900;
-  const [psProgress, setPsProgress] = useState(0);
-  const psRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / PS_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setPsProgress(ease);
-      if (t < 1) psRaf.current = requestAnimationFrame(step);
-    };
-    psRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(psRaf.current);
-  }, []);
+const shValue = SH_SCORE * prog;
+const pagesScanned = Math.round(SH_PAGES * prog);
+const redirects = Math.round(SH_REDIRECT * prog);
+const broken = Math.round(SH_BROKEN * prog);
 
-  const OT_DURATION = 1100;
-  const [otValue, setOtValue] = useState(0);
-  const [otProg, setOtProg] = useState(0);
-  const otRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / OT_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setOtValue(OT_TARGET * ease);
-      setOtProg(ease);
-      if (t < 1) otRaf.current = requestAnimationFrame(step);
-    };
-    otRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(otRaf.current);
-  }, [OT_TARGET]);
+const lcp = LCP_TARGET * prog;
+const inp = INP_TARGET * prog;
+const cls = CLS_TARGET * prog;
 
-  const OK_DURATION = 1100;
-  const [okValue, setOkValue] = useState(0);
-  const [okProg, setOkProg] = useState(0);
-  const okRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / OK_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setOkValue(OK_TOTAL * ease);
-      setOkProg(ease);
-      if (t < 1) okRaf.current = requestAnimationFrame(step);
-    };
-    okRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(okRaf.current);
-  }, [OK_TOTAL]);
+const psProgress = prog;
 
-  const LEADS_DURATION = 1100;
-  const [leadsCount, setLeadsCount] = useState(0);
-  const [leadsProg, setLeadsProg] = useState(0);
-  const leadsRaf = useRef(null);
-  useEffect(() => {
-    const start = performance.now();
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / LEADS_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setLeadsCount(LEADS_TARGET * ease);
-      setLeadsProg(ease);
-      if (t < 1) leadsRaf.current = requestAnimationFrame(step);
-    };
-    leadsRaf.current = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(leadsRaf.current);
-  }, [LEADS_TARGET]);
+const otValue = OT_TARGET * prog;
+const otProg = prog;
 
-  const [serpCounts, setSerpCounts] = useState([0,0,0,0,0]);
-  useEffect(() => {
-    const DURATION = 900;
-    const start = performance.now();
-    let rafId;
-    const step = (now) => {
-      const t = Math.min(1, (now - start) / DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setSerpCounts(serpCountsMemo.map((n) => Math.round(n * ease)));
-      if (t < 1) rafId = requestAnimationFrame(step);
-    };
-    rafId = requestAnimationFrame(step);
-    return () => cancelAnimationFrame(rafId);
-  }, [serpCountsMemo]);
+const okValue = OK_TOTAL * prog;
+const okProg = prog;
 
-  const [serpCoverage, setSerpCoverage] = useState(0);
-  useEffect(() => {
-    const DURATION = 900;
-    const start = performance.now();
-    let raf;
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setSerpCoverage(SERP_COVERAGE * ease);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [SERP_COVERAGE]);
+const leadsCount = LEADS_TARGET * prog;
+const leadsProg = prog;
 
-  const [oppCounts, setOppCounts] = useState([0, 0, 0, 0]);
-  useEffect(() => {
-    const targets = [
-      selected?.issues?.critical ?? 274,
-      selected?.issues?.warning ?? 883,
-      selected?.issues?.recommendations ?? 77,
-      selected?.issues?.contentOpps ?? 5,
-    ];
-    const DURATION = 900;
-    const start = performance.now();
-    let raf;
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setOppCounts(targets.map((n) => Math.max(0, Math.round((n ?? 0) * ease))));
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [selected]);
+const serpCounts = serpCountsMemo.map((n) => Math.round(n * prog));
+const serpCoverage = SERP_COVERAGE * prog;
 
-  const [oppCardsProgress, setOppCardsProgress] = useState(0);
-  useLayoutEffect(() => {
-    const DURATION = 800;
-    const start = performance.now();
-    let raf;
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setOppCardsProgress(ease);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+const oppCounts = [
+  Math.round((selected?.issues?.critical ?? 274) * prog),
+  Math.round((selected?.issues?.warning ?? 883) * prog),
+  Math.round((selected?.issues?.recommendations ?? 77) * prog),
+  Math.round((selected?.issues?.contentOpps ?? 5) * prog),
+];
 
-  const SEO_TABLE_DURATION = 900;
-  const [seoTableProg, setSeoTableProg] = useState(0);
-  useLayoutEffect(() => {
-    const start = performance.now();
-    let raf;
-    const tick = (now) => {
-      const t = Math.min(1, (now - start) / SEO_TABLE_DURATION);
-      const ease = 1 - Math.pow(1 - t, 3);
-      setSeoTableProg(ease);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, []);
+const oppCardsProgress = prog;
+const seoTableProg = prog;
 
-  // ====== Small UI helpers (unchanged, except table rows can be dataset-driven) ======
+// ====== Small UI helpers (unchanged, except table rows can be dataset-driven) ======
+// ====== Small UI helpers (unchanged, except table rows can be dataset-driven) ======
   function DifficultyBar({ value, progress = 1 }) {
     const [mounted, setMounted] = useState(false);
     useEffect(() => { setMounted(true); }, []);
@@ -558,7 +382,7 @@ export default function Dashboard() {
           style={{
             width: `${pct * p}%`,
             backgroundColor: fill,
-            transition: mounted ? "width 140ms linear" : "none",
+            transition: "none",
           }}
         />
       </div>
@@ -750,7 +574,7 @@ export default function Dashboard() {
                 style={{ width: `${drWidth}%` }}
               />
             </div>
-          </div>
+          </div> 
 
           {/* Referring Domains */}
           <div className="rounded-[14px] border border-[var(--border)] bg-[var(--input)] p-4 shadow-sm">
@@ -1102,7 +926,7 @@ export default function Dashboard() {
                       {row.v ? (row.v >= 1000 ? (row.v/1000).toFixed(1)+"k" : row.v) : "—"}
                     </span>
                     <div className="h-2 w-full rounded-full bg-[var(--border)]">
-                      <div className="h-2 rounded-full" style={{ width: `${pct * okProg}%`, backgroundColor: row.c, transition: "width 120ms linear" }} />
+                      <div className="h-2 rounded-full" style={{ width: `${pct * okProg}%`, backgroundColor: row.c, transition: "none" }} />
                     </div>
                   </div>
                 );
@@ -1205,7 +1029,7 @@ export default function Dashboard() {
                         className="h-2 rounded-full bg-[#22C55E]"
                         style={{
                           width: `${goalPct}%`,
-                          transition: "width 120ms linear",
+                          transition: "none",
                         }}
                       />
                     ) : null}
@@ -1231,7 +1055,7 @@ export default function Dashboard() {
                             style={{
                               width: `${cfPct * (leadsProg || 1)}%`,
                               backgroundColor: "#F59E0B",
-                              transition: "width 120ms linear",
+                              transition: "none",
                             }}
                           />
                         ) : null}
@@ -1256,7 +1080,7 @@ export default function Dashboard() {
                             style={{
                               width: `${nlPct * (leadsProg || 1)}%`,
                               backgroundColor: "#3B82F6",
-                              transition: "width 120ms linear",
+                              transition: "none",
                             }}
                           />
                         ) : null}
