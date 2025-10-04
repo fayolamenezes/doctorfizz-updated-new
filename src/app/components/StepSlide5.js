@@ -12,11 +12,11 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   const [addingBusiness, setAddingBusiness] = useState(false);
   const [addingSearch, setAddingSearch] = useState(false);
   const [bizInput, setBizInput] = useState("");
-  const [searchInput, setSearchInput] = useState("");
+  const [searchInput, setSearchInput] = useState("");   // ← fixed (was `theconst`)
 
   const [showSummary, setShowSummary] = useState(false);
 
-  // Fixed-height shell (match StepSlide4)
+  // Fixed-height shell (match other steps)
   const panelRef = useRef(null);
   const scrollRef = useRef(null);
   const bottomBarRef = useRef(null);
@@ -105,7 +105,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
     setSearchInput("");
     setTimeout(() => document.getElementById("search-more-input")?.focus(), 50);
   };
-  
 
   /* ---------------- Submit + Summary toggle ---------------- */
   useEffect(() => {
@@ -146,11 +145,11 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="w-full h-full flex flex-col bg-transparent">
-      <div className="px-6 md:px-8 pt-6">
+    <div className="w-full h-full flex flex-col bg-transparent overflow-x-hidden">
+      <div className="px-3 sm:px-4 md:px-6 pt-4 sm:pt-5 md:pt-6">
         <div
           ref={panelRef}
-          className="mx-auto w-full max-w-[1120px] rounded-2xl bg-transparent"
+          className="mx-auto w-full max-w-[1120px] rounded-2xl bg-transparent box-border"
           style={{ padding: "0px 24px", height: panelHeight ? `${panelHeight}px` : "auto" }}
         >
           <style jsx>{`
@@ -159,25 +158,30 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
           `}</style>
 
           <div ref={scrollRef} className="inner-scroll h-full w-full overflow-y-auto">
-            <div className="flex flex-col items-start text-start gap-6 max-w-[820px] mx-auto">
+            <div className="flex flex-col items-start text-start gap-5 sm:gap-6 md:gap-8 max-w-[820px] mx-auto">
               {/* Step label */}
-              <div className="text-[var(--muted)] text-sm font-medium">Step - 5</div>
-<div className="spacer-line w-[80%] self-start h-[1px] bg-[#d45427] mt-[-1%]"></div>
+              <div className="text-[11px] sm:text-[12px] md:text-[13px] text-[var(--muted)] font-medium">
+                Step - 5
+              </div>
+              <div className="spacer-line w-[80%] self-start h-[1px] bg-[#d45427] mt-[-1%]" />
+
               {/* Heading */}
-              <div className="space-y-4 max-w-[640px]">
-                <h1 className="text-[22px] md:text-[26px] font-bold text-[var(--text)]">
+              <div className="space-y-2.5 sm:space-y-3 max-w-[640px]">
+                <h1 className="text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] font-bold text-[var(--text)]">
                   Pick your competitors to compare.
                 </h1>
-                <p className="text-[15px] text-[var(--muted)] leading-relaxed">
+                <p className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--muted)] leading-relaxed">
                   Choose from our suggestions or add your own.
                 </p>
               </div>
 
               {/* BUSINESS SECTION */}
-              <div className="w-full max-w-[880px] text-left space-y-4">
-                <h3 className="text-md font-medium text-[var(--text)]">Business Competitors</h3>
+              <div className="w-full max-w-[880px] text-left space-y-3 sm:space-y-4">
+                <h3 className="text-[13px] sm:text-[14px] md:text-[15px] font-medium text-[var(--text)]">
+                  Business Competitors
+                </h3>
 
-                <div className="flex flex-wrap gap-3 items-center">
+                <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
                   {businessCompetitors.map((label) => {
                     const isSelected = selectedBusinessCompetitors.includes(label);
 
@@ -188,15 +192,13 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                             id="biz-more-input"
                             value={bizInput}
                             onChange={(e) => setBizInput(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") addCustomBusiness();
-                            }}
+                            onKeyDown={(e) => { if (e.key === "Enter") addCustomBusiness(); }}
                             placeholder="Add business competitor"
-                            className="px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[var(--text)] text-sm"
+                            className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
                           />
                           <button
                             onClick={addCustomBusiness}
-                            className="px-3 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl"
+                            className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:opacity-90"
                           >
                             <Plus size={16} />
                           </button>
@@ -215,7 +217,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                       <button
                         key={`biz-${label}`}
                         onClick={() => toggleBusiness(label)}
-                        className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-200 ${
+                        className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
                           isSelected
                             ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
                             : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
@@ -232,17 +234,17 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                   })}
                 </div>
 
-                {/* Selected BUSINESS below this section */}
+                {/* Selected BUSINESS */}
                 {selectedBusinessCompetitors.length > 0 && (
-                  <div className="pt-2">
-                    <h4 className="text-sm font-medium text-[var(--text)] mb-3">
+                  <div className="pt-1">
+                    <h4 className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[var(--text)] mb-2.5 sm:mb-3">
                       Selected Business Competitors ({selectedBusinessCompetitors.length})
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {selectedBusinessCompetitors.map((label, idx) => (
                         <div
                           key={`biz-pill-${label}-${idx}`}
-                          className="group relative inline-flex items-center text-white rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-sm transition-all duration-300 px-6 py-3 hover:pr-12"
+                          className="group relative inline-flex items-center text-white rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-[12px] sm:text-[13px] md:text-[14px] transition-all duration-300 px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 hover:pr-12"
                         >
                           <span>{label}</span>
                           <button
@@ -260,10 +262,12 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
               </div>
 
               {/* SEARCH SECTION */}
-              <div className="w-full max-w-[880px] text-left space-y-4">
-                <h3 className="text-md font-medium text-[var(--text)]">Search Engine Competitors</h3>
+              <div className="w-full max-w-[880px] text-left space-y-3 sm:space-y-4">
+                <h3 className="text-[13px] sm:text-[14px] md:text-[15px] font-medium text-[var(--text)]">
+                  Search Engine Competitors
+                </h3>
 
-                <div className="flex flex-wrap gap-3 items-center">
+                <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
                   {searchEngineCompetitors.map((label) => {
                     const isSelected = selectedSearchCompetitors.includes(label);
 
@@ -274,15 +278,13 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                             id="search-more-input"
                             value={searchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") addCustomSearch();
-                            }}
+                            onKeyDown={(e) => { if (e.key === "Enter") addCustomSearch(); }}
                             placeholder="Add search competitor"
-                            className="px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[var(--text)] text-sm"
+                            className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
                           />
                           <button
                             onClick={addCustomSearch}
-                            className="px-3 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl"
+                            className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:opacity-90"
                           >
                             <Plus size={16} />
                           </button>
@@ -301,7 +303,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                       <button
                         key={`search-${label}`}
                         onClick={() => toggleSearch(label)}
-                        className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-200 ${
+                        className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
                           isSelected
                             ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
                             : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
@@ -318,17 +320,17 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                   })}
                 </div>
 
-                {/* Selected SEARCH below this section */}
+                {/* Selected SEARCH */}
                 {selectedSearchCompetitors.length > 0 && (
-                  <div className="pt-2">
-                    <h4 className="text-sm font-medium text-[var(--text)] mb-3">
+                  <div className="pt-1">
+                    <h4 className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[var(--text)] mb-2.5 sm:mb-3">
                       Selected Search Engine Competitors ({selectedSearchCompetitors.length})
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {selectedSearchCompetitors.map((label, idx) => (
                         <div
                           key={`search-pill-${label}-${idx}`}
-                          className="group relative inline-flex items-center text-white rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-sm transition-all duration-300 px-6 py-3 hover:pr-12"
+                          className="group relative inline-flex items-center text-white rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-[12px] sm:text-[13px] md:text-[14px] transition-all duration-300 px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 hover:pr-12"
                         >
                           <span>{label}</span>
                           <button
@@ -345,33 +347,21 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 )}
               </div>
 
-              {/* Summary (unchanged) */}
-              {showSummary && (
-                <div className="max-w-[640px] text-left self-start mt-6">
-                  {/* <h3 className="text-[18px] font-bold text-[var(--text)] mb-3">
-                    Here’s your site report — take a quick look on the Info Tab.
-                  </h3>
-                  <p className="text-[15px] text-[var(--muted)] mt-2">
-                    If not, Want to do some changes?
-                  </p> */}
-                </div>
-              )}
-
               <div className="h-2" />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bottom bar (same styling as StepSlide4) */}
+      {/* Bottom bar (same rhythm as other steps) */}
       <div ref={bottomBarRef} className="flex-shrink-0 bg-transparent">
         <div className="border-t border-[var(--border)]" />
-        <div className="mx-auto w-full max-w-[1120px] px-6 md:px-8">
-          <div className="py-7 flex justify-center gap-4">
+        <div className="mx-auto w-full max-w-[1120px] px-3 sm:px-4 md:px-6">
+          <div className="py-5 sm:py-6 md:py-7 flex justify-center gap-3 sm:gap-4">
             <button
               onClick={onBack}
               type="button"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--input)] px-6 py-3 text-[var(--text)] hover:bg-[var(--input)] shadow-sm border border-[#d45427]"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--input)] px-5 sm:px-6 py-2.5 sm:py-3 text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] hover:bg-[var(--input)] shadow-sm border border-[#d45427]"
             >
               <ArrowLeft size={16} /> Back
             </button>
@@ -380,7 +370,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
               <button
                 onClick={onNext}
                 type="button"
-                className="inline-flex items-center gap-2 rounded-full bg-[image:var(--infoHighlight-gradient)] px-6 py-3 text-white hover:bg-gray-800 shadow-sm"
+                className="inline-flex items-center gap-2 rounded-full bg-[image:var(--infoHighlight-gradient)] px-5 sm:px-6 py-2.5 sm:py-3 text-white hover:opacity-90 shadow-sm text-[13px] md:text-[14px]"
               >
                 Next <ArrowRight size={16} />
               </button>

@@ -9,11 +9,11 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
   const [customKeyword, setCustomKeyword] = useState("");
   const [showSummary, setShowSummary] = useState(false);
 
-  // NEW: control inline “More → input”
+  // Inline “More → input”
   const [showInlineMoreInput, setShowInlineMoreInput] = useState(false);
   const moreInputRef = useRef(null);
 
-  // fixed-height shell like StepSlide2/3 final
+  // fixed-height shell (matches StepSlide2/3)
   const panelRef = useRef(null);
   const scrollRef = useRef(null);
   const bottomBarRef = useRef(null);
@@ -34,7 +34,7 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
     "More",
   ];
 
-  /* ---------------- Fixed panel height (same as StepSlide2/3) ---------------- */
+  /* ---------------- Fixed panel height ---------------- */
   const recomputePanelHeight = () => {
     if (!panelRef.current) return;
     const vpH = window.innerHeight;
@@ -62,10 +62,8 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
 
   /* ---------------- Keyword handlers (logic unchanged) ---------------- */
   const handleKeywordToggle = (keyword) => {
-    // “More” does not toggle selection — it reveals the inline input instead
     if (keyword === "More") {
       setShowInlineMoreInput(true);
-      // focus input shortly after render
       setTimeout(() => moreInputRef.current?.focus(), 50);
       return;
     }
@@ -83,7 +81,6 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
     if (trimmed && !selectedKeywords.includes(trimmed)) {
       setSelectedKeywords((prev) => [...prev, trimmed]);
       setCustomKeyword("");
-      // keep the inline input visible so user can add multiple, as discussed
       setTimeout(() => moreInputRef.current?.focus(), 50);
     }
   };
@@ -128,12 +125,12 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
 
   /* ---------------- UI ---------------- */
   return (
-    <div className="w-full h-full flex flex-col bg-transparent">
-      {/* Fixed-height white section (matches StepSlide2/3 final) */}
-      <div className="px-6 md:px-8 pt-6">
+    <div className="w-full h-full flex flex-col bg-transparent overflow-x-hidden">
+      {/* Fixed-height section */}
+      <div className="px-3 sm:px-4 md:px-6 pt-4 sm:pt-5 md:pt-6">
         <div
           ref={panelRef}
-          className="mx-auto w-full max-w-[1120px] rounded-2xl bg-transparent"
+          className="mx-auto w-full max-w-[1120px] rounded-2xl bg-transparent box-border"
           style={{ padding: "0px 24px", height: panelHeight ? `${panelHeight}px` : "auto" }}
         >
           {/* hide inner scrollbar */}
@@ -143,34 +140,34 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
           `}</style>
 
           <div ref={scrollRef} className="inner-scroll h-full w-full overflow-y-auto">
-            <div className="flex flex-col items-start text-start gap-6 max-w-[820px] mx-auto">
+            <div className="flex flex-col items-start text-start gap-5 sm:gap-6 md:gap-8 max-w-[820px] mx-auto">
               {/* Step label */}
-              <div className="text-[var(--muted)] text-sm font-medium">Step - 4</div>
-<div className="spacer-line w-[80%] self-start h-[1px] bg-[#d45427] mt-[-1%]"></div>
+              <div className="text-[11px] sm:text-[12px] md:text-[13px] text-[var(--muted)] font-medium">
+                Step - 4
+              </div>
+              <div className="spacer-line w-[80%] self-start h-[1px] bg-[#d45427] mt-[-1%]" />
+
               {/* Heading + copy */}
-              <div className="space-y-4 max-w-[640px]">
-                <h1 className="text-[22px] md:text-[26px] font-bold text-[var(--text)]">
+              <div className="space-y-2.5 sm:space-y-3 max-w-[640px]">
+                <h1 className="text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] font-bold text-[var(--text)]">
                   Unlock high-impact keywords.
                 </h1>
-                <p className="text-[15px] text-[var(--muted)] leading-relaxed">
+                <p className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--muted)] leading-relaxed">
                   I scanned your site and found these gems.
                 </p>
               </div>
 
               {/* Keyword picker area — suggestions + inline More-input */}
-              <div className="w-full max-w-[880px] space-y-8">
+              <div className="w-full max-w-[880px] space-y-6 sm:space-y-8">
                 {/* Suggested pills */}
-                <div className="flex flex-wrap justify-start gap-3">
+                <div className="flex flex-wrap justify-start gap-2.5 sm:gap-3">
                   {suggestedKeywords.map((keyword) => {
                     const isSelected = selectedKeywords.includes(keyword);
 
                     // Render “More” as inline input when toggled
                     if (keyword === "More" && showInlineMoreInput) {
                       return (
-                        <div
-                          key="more-inline-input"
-                          className="flex items-center gap-2"
-                        >
+                        <div key="more-inline-input" className="flex items-center gap-2">
                           <input
                             ref={moreInputRef}
                             type="text"
@@ -178,13 +175,13 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
                             value={customKeyword}
                             onChange={(e) => setCustomKeyword(e.target.value)}
                             onKeyDown={handleKeyDown}
-                            className="px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427] text-sm"
+                            className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
                           />
                           <button
                             onClick={handleAddCustom}
                             disabled={!customKeyword.trim()}
                             type="button"
-                            className="px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:bg-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-colors duration-200"
+                            className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:bg-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-colors duration-200"
                             aria-label="Add custom keyword"
                           >
                             <Plus size={16} />
@@ -198,7 +195,7 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
                         key={keyword}
                         onClick={() => handleKeywordToggle(keyword)}
                         type="button"
-                        className={`px-4 py-2 rounded-xl border text-sm font-medium transition-all duration-200 ${
+                        className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
                           isSelected
                             ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
                             : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
@@ -214,23 +211,19 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
                     );
                   })}
                 </div>
-
-                {/* The separate custom input block is intentionally hidden now.
-                    We only show the input when the user clicks “More”, which
-                    transforms the “More” pill itself into the input above. */}
               </div>
 
               {/* Selected keywords list */}
               {selectedKeywords.length > 0 && (
                 <div className="w-full max-w-[820px]">
-                  <h3 className="text-md font-medium text-[var(--text)] mb-4">
+                  <h3 className="text-[13px] sm:text-[14px] md:text-[15px] font-medium text-[var(--text)] mb-3 sm:mb-4">
                     Selected Keywords ({selectedKeywords.length})
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedKeywords.map((keyword, idx) => (
                       <div
                         key={`${keyword}-${idx}`}
-                        className="group relative inline-flex items-center text-[#fff] rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-sm transition-all duration-300 px-6 py-3 cursor-default hover:pr-12"
+                        className="group relative inline-flex items-center rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-[12px] sm:text-[13px] md:text-[14px] text-white transition-all duration-300 px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 cursor-default hover:pr-12"
                       >
                         <span>{keyword}</span>
                         <button
@@ -253,17 +246,17 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
                 </div>
               )}
 
-              {/* Left-aligned system message */}
+              {/* System message / CTA (after summary) */}
               {showSummary && (
-                <div className="max-w-[640px] text-left self-start mt-6">
-                  <h3 className="text-[18px] font-bold text-[var(--text)] mb-3">
+                <div className="max-w-[640px] text-left self-start mt-5 sm:mt-6">
+                  <h3 className="text-[15px] sm:text-[16px] md:text-[18px] font-bold text-[var(--text)] mb-2.5 sm:mb-3">
                     Here’s your site report — take a quick look on the Info Tab.
                   </h3>
-                  <p className="text-[15px] text-[var(--muted)] mt-2">
+                  <p className="text-[12px] sm:text-[13px] md:text-[15px] text-[var(--muted)]">
                     If not, Want to do some changes?
                   </p>
 
-                  <div className="flex items-center gap-12 mt-6 text-[14px]">
+                  <div className="flex items-center gap-8 sm:gap-10 mt-4 sm:mt-5 text-[12px] sm:text-[13px]">
                     <button
                       onClick={handleReset}
                       type="button"
@@ -281,15 +274,15 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
         </div>
       </div>
 
-      {/* Bottom bar (same styling as StepSlide2/3) */}
+      {/* Bottom bar (matches StepSlide2/3) */}
       <div ref={bottomBarRef} className="flex-shrink-0 bg-transparent">
         <div className="border-t border-[var(--border)]" />
-        <div className="mx-auto w-full max-w-[1120px] px-6 md:px-8">
-          <div className="py-7 flex justify-center gap-4">
+        <div className="mx-auto w-full max-w-[1120px] px-3 sm:px-4 md:px-6">
+          <div className="py-5 sm:py-6 md:py-7 flex justify-center gap-3 sm:gap-4">
             <button
               onClick={onBack}
               type="button"
-              className="inline-flex items-center gap-2 rounded-full bg-[var(--input)] px-6 py-3 text-[var(--text)] hover:bg-[var(--input)] shadow-sm border border-[#d45427]"
+              className="inline-flex items-center gap-2 rounded-full bg-[var(--input)] px-5 sm:px-6 py-2.5 sm:py-3 text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] hover:bg-[var(--input)] shadow-sm border border-[#d45427]"
             >
               <ArrowLeft size={16} /> Back
             </button>
@@ -298,7 +291,7 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
               <button
                 onClick={onNext}
                 type="button"
-                className="inline-flex items-center gap-2 rounded-full bg-[image:var(--infoHighlight-gradient)] px-6 py-3 text-white hover:bg-gray-800 shadow-sm"
+                className="inline-flex items-center gap-2 rounded-full bg-[image:var(--infoHighlight-gradient)] px-5 sm:px-6 py-2.5 sm:py-3 text-white hover:opacity-90 shadow-sm text-[13px] md:text-[14px]"
               >
                 Next <ArrowRight size={16} />
               </button>

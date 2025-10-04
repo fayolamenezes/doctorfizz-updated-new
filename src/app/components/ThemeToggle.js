@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useTheme } from "./ThemeContext";
@@ -23,6 +22,7 @@ export default function ThemeToggle() {
 
   return (
     <button
+      type="button"
       aria-label="Toggle dark/light mode"
       aria-pressed={isDark}
       onClick={toggleTheme}
@@ -32,7 +32,11 @@ export default function ThemeToggle() {
           toggleTheme();
         }
       }}
-      className="fixed top-5 right-6 z-50"
+      // Smaller on phones/tablets; unchanged on desktop
+      className="fixed z-50 right-2 sm:right-4 md:right-6
+           top-3 sm:top-10 md:top-12 lg:top-5
+           scale-[0.72] sm:scale-[0.84] md:scale-100"
+
       style={{ width: trackW, height: trackH }}
       title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
@@ -43,7 +47,7 @@ export default function ThemeToggle() {
           borderColor: "rgba(0,0,0,0.35)",
         }}
       >
-        {/* Static icons (follow mode only): white in light, grey in dark */}
+        {/* Static icons (white in light, grey in dark) */}
         <Moon
           size={18}
           className="absolute left-3 top-1/2 -translate-y-1/2"
@@ -57,7 +61,7 @@ export default function ThemeToggle() {
           strokeWidth={2}
         />
 
-        {/* Sliding thumb: black background with the active icon in white */}
+        {/* Sliding thumb: show the OPPOSITE icon to avoid duplicate glyphs */}
         <div
           className="absolute rounded-full shadow-[0_2px_8px_rgba(0,0,0,0.35)] ring-1 ring-white/20 flex items-center justify-center transition-transform duration-300 ease-out"
           style={{
@@ -65,14 +69,14 @@ export default function ThemeToggle() {
             height: thumb,
             top: topOffset,
             left: pad,
-            transform: `translateX(\${isDark ? translateX : 0}px)`,
+            transform: `translateX(${isDark ? translateX : 0}px)`,
             background: "#000000",
           }}
         >
           {isDark ? (
-            <Moon size={16} color="#FFFFFF" strokeWidth={2} />
-          ) : (
             <Sun size={16} color="#FFFFFF" strokeWidth={2} />
+          ) : (
+            <Moon size={16} color="#FFFFFF" strokeWidth={2} />
           )}
         </div>
       </div>
