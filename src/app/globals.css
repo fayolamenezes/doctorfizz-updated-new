@@ -202,3 +202,29 @@ html.dark .slides-accent {
   background-color: #303030 !important;
   color: #9AA3B2 !important; /* dark gray text */
 }
+
+:root {
+  /* Desktop (unchanged): semi-transparent */
+  --brand-gradient: linear-gradient(
+    to right,
+    rgb(212 84 39 / 50%) 0%,
+    rgb(255 166 21 / 50%) 100%
+  );
+
+  /* Full-strength base + shared overlay */
+  --brand-gradient-strong: linear-gradient(to right, #d45427 0%, #ffa615 100%);
+  --brand-overlay-alpha: 0.25; /* tweak 0.06–0.16 */
+  --brand-gradient-overlay: linear-gradient(
+    to bottom,
+    rgb(0 0 0 / var(--brand-overlay-alpha)),
+    rgb(0 0 0 / var(--brand-overlay-alpha))
+  );
+}
+
+/* < lg (1024px): FULL opacity + slight black overlay — works for LIGHT & DARK */
+@media (max-width: 1023.98px) {
+  :root,
+  .dark:root { /* note: .dark on <html> in Tailwind */
+    --brand-gradient: var(--brand-gradient-overlay), var(--brand-gradient-strong);
+  }
+}

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useRef, useMemo, useState } from "react";
@@ -169,7 +170,7 @@ function WebsiteStatsCard({ website, stats }) {
               <div className="text-[13px] leading-[16px] text-gray-600 dark:text-[var(--muted)] font-medium">
                 {label}
               </div>
-              <div className="mt-2 mb-1.5 flex items-center justify-center gap-2">
+                <div className="mt-2 mb-1.5 flex items-center justify-center gap-2">
                 <div className="text-[clamp(20px,3vw,23px)] leading-tight font-extrabold text-gray-900 dark:text-[var(--text)]">
                   {Number.isFinite(value) ? formatNumber(value) : "--"}
                 </div>
@@ -201,21 +202,14 @@ function VideoRow({ title, author = "@itzfizz", onOpen, poster }) {
       <div className="flex items-center gap-3">
         {/* poster thumbnail */}
         <div className="w-16 h-10 rounded-lg overflow-hidden relative bg-black/10 dark:bg-white/5 shrink-0">
-        <Image
-          src={poster || "/assets/poster.png"}
-          alt={title}
-          fill
-          sizes="64px"          // w-16 ≈ 64px
-          className="object-cover"
-          priority={false}
-        />
-          {/* If you want a faint play overlay, uncomment:
-          <div className="absolute inset-0 grid place-items-center bg-black/10">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="white" opacity="0.9">
-              <path d="M8 5v14l11-7z"></path>
-            </svg>
-          </div>
-          */}
+          <Image
+            src={poster || "/assets/poster.png"}
+            alt={title}
+            fill
+            sizes="64px"
+            className="object-cover"
+            priority={false}
+          />
         </div>
 
         <div className="flex-1 min-w-0">
@@ -300,6 +294,24 @@ function ContentCard({
   );
 }
 
+/* ---------- Responsive breakpoint helper (Tailwind lg = 1024px) ---------- */
+function useIsDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const mq = window.matchMedia("(min-width: 1024px)");
+    const update = () => setIsDesktop(mq.matches);
+    update();
+    if (mq.addEventListener) mq.addEventListener("change", update);
+    else mq.addListener(update);
+    return () => {
+      if (mq.removeEventListener) mq.removeEventListener("change", update);
+      else mq.removeListener(update);
+    };
+  }, []);
+  return isDesktop;
+}
+
 /* -------------------- Component -------------------- */
 export default function InfoPanel({
   isOpen,
@@ -314,6 +326,7 @@ export default function InfoPanel({
   currentStep,
 }) {
   const panelRef = useRef(null);
+  const isDesktop = useIsDesktop();
 
   // (optional) global video state if you add a top header play button later
   const [activeVideo, setActiveVideo] = useState(null);
@@ -357,17 +370,41 @@ export default function InfoPanel({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isPinned, onClose]);
 
-  // pin behavior like your original
+  /* ---------- Auto-pin only on DESKTOP; disable on tablet/mobile ---------- */
   const LAST_STEP = 6;
   const hasWebsite = Boolean(websiteData?.website && String(websiteData.website).trim());
   useEffect(() => {
+    if (!isDesktop) return; // only on desktop
     if (hasWebsite && typeof currentStep === "number" && currentStep <= LAST_STEP) {
       setIsPinned(true);
     }
-  }, [hasWebsite, currentStep, setIsPinned]);
+  }, [hasWebsite, currentStep, setIsPinned, isDesktop]);
   useEffect(() => {
     if (!hasWebsite) setIsPinned(false);
   }, [hasWebsite, setIsPinned]);
+
+  // If website just changed on non-desktop, close & unpin to negate "auto open/pin" from submit
+  const prevWebsite = useRef(websiteData?.website || "");
+  useEffect(() => {
+    const curr = websiteData?.website || "";
+    if (curr !== prevWebsite.current) {
+      if (!isDesktop) {
+        setIsPinned(false);
+        onClose && onClose();
+      }
+      prevWebsite.current = curr;
+    }
+  }, [websiteData?.website, isDesktop, onClose, setIsPinned]);
+
+  // Unpin + close when Dashboard opens (desktop parity)
+  useEffect(() => {
+    if (currentStep === "dashboard") {
+      setIsPinned(false);
+      onClose && onClose();
+    }
+  }, [currentStep, setIsPinned, onClose]);
+
+  // (optional) custom event fallback
   useEffect(() => {
     function handleDashboardOpen() {
       setIsPinned(false);
@@ -576,12 +613,12 @@ export default function InfoPanel({
     return (
       <div className="space-y-6">
         <WebsiteStatsCard website={displayWebsite} stats={stats} />
-      <div className="flex items-center gap-2">
-        <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
-          <span className="text-white text-xs">!</span>
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
+            <span className="text-white text-xs">!</span>
+          </div>
+          <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
         </div>
-        <h4 className="text-sm font-bold text-gray-800">FIX THIS</h4>
-      </div>
         {hasAny ? (
           <>
             {businessCompetitors.length > 0 && (
@@ -656,22 +693,26 @@ export default function InfoPanel({
   const renderStep5Slide2Content = renderStep5Content;
 
   /* -------------------- Render -------------------- */
+  // Gradient background like the original, with desktop width fixed and sm/md taking remaining space.
+  // Important: use lg:bg-[image:none] to override arbitrary bg-image at lg+.
+  const basePos =
+    "fixed top-0 h-screen z-40 flex flex-col " +
+    "bg-[image:var(--brand-gradient)] bg-no-repeat bg-[size:100%_100%] " +
+    "left-[56px] w-[calc(100vw-56px)] " +           // phones: remaining width beside 56px rail
+    "md:left-[72px] md:w-[calc(100vw-72px)] " +     // tablets: beside 72px rail
+    "lg:left-[80px] lg:w-[430px] lg:bg-[image:none]"; // desktop: original look (no gradient image)
+
   return (
     <>
+      {/* keep dark overlay for dark theme */}
       <div
         className="hidden dark:block fixed inset-0 -z-10 pointer-events-none bg-no-repeat bg-cover"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), var(--app-gradient-strong)",
-        }}
+        style={{ backgroundImage: "linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)), var(--app-gradient-strong)" }}
       />
       <div
         ref={panelRef}
         aria-hidden={!isOpen}
-        className={
-          "fixed left-[80px] top-0 h-screen w-[430px] transition-transform duration-300 ease-in-out z-40 flex flex-col " +
-          (isOpen ? "translate-x-0" : "-translate-x-full")
-        }
+        className={`${basePos} transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "-translate-x-full"}`}
       >
         {/* header */}
         <div className="flex items-center justify-between px-4 pt-6 bg-transparent">
@@ -688,7 +729,7 @@ export default function InfoPanel({
           </button>
         </div>
         <div className="place-items-center flex justify-center">
-          <div className="divider-gradient-line h-[1px] w-[92.5%] bg-[image:var(--brand-gradient)] my-2 mb-0"></div>
+          <div className="divider-gradient-line h-[1px] w-[97.5%] bg-[image:var(--brand-gradient)] my-2 mb-0"></div>
         </div>
 
         {/* body */}
