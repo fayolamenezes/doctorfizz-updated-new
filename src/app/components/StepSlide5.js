@@ -8,11 +8,29 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   const [selectedBusinessCompetitors, setSelectedBusinessCompetitors] = useState([]);
   const [selectedSearchCompetitors, setSelectedSearchCompetitors] = useState([]);
 
+  // Suggested pills now load dynamically from /data/seo-data.json
+  const [businessSuggestions, setBusinessSuggestions] = useState([
+    "Comp-1",
+    "Comp-2",
+    "Comp-3",
+    "Comp-4",
+    "More",
+  ]);
+  const [searchSuggestions, setSearchSuggestions] = useState([
+    "Comp-1",
+    "Comp-2",
+    "Comp-3",
+    "Comp-4",
+    "More",
+  ]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+
   // Inline “More → input”
   const [addingBusiness, setAddingBusiness] = useState(false);
   const [addingSearch, setAddingSearch] = useState(false);
   const [bizInput, setBizInput] = useState("");
-  const [searchInput, setSearchInput] = useState("");   // ← fixed (was `theconst`)
+  const [searchInput, setSearchInput] = useState("");
 
   const [showSummary, setShowSummary] = useState(false);
 
@@ -24,9 +42,128 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
 
   const lastSubmittedData = useRef(null);
 
-  /* ---------------- Suggestions ---------------- */
-  const businessCompetitors = ["Comp-1", "Comp-2", "Comp-3", "Comp-4", "More"];
-  const searchEngineCompetitors = ["Comp-1", "Comp-2", "Comp-3", "Comp-4", "More"];
+  /* ---------------- Utilities: determine target site like the dashboard ---------------- */
+  function normalizeHost(input) {
+    if (!input || typeof input !== "string") return null;
+    let s = input.trim().toLowerCase();
+    try {
+      if (!/^https?:\/\//.test(s)) s = `https://${s}`;
+      const u = new URL(s);
+      s = u.hostname || s;
+    } catch {
+      s = s.replace(/^https?:\/\//, "").split("/")[0];
+    }
+    return s.replace(/^www\./, "");
+  }
+
+  function getStoredSite() {
+    const keys = [
+      "websiteData",
+      "site",
+      "website",
+      "selectedWebsite",
+      "drfizzm.site",
+      "drfizzm.website",
+    ];
+    for (const k of keys) {
+      try {
+        const raw = localStorage.getItem(k) ?? sessionStorage.getItem(k);
+        if (!raw) continue;
+        try {
+          const obj = JSON.parse(raw);
+          const val = obj?.website || obj?.site || obj?.domain || obj?.host || raw;
+          const host = normalizeHost(val);
+          if (host) return host;
+        } catch {
+          const host = normalizeHost(raw);
+          if (host) return host;
+        }
+      } catch {}
+    }
+    return null;
+  }
+
+  function getTargetSite() {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const fromParam = normalizeHost(params.get("site"));
+      if (fromParam) return fromParam;
+    } catch {}
+    const fromStorage = getStoredSite();
+    if (fromStorage) return fromStorage;
+    return "example.com";
+  }
+
+  function extractCompetitors(row) {
+    const biz = [];
+    const ser = [];
+    for (let i = 1; i <= 6; i++) {
+      // Business competitors: expect 1..4 but be generous up to 6
+      const v = row?.[`Business_Competitor_${i}`];
+      if (typeof v === "string" && v.trim()) biz.push(v.trim());
+    }
+    for (let i = 1; i <= 6; i++) {
+      const v = row?.[`Search_Competitor_${i}`];
+      if (typeof v === "string" && v.trim()) ser.push(v.trim());
+    }
+    // De-dup, preserve order
+    const dedup = (arr) => {
+      const seen = new Set();
+      return arr.filter((x) => {
+        const k = x.toLowerCase();
+        if (seen.has(k)) return false;
+        seen.add(k);
+        return true;
+      });
+    };
+    return { biz: dedup(biz).slice(0, 8), ser: dedup(ser).slice(0, 8) };
+  }
+
+  /* ---------------- Load suggestions for the chosen site ---------------- */
+  useEffect(() => {
+    let isMounted = true;
+    async function load() {
+      setIsLoading(true);
+      setLoadError(null);
+      try {
+        const target = getTargetSite();
+        const res = await fetch("/data/seo-data.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load seo-data.json (${res.status})`);
+        const rows = await res.json();
+        const host = normalizeHost(target);
+        const variants = host ? [host, `www.${host}`] : [];
+
+        const match = rows.find((r) => {
+          const d1 = normalizeHost(r?.Domain);
+          const d2 = normalizeHost(r?.["Domain/Website"]);
+          return (d1 && variants.includes(d1)) || (d2 && variants.includes(d2));
+        });
+
+        const { biz, ser } = extractCompetitors(match || {});
+
+        const bizFinal = (biz.length ? biz : ["Comp-1", "Comp-2", "Comp-3", "Comp-4"]).concat("More");
+        const serFinal = (ser.length ? ser : ["Comp-1", "Comp-2", "Comp-3", "Comp-4"]).concat("More");
+
+        if (isMounted) {
+          setBusinessSuggestions(bizFinal);
+          setSearchSuggestions(serFinal);
+        }
+      } catch (err) {
+        if (isMounted) {
+          setLoadError(err?.message || "Failed to load competitor data");
+          // keep placeholders and ensure More is present
+          setBusinessSuggestions((prev) => (prev.includes("More") ? prev : prev.concat("More")));
+          setSearchSuggestions((prev) => (prev.includes("More") ? prev : prev.concat("More")));
+        }
+      } finally {
+        if (isMounted) setIsLoading(false);
+      }
+    }
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   /* ---------------- Fixed panel height ---------------- */
   const recomputePanelHeight = () => {
@@ -171,7 +308,11 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                   Pick your competitors to compare.
                 </h1>
                 <p className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--muted)] leading-relaxed">
-                  Choose from our suggestions or add your own.
+                  {isLoading
+                    ? "Scanning your site…"
+                    : loadError
+                    ? "Showing starter suggestions (we'll refine once data is available)."
+                    : "I scanned your site and found these competitors."}
                 </p>
               </div>
 
@@ -182,7 +323,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 </h3>
 
                 <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
-                  {businessCompetitors.map((label) => {
+                  {businessSuggestions.map((label) => {
                     const isSelected = selectedBusinessCompetitors.includes(label);
 
                     if (label === "More" && addingBusiness) {
@@ -268,7 +409,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 </h3>
 
                 <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
-                  {searchEngineCompetitors.map((label) => {
+                  {searchSuggestions.map((label) => {
                     const isSelected = selectedSearchCompetitors.includes(label);
 
                     if (label === "More" && addingSearch) {

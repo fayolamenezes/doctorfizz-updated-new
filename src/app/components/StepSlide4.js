@@ -9,6 +9,22 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
   const [customKeyword, setCustomKeyword] = useState("");
   const [showSummary, setShowSummary] = useState(false);
 
+  // Suggested keywords now load dynamically from /data/seo-data.json
+  const [suggestedKeywords, setSuggestedKeywords] = useState([
+    // placeholder pills shown instantly; replaced after fetch
+    "Keyword 1",
+    "Keyword 2",
+    "Keyword 3",
+    "Keyword 4",
+    "Keyword 5",
+    "Keyword 6",
+    "Keyword 7",
+    "Keyword 8",
+    "More",
+  ]);
+  const [isLoadingKeywords, setIsLoadingKeywords] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+
   // Inline “More → input”
   const [showInlineMoreInput, setShowInlineMoreInput] = useState(false);
   const moreInputRef = useRef(null);
@@ -21,18 +37,138 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
 
   const lastSubmittedData = useRef(null);
 
-  /* ---------------- Suggestions (unchanged list) ---------------- */
-  const suggestedKeywords = [
-    "Keyword A",
-    "Keyword B",
-    "Keyword C",
-    "Keyword D",
-    "Keyword E",
-    "Keyword F",
-    "Keyword G",
-    "Keyword H",
-    "More",
-  ];
+  /* ---------------- Utilities: determine target site like the dashboard ---------------- */
+  function normalizeHost(input) {
+    if (!input || typeof input !== "string") return null;
+    let s = input.trim().toLowerCase();
+    // if full URL, strip protocol/path/query; otherwise treat as host
+    try {
+      if (!/^https?:\/\//.test(s)) s = `https://${s}`;
+      const u = new URL(s);
+      s = u.hostname || s;
+    } catch (_) {
+      // fall back to simple cleanup
+      s = s.replace(/^https?:\/\//, "").split("/")[0];
+    }
+    // drop leading www.
+    s = s.replace(/^www\./, "");
+    return s;
+  }
+
+  function getStoredSite() {
+    // Try a few common keys the dashboard uses
+    const keys = [
+      "websiteData",
+      "site",
+      "website",
+      "selectedWebsite",
+      "drfizzm.site",
+      "drfizzm.website",
+    ];
+    for (const k of keys) {
+      try {
+        const raw = localStorage.getItem(k) ?? sessionStorage.getItem(k);
+        if (!raw) continue;
+        // Might be JSON like { website: "domain.com" } or just a string
+        try {
+          const obj = JSON.parse(raw);
+          const val = obj?.website || obj?.site || obj?.domain || obj?.host || raw;
+          const host = normalizeHost(val);
+          if (host) return host;
+        } catch {
+          const host = normalizeHost(raw);
+          if (host) return host;
+        }
+      } catch {
+        // storage might be blocked; ignore
+      }
+    }
+    return null;
+  }
+
+  function getTargetSite() {
+    // 1) URL param ?site=
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const fromParam = normalizeHost(params.get("site"));
+      if (fromParam) return fromParam;
+    } catch {}
+    // 2) Storage fallbacks
+    const fromStorage = getStoredSite();
+    if (fromStorage) return fromStorage;
+    // 3) default
+    return "example.com";
+  }
+
+  function extractKeywords(row) {
+    const out = [];
+    // Prefer Keyword1..Keyword8; fall back to NewOp_Keyword_1..6 if needed
+    for (let i = 1; i <= 8; i++) {
+      const a = row?.[`Keyword${i}`];
+      const b = row?.[`NewOp_Keyword_${i}`];
+      const v = (a ?? b ?? "").toString().trim();
+      if (v) out.push(v);
+    }
+    // de-dup while preserving order
+    const seen = new Set();
+    const deduped = out.filter((k) => {
+      const key = k.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+    // ensure we return up to 8
+    return deduped.slice(0, 8);
+  }
+
+  /* ---------------- Load keywords for the chosen site ---------------- */
+  useEffect(() => {
+    let isMounted = true;
+    async function load() {
+      setIsLoadingKeywords(true);
+      setLoadError(null);
+      try {
+        const target = getTargetSite();
+        const res = await fetch("/data/seo-data.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`Failed to load seo-data.json (${res.status})`);
+        const rows = await res.json();
+        const host = normalizeHost(target);
+        const variants = host ? [host, `www.${host}`] : [];
+        // try matching against either Domain or "Domain/Website"
+        const match = rows.find((r) => {
+          const d1 = normalizeHost(r?.Domain);
+          const d2 = normalizeHost(r?.["Domain/Website"]);
+          return (d1 && variants.includes(d1)) || (d2 && variants.includes(d2));
+        });
+
+        const kws = extractKeywords(match || {});
+        const final = (kws.length ? kws : [
+          "Keyword 1",
+          "Keyword 2",
+          "Keyword 3",
+          "Keyword 4",
+          "Keyword 5",
+          "Keyword 6",
+          "Keyword 7",
+          "Keyword 8",
+        ]).concat("More");
+
+        if (isMounted) setSuggestedKeywords(final);
+      } catch (err) {
+        if (isMounted) {
+          setLoadError(err?.message || "Failed to load keywords");
+          // keep placeholders (already set in state) and ensure "More" exists
+          setSuggestedKeywords((prev) => (prev.includes("More") ? prev : prev.concat("More")));
+        }
+      } finally {
+        if (isMounted) setIsLoadingKeywords(false);
+      }
+    }
+    load();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   /* ---------------- Fixed panel height ---------------- */
   const recomputePanelHeight = () => {
@@ -153,7 +289,11 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
                   Unlock high-impact keywords.
                 </h1>
                 <p className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--muted)] leading-relaxed">
-                  I scanned your site and found these gems.
+                  {isLoadingKeywords
+                    ? "Scanning your site…"
+                    : loadError
+                    ? "Showing starter suggestions (we'll refine once data is available)."
+                    : "I scanned your site and found these gems."}
                 </p>
               </div>
 
