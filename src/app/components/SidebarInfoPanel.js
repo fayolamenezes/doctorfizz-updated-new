@@ -12,6 +12,8 @@ const SidebarInfoPanel = forwardRef(function SidebarInfoPanel(
     // sidebar
     onInfoClick,
     infoActive,
+    variant = "default", // <-- NEW: accept variant from parent ("default" | "editor")
+
     // info panel
     isOpen,
     isPinned,
@@ -28,7 +30,10 @@ const SidebarInfoPanel = forwardRef(function SidebarInfoPanel(
 ) {
   return (
     <>
-      <Sidebar onInfoClick={onInfoClick} infoActive={infoActive} />
+      {/* Forward the variant to the actual Sidebar so it can switch menus */}
+      <Sidebar onInfoClick={onInfoClick} infoActive={infoActive} variant={variant} />
+
+      {/* Info panel stays the same */}
       <InfoPanel
         ref={ref}
         isOpen={isOpen}

@@ -1,15 +1,27 @@
 "use client";
 
-import { BarChart2, PlusSquare, Clock, Grid } from "lucide-react";
+import {
+  BarChart2,
+  PlusSquare,
+  Clock,
+  Grid,
+  LayoutDashboard,
+  Activity,
+  Link2,
+  LineChart,
+} from "lucide-react";
 
-function NavItem({ id, label, Icon, onClick, active = false }) {
+function NavItem({ id, label, Icon, onClick, active = false, disabled = false }) {
   return (
     <button
       id={id}
-      onClick={onClick}
+      onClick={disabled ? undefined : onClick}
       type="button"
       aria-current={active ? "page" : undefined}
-      className="group relative w-full mb-6 flex flex-col items-center gap-1 outline-none text-[#000000] dark:text-[#000000]"
+      aria-disabled={disabled}
+      className={`group relative w-full mb-6 flex flex-col items-center gap-1 outline-none
+                  text-[#000000] dark:text-[#000000]
+                  ${disabled ? "opacity-30 cursor-not-allowed" : ""}`}
     >
       {/* Icon */}
       <span
@@ -34,7 +46,11 @@ function NavItem({ id, label, Icon, onClick, active = false }) {
   );
 }
 
-export default function Sidebar({ onInfoClick, infoActive = false }) {
+export default function Sidebar({
+  onInfoClick,
+  infoActive = false,
+  variant = "default", // "default" | "editor"
+}) {
   return (
     <aside
       className="fixed left-0 top-0 h-full
@@ -51,20 +67,41 @@ export default function Sidebar({ onInfoClick, infoActive = false }) {
 
       {/* Menu */}
       <nav className="w-full px-1.5 md:px-2">
-        <NavItem
-          id="sidebar-info-btn"
-          onClick={onInfoClick}
-          label="Info"
-          Icon={BarChart2}
-          active={infoActive}
-        />
-        <NavItem label="New" Icon={PlusSquare} />
-        <NavItem label="History" Icon={Clock} />
+        {variant === "default" ? (
+          <>
+            <NavItem
+              id="sidebar-info-btn"
+              onClick={onInfoClick}
+              label="Info"
+              Icon={BarChart2}
+              active={infoActive}
+            />
+            <NavItem label="New" Icon={PlusSquare} />
+            <NavItem label="History" Icon={Clock} />
 
-        {/* divider */}
-        <div className="mx-2 md:mx-3 my-5 md:my-6 h-px bg-[#e6e9ec] dark:bg-[#374151]" />
+            {/* divider */}
+            <div className="mx-2 md:mx-3 my-5 md:my-6 h-px bg-[#e6e9ec] dark:bg-[#374151]" />
 
-        <NavItem label="Others" Icon={Grid} />
+            <NavItem label="Others" Icon={Grid} />
+          </>
+        ) : (
+          // editor variant
+          <>
+            <NavItem
+              label="Dashboard"
+              Icon={LayoutDashboard}
+              active
+              onClick={() => {
+                // Tell the app to go back to the dashboard view
+                try { window.dispatchEvent(new Event("content-editor:back")); } catch {}
+              }}
+            />
+            <NavItem label="Site Health" Icon={Activity} disabled />
+            <NavItem label="Backlinks" Icon={Link2} disabled />
+            <NavItem label="Comp analysis" Icon={LineChart} disabled />
+            <NavItem label="Reports" Icon={BarChart2} disabled />
+          </>
+        )}
       </nav>
 
       <div className="flex-1" />

@@ -100,6 +100,7 @@ export default function Home() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isPinned]);
+
   // Listen for custom events to switch between Dashboard and Content Editor
   useEffect(() => {
     const toEditor = () => setCurrentStep("contentEditor");
@@ -111,7 +112,6 @@ export default function Home() {
       window.removeEventListener("content-editor:back", toDashboard);
     };
   }, []);
-
 
   const handleNextStep = () => {
     if (currentStep === 5) {
@@ -219,6 +219,9 @@ export default function Home() {
       ? "ml-[56px] md:ml-[72px] lg:ml-[510px]"
       : "ml-[56px] md:ml-[72px] lg:ml-[80px]";
 
+  // Switch the left sidebar content when Content Editor is active
+  const sidebarVariant = currentStep === "contentEditor" ? "editor" : "default";
+
   return (
     <div className="flex h-screen overflow-hidden bg-[image:var(--brand-gradient)] bg-no-repeat bg-[size:100%_100%] p-3">
       <SidebarInfoPanel
@@ -238,13 +241,14 @@ export default function Home() {
         competitorData={competitorData}
         currentStep={currentStep === "5b" ? 5 : currentStep}
         onClose={() => setIsInfoOpen(false)}
+        variant={sidebarVariant} // <-- pass through to Sidebar
       />
 
       <ThemeToggle />
 
       {/* FLEX COLUMN ROOT */}
       <main className={`flex-1 min-w-0 flex flex-col min-h-0 transition-all duration-300 ${mainOffsetClass}`}>
-        {/* Steps header (hidden on 5b & dashboard) */}
+        {/* Steps header (hidden on 5b & dashboard & editor) */}
         {currentStep !== "5b" && currentStep !== "dashboard" && currentStep !== "contentEditor" && (
           <>
             {/* Mobile: 3 / 2 steps – centered, dotted connectors, lowered */}

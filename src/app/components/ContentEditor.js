@@ -1,52 +1,51 @@
 "use client";
 
-import React from "react";
-import { ArrowLeft, Save, FileText } from "lucide-react";
+import React, { useState } from "react";
+// ⛔ Removed CE.Sidebar so we don't render two sidebars
+import CENavbar from "./content-editor/CE.Navbar";
+import CEMetricsStrip from "./content-editor/CE.MetricsStrip";
+import CEContentArea from "./content-editor/CE.ContentArea";
 
 export default function ContentEditor({ onBackToDashboard }) {
-  const handleBack = () => {
-    // Fire global event (works even if parent forgot to pass the prop)
-    try { window.dispatchEvent(new Event("content-editor:back")); } catch {}
-    // Call parent prop if provided
-    if (typeof onBackToDashboard === "function") onBackToDashboard();
-  };
+  const [title, setTitle] = useState("Untitled");
+  const [activeTab, setActiveTab] = useState("content"); // content | summary | final
+  const [seoMode, setSeoMode] = useState("basic");       // basic | advance | details
+  const [metrics, setMetrics] = useState({
+    plagiarism: null,
+    primaryKeyword: null,
+    wordCount: null,
+    lsiKeywords: null,
+  });
+  const [lastEdited, setLastEdited] = useState("1 day ago");
+  const [query, setQuery] = useState(""); // research query input
 
   return (
-    <main className="min-h-screen bg-[var(--bg-panel)] px-4 py-6 sm:px-6 lg:px-8">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={handleBack}
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[var(--muted)] hover:bg-[var(--input)] transition"
-          >
-            <ArrowLeft size={16} /> Back
-          </button>
-          <h1 className="text-[18px] font-bold">Content Editor</h1>
-        </div>
-        <button className="inline-flex items-center gap-2 rounded-[14px] px-4 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)] hover:opacity-90 transition">
-          <Save size={16} /> Save Changes
-        </button>
-      </div>
-
-      {/* Editor panel */}
-      <section className="rounded-[18px] border border-[var(--border)] bg-[var(--input)] p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-4">
-          <FileText size={18} className="text-[var(--accent)]" />
-          <h2 className="text-[16px] font-semibold">Edit Page Content</h2>
-        </div>
-
-        <textarea
-          placeholder="Start editing your optimized content here..."
-          className="w-full min-h-[300px] rounded-lg border border-[var(--border)] bg-[var(--bg-panel)] text-[14px] text-[var(--text-primary)] p-4 outline-none focus:border-[var(--accent)] resize-y"
+    <div className="min-h-screen">
+      <main className="bg-[var(--bg-panel)] px-4 py-6 sm:px-6 lg:px-8">
+        <CENavbar
+          title={title}
+          onBack={onBackToDashboard}
+          onTitleChange={setTitle}
         />
 
-        <div className="mt-4 flex justify-end">
-          <button className="inline-flex items-center gap-2 rounded-[14px] px-4 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)] hover:opacity-90 transition">
-            <Save size={16} /> Save Draft
-          </button>
-        </div>
-      </section>
-    </main>
+        <CEMetricsStrip
+          metrics={metrics}
+          seoMode={seoMode}
+          onChangeSeoMode={setSeoMode}
+        />
+
+        <CEContentArea
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+          lastEdited={lastEdited}
+          title={title}
+          query={query}
+          onQueryChange={setQuery}
+          onStartResearch={() => {
+            /* TODO: fetch SERP */
+          }}
+        />
+      </main>
+    </div>
   );
 }
