@@ -1,6 +1,7 @@
+// /mnt/data/StepSlide5.js
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowRight, ArrowLeft, ChevronDown, Plus, X } from "lucide-react";
 
 export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
@@ -8,21 +9,9 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   const [selectedBusinessCompetitors, setSelectedBusinessCompetitors] = useState([]);
   const [selectedSearchCompetitors, setSelectedSearchCompetitors] = useState([]);
 
-  // Suggested pills now load dynamically from /data/seo-data.json
-  const [businessSuggestions, setBusinessSuggestions] = useState([
-    "Comp-1",
-    "Comp-2",
-    "Comp-3",
-    "Comp-4",
-    "More",
-  ]);
-  const [searchSuggestions, setSearchSuggestions] = useState([
-    "Comp-1",
-    "Comp-2",
-    "Comp-3",
-    "Comp-4",
-    "More",
-  ]);
+  // Start EMPTY to avoid flicker; show skeletons while loading
+  const [businessSuggestions, setBusinessSuggestions] = useState([]);
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState(null);
 
@@ -43,7 +32,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   const lastSubmittedData = useRef(null);
 
   /* ---------------- Utilities: determine target site like the dashboard ---------------- */
-  function normalizeHost(input) {
+  const normalizeHost = useCallback((input) => {
     if (!input || typeof input !== "string") return null;
     let s = input.trim().toLowerCase();
     try {
@@ -54,9 +43,9 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       s = s.replace(/^https?:\/\//, "").split("/")[0];
     }
     return s.replace(/^www\./, "");
-  }
+  }, []);
 
-  function getStoredSite() {
+  const getStoredSite = useCallback(() => {
     const keys = [
       "websiteData",
       "site",
@@ -81,9 +70,9 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       } catch {}
     }
     return null;
-  }
+  }, [normalizeHost]);
 
-  function getTargetSite() {
+  const getTargetSite = useCallback(() => {
     try {
       const params = new URLSearchParams(window.location.search);
       const fromParam = normalizeHost(params.get("site"));
@@ -92,13 +81,12 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
     const fromStorage = getStoredSite();
     if (fromStorage) return fromStorage;
     return "example.com";
-  }
+  }, [normalizeHost, getStoredSite]);
 
-  function extractCompetitors(row) {
+  const extractCompetitors = useCallback((row) => {
     const biz = [];
     const ser = [];
     for (let i = 1; i <= 6; i++) {
-      // Business competitors: expect 1..4 but be generous up to 6
       const v = row?.[`Business_Competitor_${i}`];
       if (typeof v === "string" && v.trim()) biz.push(v.trim());
     }
@@ -106,7 +94,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       const v = row?.[`Search_Competitor_${i}`];
       if (typeof v === "string" && v.trim()) ser.push(v.trim());
     }
-    // De-dup, preserve order
     const dedup = (arr) => {
       const seen = new Set();
       return arr.filter((x) => {
@@ -117,7 +104,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       });
     };
     return { biz: dedup(biz).slice(0, 8), ser: dedup(ser).slice(0, 8) };
-  }
+  }, []);
 
   /* ---------------- Load suggestions for the chosen site ---------------- */
   useEffect(() => {
@@ -140,7 +127,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
         });
 
         const { biz, ser } = extractCompetitors(match || {});
-
         const bizFinal = (biz.length ? biz : ["Comp-1", "Comp-2", "Comp-3", "Comp-4"]).concat("More");
         const serFinal = (ser.length ? ser : ["Comp-1", "Comp-2", "Comp-3", "Comp-4"]).concat("More");
 
@@ -151,9 +137,9 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       } catch (err) {
         if (isMounted) {
           setLoadError(err?.message || "Failed to load competitor data");
-          // keep placeholders and ensure More is present
-          setBusinessSuggestions((prev) => (prev.includes("More") ? prev : prev.concat("More")));
-          setSearchSuggestions((prev) => (prev.includes("More") ? prev : prev.concat("More")));
+          // Show sensible fallback AFTER loading completes (no initial flicker)
+          setBusinessSuggestions(["Comp-1", "Comp-2", "Comp-3", "Comp-4", "More"]);
+          setSearchSuggestions(["Comp-1", "Comp-2", "Comp-3", "Comp-4", "More"]);
         }
       } finally {
         if (isMounted) setIsLoading(false);
@@ -163,7 +149,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [getTargetSite, normalizeHost, extractCompetitors]);
 
   /* ---------------- Fixed panel height ---------------- */
   const recomputePanelHeight = () => {
@@ -199,6 +185,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
 
   /* ---------------- Handlers ---------------- */
   const toggleBusiness = (label) => {
+    if (label === "More" && isLoading) return; // block during loading
     if (label === "More") {
       setAddingBusiness(true);
       setTimeout(() => document.getElementById("biz-more-input")?.focus(), 50);
@@ -210,6 +197,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   };
 
   const toggleSearch = (label) => {
+    if (label === "More" && isLoading) return; // block during loading
     if (label === "More") {
       setAddingSearch(true);
       setTimeout(() => document.getElementById("search-more-input")?.focus(), 50);
@@ -292,6 +280,18 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
           <style jsx>{`
             .inner-scroll { scrollbar-width: none; -ms-overflow-style: none; }
             .inner-scroll::-webkit-scrollbar { display: none; }
+            .chip-skel {
+              display: inline-block;
+              border-radius: 0.75rem;
+              height: 36px;
+              width: 88px;
+              background: var(--border);
+              animation: pulse 1.2s ease-in-out infinite;
+            }
+            @keyframes pulse {
+              0%, 100% { opacity: 0.6; }
+              50% { opacity: 1; }
+            }
           `}</style>
 
           <div ref={scrollRef} className="inner-scroll h-full w-full overflow-y-auto">
@@ -323,56 +323,62 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 </h3>
 
                 <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
-                  {businessSuggestions.map((label) => {
-                    const isSelected = selectedBusinessCompetitors.includes(label);
+                  {/* Loading skeletons: render only while loading so nothing ‘real’ flashes */}
+                  {isLoading && businessSuggestions.length === 0
+                    ? Array.from({ length: 6 }).map((_, i) => (
+                        <span key={`biz-skel-${i}`} className="chip-skel" />
+                      ))
+                    : businessSuggestions.map((label) => {
+                        const isSelected = selectedBusinessCompetitors.includes(label);
 
-                    if (label === "More" && addingBusiness) {
-                      return (
-                        <div key="biz-inline-input" className="flex items-center gap-2">
-                          <input
-                            id="biz-more-input"
-                            value={bizInput}
-                            onChange={(e) => setBizInput(e.target.value)}
-                            onKeyDown={(e) => { if (e.key === "Enter") addCustomBusiness(); }}
-                            placeholder="Add business competitor"
-                            className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
-                          />
-                          <button
-                            onClick={addCustomBusiness}
-                            className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:opacity-90"
-                          >
-                            <Plus size={16} />
-                          </button>
-                          <button
-                            onClick={() => { setAddingBusiness(false); setBizInput(""); }}
-                            className="px-2 py-2 text-[var(--muted)] hover:text-red-500 rounded-xl"
-                            title="Cancel"
-                          >
-                            <X size={16} />
-                          </button>
-                        </div>
-                      );
-                    }
+                        if (label === "More" && addingBusiness) {
+                          return (
+                            <div key="biz-inline-input" className="flex items-center gap-2">
+                              <input
+                                id="biz-more-input"
+                                value={bizInput}
+                                onChange={(e) => setBizInput(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === "Enter") addCustomBusiness(); }}
+                                placeholder="Add business competitor"
+                                className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
+                              />
+                              <button
+                                onClick={addCustomBusiness}
+                                className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:opacity-90"
+                              >
+                                <Plus size={16} />
+                              </button>
+                              <button
+                                onClick={() => { setAddingBusiness(false); setBizInput(""); }}
+                                className="px-2 py-2 text-[var(--muted)] hover:text-red-500 rounded-xl"
+                                title="Cancel"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                          );
+                        }
 
-                    return (
-                      <button
-                        key={`biz-${label}`}
-                        onClick={() => toggleBusiness(label)}
-                        className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
-                          isSelected
-                            ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
-                            : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
-                        }`}
-                      >
-                        {label}
-                        {isSelected ? (
-                          <ChevronDown size={16} className="inline ml-1 -rotate-180" />
-                        ) : label !== "More" ? (
-                          <Plus size={16} className="inline ml-1" />
-                        ) : null}
-                      </button>
-                    );
-                  })}
+                        return (
+                          <button
+                            key={`biz-${label}`}
+                            onClick={() => toggleBusiness(label)}
+                            disabled={isLoading && label === "More"}
+                            className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
+                              isSelected
+                                ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
+                                : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
+                            } ${isLoading && label === "More" ? "opacity-60 cursor-not-allowed" : ""}`}
+                          >
+                            {label}
+                            {isSelected ? (
+                              <ChevronDown size={16} className="inline ml-1 -rotate-180" />
+                            ) : label !== "More" ? (
+                              <Plus size={16} className="inline ml-1" />
+                            ) : null}
+                          </button>
+                        );
+                      })}
                 </div>
 
                 {/* Selected BUSINESS */}
@@ -409,56 +415,62 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 </h3>
 
                 <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
-                  {searchSuggestions.map((label) => {
-                    const isSelected = selectedSearchCompetitors.includes(label);
+                  {/* Loading skeletons */}
+                  {isLoading && searchSuggestions.length === 0
+                    ? Array.from({ length: 6 }).map((_, i) => (
+                        <span key={`ser-skel-${i}`} className="chip-skel" />
+                      ))
+                    : searchSuggestions.map((label) => {
+                        const isSelected = selectedSearchCompetitors.includes(label);
 
-                    if (label === "More" && addingSearch) {
-                      return (
-                        <div key="search-inline-input" className="flex items-center gap-2">
-                          <input
-                            id="search-more-input"
-                            value={searchInput}
-                            onChange={(e) => setSearchInput(e.target.value)}
-                            onKeyDown={(e) => { if (e.key === "Enter") addCustomSearch(); }}
-                            placeholder="Add search competitor"
-                            className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
-                          />
-                          <button
-                            onClick={addCustomSearch}
-                            className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:opacity-90"
-                          >
-                            <Plus size={16} />
-                          </button>
-                          <button
-                            onClick={() => { setAddingSearch(false); setSearchInput(""); }}
-                            className="px-2 py-2 text-[var(--muted)] hover:text-red-500 rounded-xl"
-                            title="Cancel"
-                          >
-                            <X size={16} />
-                          </button>
-                        </div>
-                      );
-                    }
+                        if (label === "More" && addingSearch) {
+                          return (
+                            <div key="search-inline-input" className="flex items-center gap-2">
+                              <input
+                                id="search-more-input"
+                                value={searchInput}
+                                onChange={(e) => setSearchInput(e.target.value)}
+                                onKeyDown={(e) => { if (e.key === "Enter") addCustomSearch(); }}
+                                placeholder="Add search competitor"
+                                className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
+                              />
+                              <button
+                                onClick={addCustomSearch}
+                                className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:opacity-90"
+                              >
+                                <Plus size={16} />
+                              </button>
+                              <button
+                                onClick={() => { setAddingSearch(false); setSearchInput(""); }}
+                                className="px-2 py-2 text-[var(--muted)] hover:text-red-500 rounded-xl"
+                                title="Cancel"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                          );
+                        }
 
-                    return (
-                      <button
-                        key={`search-${label}`}
-                        onClick={() => toggleSearch(label)}
-                        className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
-                          isSelected
-                            ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
-                            : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
-                        }`}
-                      >
-                        {label}
-                        {isSelected ? (
-                          <ChevronDown size={16} className="inline ml-1 -rotate-180" />
-                        ) : label !== "More" ? (
-                          <Plus size={16} className="inline ml-1" />
-                        ) : null}
-                      </button>
-                    );
-                  })}
+                        return (
+                          <button
+                            key={`search-${label}`}
+                            onClick={() => toggleSearch(label)}
+                            disabled={isLoading && label === "More"}
+                            className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
+                              isSelected
+                                ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
+                                : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
+                            } ${isLoading && label === "More" ? "opacity-60 cursor-not-allowed" : ""}`}
+                          >
+                            {label}
+                            {isSelected ? (
+                              <ChevronDown size={16} className="inline ml-1 -rotate-180" />
+                            ) : label !== "More" ? (
+                              <Plus size={16} className="inline ml-1" />
+                            ) : null}
+                          </button>
+                        );
+                      })}
                 </div>
 
                 {/* Selected SEARCH */}

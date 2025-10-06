@@ -1,6 +1,7 @@
+// /mnt/data/StepSlide4.js
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { ArrowRight, ArrowLeft, ChevronDown, Plus, X } from "lucide-react";
 
 export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
@@ -9,19 +10,8 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
   const [customKeyword, setCustomKeyword] = useState("");
   const [showSummary, setShowSummary] = useState(false);
 
-  // Suggested keywords now load dynamically from /data/seo-data.json
-  const [suggestedKeywords, setSuggestedKeywords] = useState([
-    // placeholder pills shown instantly; replaced after fetch
-    "Keyword 1",
-    "Keyword 2",
-    "Keyword 3",
-    "Keyword 4",
-    "Keyword 5",
-    "Keyword 6",
-    "Keyword 7",
-    "Keyword 8",
-    "More",
-  ]);
+  // Start empty to avoid flicker; we’ll show skeletons while loading.
+  const [suggestedKeywords, setSuggestedKeywords] = useState([]);
   const [isLoadingKeywords, setIsLoadingKeywords] = useState(true);
   const [loadError, setLoadError] = useState(null);
 
@@ -38,25 +28,21 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
   const lastSubmittedData = useRef(null);
 
   /* ---------------- Utilities: determine target site like the dashboard ---------------- */
-  function normalizeHost(input) {
+  const normalizeHost = useCallback((input) => {
     if (!input || typeof input !== "string") return null;
     let s = input.trim().toLowerCase();
-    // if full URL, strip protocol/path/query; otherwise treat as host
     try {
       if (!/^https?:\/\//.test(s)) s = `https://${s}`;
       const u = new URL(s);
       s = u.hostname || s;
     } catch (_) {
-      // fall back to simple cleanup
       s = s.replace(/^https?:\/\//, "").split("/")[0];
     }
-    // drop leading www.
     s = s.replace(/^www\./, "");
     return s;
-  }
+  }, []);
 
-  function getStoredSite() {
-    // Try a few common keys the dashboard uses
+  const getStoredSite = useCallback(() => {
     const keys = [
       "websiteData",
       "site",
@@ -69,7 +55,6 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
       try {
         const raw = localStorage.getItem(k) ?? sessionStorage.getItem(k);
         if (!raw) continue;
-        // Might be JSON like { website: "domain.com" } or just a string
         try {
           const obj = JSON.parse(raw);
           const val = obj?.website || obj?.site || obj?.domain || obj?.host || raw;
@@ -84,32 +69,27 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
       }
     }
     return null;
-  }
+  }, [normalizeHost]);
 
-  function getTargetSite() {
-    // 1) URL param ?site=
+  const getTargetSite = useCallback(() => {
     try {
       const params = new URLSearchParams(window.location.search);
       const fromParam = normalizeHost(params.get("site"));
       if (fromParam) return fromParam;
     } catch {}
-    // 2) Storage fallbacks
     const fromStorage = getStoredSite();
     if (fromStorage) return fromStorage;
-    // 3) default
     return "example.com";
-  }
+  }, [normalizeHost, getStoredSite]);
 
-  function extractKeywords(row) {
+  const extractKeywords = useCallback((row) => {
     const out = [];
-    // Prefer Keyword1..Keyword8; fall back to NewOp_Keyword_1..6 if needed
     for (let i = 1; i <= 8; i++) {
       const a = row?.[`Keyword${i}`];
       const b = row?.[`NewOp_Keyword_${i}`];
       const v = (a ?? b ?? "").toString().trim();
       if (v) out.push(v);
     }
-    // de-dup while preserving order
     const seen = new Set();
     const deduped = out.filter((k) => {
       const key = k.toLowerCase();
@@ -117,9 +97,8 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
       seen.add(key);
       return true;
     });
-    // ensure we return up to 8
     return deduped.slice(0, 8);
-  }
+  }, []);
 
   /* ---------------- Load keywords for the chosen site ---------------- */
   useEffect(() => {
@@ -134,7 +113,6 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
         const rows = await res.json();
         const host = normalizeHost(target);
         const variants = host ? [host, `www.${host}`] : [];
-        // try matching against either Domain or "Domain/Website"
         const match = rows.find((r) => {
           const d1 = normalizeHost(r?.Domain);
           const d2 = normalizeHost(r?.["Domain/Website"]);
@@ -142,23 +120,37 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
         });
 
         const kws = extractKeywords(match || {});
-        const final = (kws.length ? kws : [
-          "Keyword 1",
-          "Keyword 2",
-          "Keyword 3",
-          "Keyword 4",
-          "Keyword 5",
-          "Keyword 6",
-          "Keyword 7",
-          "Keyword 8",
-        ]).concat("More");
+        const final =
+          (kws.length
+            ? kws
+            : [
+                "Keyword 1",
+                "Keyword 2",
+                "Keyword 3",
+                "Keyword 4",
+                "Keyword 5",
+                "Keyword 6",
+                "Keyword 7",
+                "Keyword 8",
+              ]) // fallback suggestions if no match
+            .concat("More");
 
         if (isMounted) setSuggestedKeywords(final);
       } catch (err) {
         if (isMounted) {
           setLoadError(err?.message || "Failed to load keywords");
-          // keep placeholders (already set in state) and ensure "More" exists
-          setSuggestedKeywords((prev) => (prev.includes("More") ? prev : prev.concat("More")));
+          // show sensible fallback only after loading completes (no initial flicker)
+          setSuggestedKeywords([
+            "Keyword 1",
+            "Keyword 2",
+            "Keyword 3",
+            "Keyword 4",
+            "Keyword 5",
+            "Keyword 6",
+            "Keyword 7",
+            "Keyword 8",
+            "More",
+          ]);
         }
       } finally {
         if (isMounted) setIsLoadingKeywords(false);
@@ -168,7 +160,7 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [getTargetSite, normalizeHost, extractKeywords]);
 
   /* ---------------- Fixed panel height ---------------- */
   const recomputePanelHeight = () => {
@@ -196,8 +188,11 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
     recomputePanelHeight();
   }, [showSummary, selectedKeywords.length, showInlineMoreInput]);
 
-  /* ---------------- Keyword handlers (logic unchanged) ---------------- */
+  /* ---------------- Keyword handlers (logic mostly unchanged) ---------------- */
   const handleKeywordToggle = (keyword) => {
+    // Prevent interacting with “More” while loading to avoid odd states
+    if (isLoadingKeywords && keyword === "More") return;
+
     if (keyword === "More") {
       setShowInlineMoreInput(true);
       setTimeout(() => moreInputRef.current?.focus(), 50);
@@ -273,6 +268,18 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
           <style jsx>{`
             .inner-scroll { scrollbar-width: none; -ms-overflow-style: none; }
             .inner-scroll::-webkit-scrollbar { display: none; }
+            .chip-skel {
+              display: inline-block;
+              border-radius: 0.75rem;
+              height: 36px;
+              width: 88px;
+              background: var(--border);
+              animation: pulse 1.2s ease-in-out infinite;
+            }
+            @keyframes pulse {
+              0%, 100% { opacity: 0.6; }
+              50% { opacity: 1; }
+            }
           `}</style>
 
           <div ref={scrollRef} className="inner-scroll h-full w-full overflow-y-auto">
@@ -301,55 +308,64 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
               <div className="w-full max-w-[880px] space-y-6 sm:space-y-8">
                 {/* Suggested pills */}
                 <div className="flex flex-wrap justify-start gap-2.5 sm:gap-3">
-                  {suggestedKeywords.map((keyword) => {
-                    const isSelected = selectedKeywords.includes(keyword);
+                  {/* Loading skeletons: render only while loading so nothing ‘real’ flashes */}
+                  {isLoadingKeywords && suggestedKeywords.length === 0 && (
+                    Array.from({ length: 8 }).map((_, i) => (
+                      <span key={`skel-${i}`} className="chip-skel" />
+                    ))
+                  )}
 
-                    // Render “More” as inline input when toggled
-                    if (keyword === "More" && showInlineMoreInput) {
+                  {/* Real chips: render only when we have data */}
+                  {!isLoadingKeywords &&
+                    suggestedKeywords.map((keyword) => {
+                      const isSelected = selectedKeywords.includes(keyword);
+
+                      // Render “More” as inline input when toggled
+                      if (keyword === "More" && showInlineMoreInput) {
+                        return (
+                          <div key="more-inline-input" className="flex items-center gap-2">
+                            <input
+                              ref={moreInputRef}
+                              type="text"
+                              placeholder="Add your own keyword"
+                              value={customKeyword}
+                              onChange={(e) => setCustomKeyword(e.target.value)}
+                              onKeyDown={handleKeyDown}
+                              className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
+                            />
+                            <button
+                              onClick={handleAddCustom}
+                              disabled={!customKeyword.trim()}
+                              type="button"
+                              className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:bg-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-colors duration-200"
+                              aria-label="Add custom keyword"
+                            >
+                              <Plus size={16} />
+                            </button>
+                          </div>
+                        );
+                      }
+
                       return (
-                        <div key="more-inline-input" className="flex items-center gap-2">
-                          <input
-                            ref={moreInputRef}
-                            type="text"
-                            placeholder="Add your own keyword"
-                            value={customKeyword}
-                            onChange={(e) => setCustomKeyword(e.target.value)}
-                            onKeyDown={handleKeyDown}
-                            className="px-3 sm:px-4 py-2 border border-[#d45427] rounded-xl bg-[var(--input)] text-[12px] sm:text-[13px] md:text-[14px] text-[var(--text)] placeholder:text-[var(--muted)] focus:outline-none focus:border-[#d45427]"
-                          />
-                          <button
-                            onClick={handleAddCustom}
-                            disabled={!customKeyword.trim()}
-                            type="button"
-                            className="px-3 sm:px-4 py-2 bg-[image:var(--infoHighlight-gradient)] text-white rounded-xl hover:bg-gray-900 disabled:opacity-70 disabled:cursor-not-allowed transition-colors duration-200"
-                            aria-label="Add custom keyword"
-                          >
-                            <Plus size={16} />
-                          </button>
-                        </div>
+                        <button
+                          key={keyword}
+                          onClick={() => handleKeywordToggle(keyword)}
+                          type="button"
+                          className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
+                            isSelected
+                              ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
+                              : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
+                          }`}
+                        >
+                          {keyword}
+                          {isSelected ? (
+                            <ChevronDown size={16} className="inline ml-1 -rotate-180" />
+                          ) : keyword !== "More" ? (
+                            <Plus size={16} className="inline ml-1" />
+                          ) : null}
+                        </button>
                       );
-                    }
-
-                    return (
-                      <button
-                        key={keyword}
-                        onClick={() => handleKeywordToggle(keyword)}
-                        type="button"
-                        className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
-                          isSelected
-                            ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
-                            : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
-                        }`}
-                      >
-                        {keyword}
-                        {isSelected ? (
-                          <ChevronDown size={16} className="inline ml-1 -rotate-180" />
-                        ) : keyword !== "More" ? (
-                          <Plus size={16} className="inline ml-1" />
-                        ) : null}
-                      </button>
-                    );
-                  })}
+                    })}
                 </div>
               </div>
 
@@ -396,7 +412,7 @@ export default function StepSlide4({ onNext, onBack, onKeywordSubmit }) {
                     If not, Want to do some changes?
                   </p>
 
-                  <div className="flex items-center gap-8 sm:gap-10 mt-4 sm:mt-5 text-[12px] sm:text-[13px]">
+                  <div className="flex items-center gap-8 sm:gap-10 mt-4 sm:mt-5 text-[12px] sm:[text-13px]">
                     <button
                       onClick={handleReset}
                       type="button"
