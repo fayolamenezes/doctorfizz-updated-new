@@ -11,6 +11,7 @@ import Step5Slide2 from "./components/Step5Slide2";
 import ThemeToggle from "./components/ThemeToggle";
 import SidebarInfoPanel from "./components/SidebarInfoPanel";
 import Dashboard from "./components/Dashboard";
+import ContentEditor from "./components/ContentEditor";
 
 /* ---------- Mobile-only compact steps: 3 / 2 with dotted connectors ---------- */
 function MobileStepsThreeTwo({ currentStep }) {
@@ -99,6 +100,18 @@ export default function Home() {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isPinned]);
+  // Listen for custom events to switch between Dashboard and Content Editor
+  useEffect(() => {
+    const toEditor = () => setCurrentStep("contentEditor");
+    const toDashboard = () => setCurrentStep("dashboard");
+    window.addEventListener("content-editor:open", toEditor);
+    window.addEventListener("content-editor:back", toDashboard);
+    return () => {
+      window.removeEventListener("content-editor:open", toEditor);
+      window.removeEventListener("content-editor:back", toDashboard);
+    };
+  }, []);
+
 
   const handleNextStep = () => {
     if (currentStep === 5) {
@@ -191,7 +204,9 @@ export default function Home() {
           />
         );
       case "dashboard":
-        return <Dashboard />;
+        return <Dashboard onOpenContentEditor={() => setCurrentStep("contentEditor")} />;
+      case "contentEditor":
+        return <ContentEditor onBackToDashboard={() => setCurrentStep("dashboard")} />;
       default:
         return <Step1Slide1 onNext={handleNextStep} onWebsiteSubmit={handleWebsiteSubmit} />;
     }
@@ -230,7 +245,7 @@ export default function Home() {
       {/* FLEX COLUMN ROOT */}
       <main className={`flex-1 min-w-0 flex flex-col min-h-0 transition-all duration-300 ${mainOffsetClass}`}>
         {/* Steps header (hidden on 5b & dashboard) */}
-        {currentStep !== "5b" && currentStep !== "dashboard" && (
+        {currentStep !== "5b" && currentStep !== "dashboard" && currentStep !== "contentEditor" && (
           <>
             {/* Mobile: 3 / 2 steps – centered, dotted connectors, lowered */}
             <MobileStepsThreeTwo currentStep={currentStep} />
@@ -267,7 +282,7 @@ export default function Home() {
 
           <div
             className={`relative flex-1 min-w-0 h-full bg-[var(--bg-panel)] shadow-sm 
-              ${currentStep === "dashboard" || currentStep === "5b" ? "rounded-2xl" : "rounded-bl-2xl rounded-br-2xl"} 
+              ${currentStep === "dashboard" || currentStep === "contentEditor" || currentStep === "5b" ? "rounded-2xl" : "rounded-bl-2xl rounded-br-2xl"} 
               overflow-y-scroll overscroll-contain no-scrollbar`}
           >
             {renderCurrentStep()}

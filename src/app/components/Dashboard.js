@@ -251,7 +251,7 @@ function mapRowToSchema(row) {
   };
 }
 
-export default function Dashboard() {
+export default function Dashboard({ onOpenContentEditor }) {
 
   const searchParams = useSearchParams();
   const [domain, setDomain] = useState("example.com");
@@ -356,7 +356,8 @@ useEffect(() => {
   let raf;
   const start = performance.now();
   const tick = (now) => {
-    const t = Math.min(1, (now - start) / MASTER_MS);
+    const tRaw = (now - start) / MASTER_MS;
+    const t = Math.max(0, Math.min(1, tRaw));
     const ease = 1 - Math.pow(1 - t, 3); // cubic-out
     setProg(ease);
     if (t < 1) raf = requestAnimationFrame(tick);
@@ -366,46 +367,46 @@ useEffect(() => {
 }, [rows]);
 
 // ---- Derived animated values (no per-widget RAFs) ----
-const drValue = DR_TARGET * prog;
-const drWidth = DR_BAR * prog;
+const drValue = Math.max(0, DR_TARGET * prog);
+const drWidth = Math.max(0, DR_BAR * prog);
 
-const rdValue = RD_TARGET * prog;
-const rdP = prog;  // reuse for quality bars
+const rdValue = Math.max(0, RD_TARGET * prog);
+const rdP = Math.max(0, prog);  // reuse for quality bars
 
-const tbValue = TB_TARGET * prog;
+const tbValue = Math.max(0, TB_TARGET * prog);
 
-const shValue = SH_SCORE * prog;
-const pagesScanned = Math.round(SH_PAGES * prog);
-const redirects = Math.round(SH_REDIRECT * prog);
-const broken = Math.round(SH_BROKEN * prog);
+const shValue = Math.max(0, SH_SCORE * prog);
+const pagesScanned = Math.max(0, Math.round(SH_PAGES * prog));
+const redirects = Math.max(0, Math.round(SH_REDIRECT * prog));
+const broken = Math.max(0, Math.round(SH_BROKEN * prog));
 
-const lcp = LCP_TARGET * prog;
-const inp = INP_TARGET * prog;
-const cls = CLS_TARGET * prog;
+const lcp = Math.max(0, LCP_TARGET * prog);
+const inp = Math.max(0, INP_TARGET * prog);
+const cls = Math.max(0, CLS_TARGET * prog);
 
-const psProgress = prog;
+const psProgress = Math.max(0, prog);
 
-const otValue = OT_TARGET * prog;
-const otProg = prog;
+const otValue = Math.max(0, OT_TARGET * prog);
+const otProg = Math.max(0, prog);
 
-const okValue = OK_TOTAL * prog;
-const okProg = prog;
+const okValue = Math.max(0, OK_TOTAL * prog);
+const okProg = Math.max(0, prog);
 
-const leadsCount = LEADS_TARGET * prog;
-const leadsProg = prog;
+const leadsCount = Math.max(0, LEADS_TARGET * prog);
+const leadsProg = Math.max(0, prog);
 
-const serpCounts = serpCountsMemo.map((n) => Math.round(n * prog));
-const serpCoverage = SERP_COVERAGE * prog;
+const serpCounts = serpCountsMemo.map((n) => Math.max(0, Math.round(n * prog)));
+const serpCoverage = Math.max(0, SERP_COVERAGE * prog);
 
 const oppCounts = [
-  Math.round((selected?.issues?.critical ?? 274) * prog),
-  Math.round((selected?.issues?.warning ?? 883) * prog),
-  Math.round((selected?.issues?.recommendations ?? 77) * prog),
-  Math.round((selected?.issues?.contentOpps ?? 5) * prog),
+  Math.max(0, Math.round((selected?.issues?.critical ?? 274)) * prog),
+  Math.max(0, Math.round((selected?.issues?.warning ?? 883)) * prog),
+  Math.max(0, Math.round((selected?.issues?.recommendations ?? 77)) * prog),
+  Math.max(0, Math.round((selected?.issues?.contentOpps ?? 5)) * prog),
 ];
 
-const oppCardsProgress = prog;
-const seoTableProg = prog;
+const oppCardsProgress = Math.max(0, prog);
+const seoTableProg = Math.max(0, prog);
 
   // On-page content opportunities (pulled from seo-data.json)
   const blogCards = selected?.content?.blog ?? [];
@@ -538,9 +539,12 @@ const seoTableProg = prog;
           <button className="inline-flex items-center gap-2 rounded-[10px] border border-[var(--border)] bg-[var(--input)] px-3 py-2 text-[12px] font-medium text-[var(--muted)]">
             <Eye size={14} /> View Details
           </button>
-          <button className="inline-flex items-center gap-2 rounded-[14px] px-4 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)]">
-            Start <ChevronRight size={16} />
-          </button>
+          <button
+  onClick={() => { window.dispatchEvent(new Event("content-editor:open")); onOpenContentEditor?.(); }}
+  className="inline-flex items-center gap-2 rounded-[14px] px-4 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)] hover:opacity-90 transition"
+>
+  Start <ChevronRight size={16} />
+</button>
         </div>
       </div>
     );
