@@ -1,40 +1,73 @@
 "use client";
 
 import React from "react";
-import { ArrowLeft, Edit3, MoonStar, Sparkles } from "lucide-react";
+import { ArrowLeft, Edit3, Sparkles } from "lucide-react";
 
-export default function CENavbar({ title, onBack, onTitleChange }) {
+export default function CENavbar({
+  title,
+  onBack,
+  onTitleChange,
+  searchVolume,
+  keywordDifficulty,
+}) {
+  const sv = searchVolume ?? "-----";
+  const kd = keywordDifficulty ?? "-----";
+
   return (
-    <header className="flex items-center justify-between mb-4">
-      <div className="flex items-center gap-3">
-        <button
-          onClick={() => onBack?.()}
-          className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm text-[var(--muted)] hover:bg-[var(--input)] transition"
-        >
-          <ArrowLeft size={16} /> Back to DASHBOARD
-        </button>
-        <h1 className="text-[18px] font-semibold">
-          Content Editor : <span className="text-[var(--muted)]">{title}</span>
-        </h1>
-        <button
-          className="p-1 rounded hover:bg-[var(--input)] text-[var(--muted)]"
-          title="Rename"
-          onClick={() => {
-            const next = prompt("Rename document", title);
-            if (next != null) onTitleChange?.(next || "Untitled");
-          }}
-        >
-          <Edit3 size={16} />
-        </button>
-      </div>
+    // add right padding so your existing toggle doesn't overlap the pill
+    <header className="mb-4 pr-16 md:pr-20">
+      {/* 3 columns, 2 rows: 
+          row 1 -> back (left) + chat (right)
+          row 2 -> title (left) + metrics (center) */}
+      <div className="grid grid-cols-[auto_1fr_auto] grid-rows-[auto_auto] items-center gap-x-4">
+        {/* TOP-LEFT: small back link */}
+        <div className="col-start-1 row-start-1">
+          <button
+            onClick={() => onBack?.()}
+            className="inline-flex items-center gap-2 px-0 py-0 text-[12px] text-[var(--muted)] hover:opacity-70 transition"
+          >
+            <ArrowLeft size={16} />
+            <span className="font-medium">Back to DASHBOARD</span>
+          </button>
+        </div>
 
-      <div className="flex items-center gap-2">
-        <button className="inline-flex items-center gap-2 rounded-[14px] px-4 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)]">
-          <Sparkles size={16} /> Chat with AI
-        </button>
-        <button className="h-9 w-9 grid place-items-center rounded-full bg-orange-200/60 text-orange-700">
-          <MoonStar size={18} />
-        </button>
+        {/* BOTTOM-LEFT: title + pencil */}
+        <div className="col-start-1 row-start-2 flex items-baseline gap-1 min-w-0">
+          <h1 className="text-[16px] md:text-[18px] font-semibold leading-none truncate">
+            Content Editor :{" "}
+            <span className="text-[var(--muted)]">{title}</span>
+          </h1>
+          <button
+            title="Rename"
+            onClick={() => {
+              const next = prompt("Rename document", title);
+              if (next != null) onTitleChange?.(next || "Untitled");
+            }}
+            className="p-1 rounded text-[var(--muted)] hover:bg-[var(--input)]"
+          >
+            <Edit3 size={16} />
+          </button>
+        </div>
+
+        {/* BOTTOM-CENTER: muted inline metrics (hidden on small) */}
+        <div className="col-start-2 row-start-2 hidden md:flex items-center justify-center">
+          <div className="flex items-center gap-12 text-[12px] text-[var(--muted)]">
+            <span>
+              Search Volume : <span className="opacity-60">{sv}</span>
+            </span>
+            <span>
+              Keyword difficulty : <span className="opacity-60">{kd}</span>
+            </span>
+          </div>
+        </div>
+
+        {/* TOP-RIGHT: Chat with AI pill */}
+        <div className="col-start-3 row-start-1 flex items-center gap-2">
+          <button className="inline-flex items-center gap-2 rounded-full px-5 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)] hover:opacity-90 transition">
+            <span>Chat with Ai</span>
+            <Sparkles size={16} />
+          </button>
+        </div>
       </div>
     </header>
   );

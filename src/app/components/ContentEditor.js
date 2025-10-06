@@ -21,7 +21,7 @@ export default function ContentEditor({ onBackToDashboard }) {
 
   return (
     <div className="min-h-screen">
-      <main className="bg-[var(--bg-panel)] px-4 py-6 sm:px-6 lg:px-8">
+      <main className="bg-[var(--bg-panel)] px-2 py-6 sm:px-3 lg:px-4 xl:px-5">
         <CENavbar
           title={title}
           onBack={onBackToDashboard}
