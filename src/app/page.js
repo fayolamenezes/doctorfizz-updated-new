@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -84,11 +85,20 @@ export default function Home() {
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [competitorData, setCompetitorData] = useState(null);
 
-  // NEW: holds payload for editor (null => open empty document)
+  // holds payload for editor (null => open empty document)
   const [editorData, setEditorData] = useState(null);
 
   const infoRef = useRef(null);
 
+  // --- NEW: on first load, if URL hash is #editor, land on Content Editor
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (window.location.hash === "#editor") {
+      setCurrentStep("contentEditor");
+    }
+  }, []);
+
+  // Sidebar click-outside
   useEffect(() => {
     function handleClickOutside(event) {
       if (
@@ -122,6 +132,19 @@ export default function Home() {
       window.removeEventListener("content-editor:back", toDashboard);
     };
   }, []);
+
+  // --- NEW: keep the URL hash in sync ONLY for Content Editor
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (currentStep === "contentEditor") {
+      if (window.location.hash !== "#editor") {
+        history.replaceState(null, "", "#editor");
+      }
+    } else if (window.location.hash === "#editor") {
+      // when leaving editor, clear the hash (or set whatever you prefer)
+      history.replaceState(null, "", "#");
+    }
+  }, [currentStep]);
 
   const handleNextStep = () => {
     if (currentStep === 5) {
@@ -238,8 +261,7 @@ export default function Home() {
     }
   };
 
-  // ✅ Only desktop shifts left when the info panel is open/pinned.
-  // Phones/tablets always keep just the rail margin beside the sidebar.
+  // Only desktop shifts left when the info panel is open/pinned.
   const mainOffsetClass =
     isInfoOpen || isPinned
       ? "ml-[56px] md:ml-[72px] lg:ml-[510px]"
@@ -267,7 +289,7 @@ export default function Home() {
         competitorData={competitorData}
         currentStep={currentStep === "5b" ? 5 : currentStep}
         onClose={() => setIsInfoOpen(false)}
-        variant={sidebarVariant} // <-- pass through to Sidebar
+        variant={sidebarVariant}
       />
 
       <ThemeToggle />
