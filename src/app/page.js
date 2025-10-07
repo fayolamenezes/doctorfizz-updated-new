@@ -84,6 +84,9 @@ export default function Home() {
   const [selectedKeywords, setSelectedKeywords] = useState([]);
   const [competitorData, setCompetitorData] = useState(null);
 
+  // NEW: holds payload for editor (null => open empty document)
+  const [editorData, setEditorData] = useState(null);
+
   const infoRef = useRef(null);
 
   useEffect(() => {
@@ -103,8 +106,15 @@ export default function Home() {
 
   // Listen for custom events to switch between Dashboard and Content Editor
   useEffect(() => {
-    const toEditor = () => setCurrentStep("contentEditor");
-    const toDashboard = () => setCurrentStep("dashboard");
+    const toEditor = (e) => {
+      // e.detail contains payload from Dashboard Start or null from "New document"
+      setEditorData(e?.detail ?? null);
+      setCurrentStep("contentEditor");
+    };
+    const toDashboard = () => {
+      setEditorData(null);
+      setCurrentStep("dashboard");
+    };
     window.addEventListener("content-editor:open", toEditor);
     window.addEventListener("content-editor:back", toDashboard);
     return () => {
@@ -204,9 +214,25 @@ export default function Home() {
           />
         );
       case "dashboard":
-        return <Dashboard onOpenContentEditor={() => setCurrentStep("contentEditor")} />;
+        return (
+          <Dashboard
+            // Start from a card: pass payload to open editor with content
+            onOpenContentEditor={(payload) => {
+              setEditorData(payload ?? null);
+              setCurrentStep("contentEditor");
+            }}
+          />
+        );
       case "contentEditor":
-        return <ContentEditor onBackToDashboard={() => setCurrentStep("dashboard")} />;
+        return (
+          <ContentEditor
+            data={editorData} // null => empty editor; object => prefilled
+            onBackToDashboard={() => {
+              setEditorData(null);
+              setCurrentStep("dashboard");
+            }}
+          />
+        );
       default:
         return <Step1Slide1 onNext={handleNextStep} onWebsiteSubmit={handleWebsiteSubmit} />;
     }

@@ -1,7 +1,6 @@
-// CE.ContentArea.js
 "use client";
 
-import React from "react";
+import React, { useRef } from "react";
 import CEToolbar from "./CE.Toolbar";
 import CECanvas from "./CE.Canvas";
 import CEResearchPanel from "./CE.ResearchPanel";
@@ -14,27 +13,30 @@ export default function CEContentArea({
   query,
   onQueryChange,
   onStart,
+  content,
+  setContent,
 }) {
+  const editorRef = useRef(null);
+
   return (
-    <div
-      className="
-        grid grid-cols-[2fr_1fr]       /* 66.7% : 33.3% */
+    <div className="
+        grid grid-cols-[2fr_1fr]
         items-stretch gap-0
         rounded-[18px] overflow-hidden
         border border-[var(--border)] bg-white/70
-      "
-    >
+      ">
       {/* LEFT: toolbar + canvas */}
       <div className="min-w-0">
         <CEToolbar
           activeTab={activeTab}
           onTabChange={onTabChange}
           lastEdited={lastEdited}
+          editorRef={editorRef}
         />
-        <CECanvas title={title} />
+        <CECanvas ref={editorRef} title={title} content={content} setContent={setContent} />
       </div>
 
-      {/* RIGHT: research column (auto width ~33%) */}
+      {/* RIGHT: research column */}
       <div className="min-w-[320px]">
         <CEResearchPanel
           query={query}

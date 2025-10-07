@@ -4,6 +4,31 @@ import Image from "next/image";
 import { Activity, ActivitySquare, AlertTriangle, BarChart3, BookOpen, Check, ChevronRight, Clock3, Eye, FileText, Gauge, Goal, HelpCircle, KeyRound, Lightbulb, Link2, Lock, Monitor, Network, PencilLine, RefreshCw, Rocket, Settings, ShieldCheck, Skull, SlidersHorizontal, Smartphone, SquareArrowOutUpRight, ThumbsDown, ThumbsUp, TrendingUp, TrendingDown, Wifi, X } from "lucide-react";
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
+// --- Prefill content templates for the 4 "Top On-Page Content Opportunities" cards ---
+const PREFILL_BY_TITLE = {
+  "How to Choose a CRM for SMEs": `Intro: Picking the right CRM for SMEs depends on workflows, budget, and integration needs.
+H2: Audit your current sales workflows
+H2: Must-have features vs nice-to-haves
+H2: Integration plan (email, billing, WhatsApp)
+Conclusion: Pilot with a small team and measure adoption.`,
+  "What Is Content Marketing?": `Content marketing is the strategic creation and distribution of helpful content to attract qualified audiences.
+H2: Why content compounds over time
+H2: Editorial calendar & topic clusters
+H2: Measuring ROI beyond vanity metrics`,
+  "Pricing Page Optimization": `Your pricing page is a high-intent surface—remove friction and make comparison effortless.
+H2: Clarity over cleverness
+H2: Social proof and objection handlers
+H2: Common layout patterns that convert`,
+  "Contact Page Best Practices": `The contact page reduces uncertainty and sets response expectations.
+H2: Inline FAQs to deflect simple queries
+H2: Trust signals (office address, phone, SLA)
+H2: Clear next steps after submit`,
+};
+
+function getPrefillFor(title) {
+  return PREFILL_BY_TITLE[title] ?? "";
+}
+// --- End prefill helpers ---
 
 /** Normalize a domain string -> "example.com" */
 function normalizeDomain(input = "") {
@@ -539,12 +564,17 @@ const seoTableProg = Math.max(0, prog);
           <button className="inline-flex items-center gap-2 rounded-[10px] border border-[var(--border)] bg-[var(--input)] px-3 py-2 text-[12px] font-medium text-[var(--muted)]">
             <Eye size={14} /> View Details
           </button>
-          <button
-  onClick={() => { window.dispatchEvent(new Event("content-editor:open")); onOpenContentEditor?.(); }}
+<button
+  onClick={() => {
+    const payload = { title }; // you can add more fields later (e.g., type, id, content)
+    window.dispatchEvent(new CustomEvent("content-editor:open", { detail: payload }));
+    onOpenContentEditor?.(payload);
+  }}
   className="inline-flex items-center gap-2 rounded-[14px] px-4 py-2 text-[13px] font-semibold text-white shadow-sm bg-[image:var(--infoHighlight-gradient)] hover:opacity-90 transition"
 >
   Start <ChevronRight size={16} />
 </button>
+
         </div>
       </div>
     );
