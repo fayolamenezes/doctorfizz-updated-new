@@ -5,7 +5,6 @@ import CENavbar      from "./content-editor/CE.Navbar";
 import CEMetricsStrip from "./content-editor/CE.MetricsStrip";
 import CEContentArea  from "./content-editor/CE.ContentArea";
 
-
 /** Plain-text extractor for a chunk of HTML. */
 function htmlToText(html) {
   if (!html) return "";
@@ -13,10 +12,17 @@ function htmlToText(html) {
   div.innerHTML = html;
   return div.textContent || div.innerText || "";
 }
+
 const clamp = (n, a = 0, b = 100) => Math.max(a, Math.min(b, n));
 
+/** Treat whitespace-only or tag-only HTML as blank. */
+function isBlankHtml(html) {
+  if (!html) return true;
+  return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() === "";
+}
+
 export default function ContentEditor({ data, onBackToDashboard }) {
-  // Defaults for a believable demo
+  // Defaults for non-empty docs
   const PRIMARY_KEYWORD = (data?.primaryKeyword || "content marketing").toLowerCase();
   const LSI = useMemo(
     () =>
@@ -55,6 +61,7 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     <p>Use keyword research, internal linking, and on-page SEO. Add clear CTAs, social proof, and objection handling to increase conversions.</p>
   `;
 
+  // If "New document" dispatched a single space, it's truthy and stays blank here.
   const [title, setTitle] = useState(data?.title || "Content Editor : AI in education");
   const [content, setContent] = useState(data?.content || DEFAULT_CONTENT);
 
@@ -71,34 +78,46 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     lsiKeywords: 0,
   });
 
-  // Apply payload when opening from a Dashboard card
+  // Apply payload when opening from Dashboard card or New doc
   useEffect(() => {
     if (!data) return;
     if (data.title) setTitle(data.title);
-    if (data.content) setContent(data.content);
+    if (typeof data.content === "string") setContent(data.content);
   }, [data]);
 
-  // Recompute metrics whenever the canvas content changes
+  // Recompute metrics whenever content changes
   useEffect(() => {
+    // NEW: if the doc is blank, force zeros so nothing shows 100%
+    if (isBlankHtml(content)) {
+      setMetrics({
+        plagiarism: 0,
+        primaryKeyword: 0,
+        wordCount: 0,
+        wordTarget: 1480,
+        lsiKeywords: 0,
+      });
+      return;
+    }
+
     const text = htmlToText(content).toLowerCase();
     const words = text.match(/[a-z0-9']+/gi) || [];
     const wordCount = words.length;
 
-    // Primary keyword “score” — best near ~1.3% density
+    // Primary keyword score — best near ~1.3% density
     const pkEsc = PRIMARY_KEYWORD.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pkOcc = (text.match(new RegExp(`\\b${pkEsc}\\b`, "gi")) || []).length;
     const density = pkOcc / Math.max(1, wordCount); // 0..1
     const ideal = 0.013;
     const pkScore = clamp(100 - (Math.abs(density - ideal) / ideal) * 100);
 
-    // LSI coverage — percent of LSI terms that appear at least once
+    // LSI coverage
     const lsiHits = LSI.filter((k) => text.includes(k)).length;
     const lsiPct = clamp((lsiHits / Math.max(1, LSI.length)) * 100);
 
-    // Simulated “plagiarism”: more repetition => higher %
+    // Simulated plagiarism
     const uniqueWords = new Set(words).size;
-    const uniqueness = uniqueWords / Math.max(1, wordCount); // 0..1
-    const plag = clamp((1 - uniqueness) * 120); // bias upward slightly
+    const uniqueness = uniqueWords / Math.max(1, wordCount);
+    const plag = clamp((1 - uniqueness) * 120);
 
     setMetrics({
       plagiarism: Math.round(plag),
