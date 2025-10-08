@@ -1,3 +1,4 @@
+// components/ContentEditor.js
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
@@ -147,6 +148,9 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           query={query}
           onQueryChange={setQuery}
           onStart={() => {}}
+          /** pass-through so Research Panel reacts to pills + shows live chips */
+          seoMode={seoMode}
+          metrics={metrics}
           content={content}
           setContent={(html) => {
             setContent(html);

@@ -1,3 +1,4 @@
+// components/content-editor/CE.ContentArea.js
 "use client";
 
 import React, { useRef } from "react";
@@ -13,18 +14,23 @@ export default function CEContentArea({
   query,
   onQueryChange,
   onStart,
+  /** NEW: received from parent so panel is connected to strip */
+  seoMode,
+  metrics,
   content,
   setContent,
 }) {
   const editorRef = useRef(null);
 
   return (
-    <div className="
+    <div
+      className="
         grid grid-cols-[2fr_1fr]
         items-stretch gap-0
         rounded-[18px] overflow-hidden
         border border-[var(--border)] bg-white/70
-      ">
+      "
+    >
       {/* LEFT: toolbar + canvas */}
       <div className="min-w-0">
         <CEToolbar
@@ -42,6 +48,9 @@ export default function CEContentArea({
           query={query}
           onQueryChange={onQueryChange}
           onStart={onStart}
+          /** pass-through so panel reacts to the SEO pills + shows metrics chips */
+          seoMode={seoMode}
+          metrics={metrics}
         />
       </div>
     </div>
