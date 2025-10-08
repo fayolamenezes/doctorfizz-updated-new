@@ -144,7 +144,7 @@ export default function CEMetricsStrip({ metrics, seoMode, onChangeSeoMode }) {
         <MetricCard label="LSI KEYWORDS" valuePct={lsiPct} rightText="Moderate" />
 
         <SeoPill title="Basic"   Icon={MinusCircle} active={seoMode === "basic"}   onClick={() => onChangeSeoMode?.("basic")} />
-        <SeoPill title="Advance" Icon={PlusCircle}  active={seoMode === "advance"} onClick={() => onChangeSeoMode?.("advance")} />
+        <SeoPill title="Advanced" Icon={PlusCircle} active={seoMode === "advanced"} onClick={() => onChangeSeoMode?.("advanced")} />
         <SeoPill title="Details" Icon={ListChecks}  active={seoMode === "details"} onClick={() => onChangeSeoMode?.("details")} />
       </div>
     </div>
