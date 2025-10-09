@@ -131,7 +131,7 @@ export default function ContentEditor({ data, onBackToDashboard }) {
 
   return (
     <div className="min-h-screen">
-      <main className="bg-[var(--bg-panel)] px-2 py-6 sm:px-3 lg:px-4 xl:px-5">
+      <main className="bg-[var(--bg-panel)] px-2 py-6 sm:px-1 lg:px-2 xl:px-3">
         <CENavbar title={title} onBack={onBackToDashboard} onTitleChange={setTitle} />
 
         <CEMetricsStrip
