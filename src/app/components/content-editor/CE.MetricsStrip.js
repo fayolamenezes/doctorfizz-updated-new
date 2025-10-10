@@ -34,9 +34,11 @@ function useSpringNumber(target = 0, ms = 700) {
 const pctText = (n, digits = 0) =>
   `${Math.max(0, Math.min(100, n || 0)).toFixed(digits)}%`;
 
-function getStatus(pct) {
-  if (pct >= 75) return { label: "Good", color: "text-green-600" };
-  if (pct >= 40) return { label: "Moderate", color: "text-yellow-600" };
+/** Status helper with optional inversion (for metrics where lower is better, e.g., Plagiarism) */
+function getStatus(pct, { invert = false } = {}) {
+  const v = invert ? 100 - (pct || 0) : (pct || 0);
+  if (v >= 75) return { label: "Good", color: "text-green-600" };
+  if (v >= 40) return { label: "Moderate", color: "text-yellow-600" };
   return { label: "Needs Review", color: "text-red-600" };
 }
 
@@ -63,8 +65,9 @@ function Bar({ pct = 0, tone = "default", className = "" }) {
 
 /** Generic metric card (Plagiarism, Primary Keyword) */
 function MetricCard({ label, valuePct }) {
+  const invert = label === "PLAGIARISM"; // ⬅️ Only plagiarism uses inverse scoring
   const anim = useSpringNumber(valuePct ?? 0);
-  const status = getStatus(valuePct);
+  const status = getStatus(valuePct, { invert });
   const tone =
     status.label === "Good" ? "good" : status.label === "Moderate" ? "warn" : "bad";
 
@@ -194,7 +197,7 @@ function SeoPill({ active, title, Icon, onClick }) {
 
 /** MAIN */
 export default function CEMetricsStrip({ metrics, seoMode, onChangeSeoMode }) {
-  const plagPct = metrics?.plagiarism ?? 0;
+  const plagPct = metrics?.plagiarism ?? 0;      // percentage of plagiarized content (lower is better)
   const pkPct = metrics?.primaryKeyword ?? 0;
   const wc = metrics?.wordCount ?? 0;
   const wcTarget = metrics?.wordTarget ?? 1200;

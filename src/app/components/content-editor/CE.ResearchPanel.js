@@ -23,7 +23,35 @@ import {
   ArrowDownRight,
   ClipboardPaste,
   X,
+  Plus,
+  MoreHorizontal,
+  Sparkles
 } from "lucide-react";
+
+/* ---------------------------------------------
+   Small icon-only button with instant tooltip
+---------------------------------------------- */
+function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
+  return (
+    <div className={`relative group ${className}`}>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={label}
+        className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none"
+      >
+        <ClipboardPaste size={size} />
+      </button>
+      <span
+        className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5
+                   text-[10px] font-medium text-gray-700 shadow-sm opacity-0 group-hover:opacity-100
+                   group-focus-within:opacity-100 transition-opacity duration-75 whitespace-nowrap"
+      >
+        {label}
+      </span>
+    </div>
+  );
+}
 
 /* =========================================================
    Shared primitives (Pill, StepRow, Section, ResultItem)
@@ -49,13 +77,13 @@ function StepRow({ status, text }) {
   const isDone = status === "done";
   const isActive = status === "active";
   return (
-    <div className={`flex items-start gap-2 text-[13px] rounded-md px-2 py-1.5 transition ${isActive ? "bg-blue-50/60" : ""}`}>
+    <div className={`flex items-start gap-2 text-[12px] rounded-md px-2 py-1.5 transition ${isActive ? "bg-blue-50/60" : ""}`}>
       {isDone ? (
-        <CheckCircle2 size={16} className="text-emerald-600 mt-0.5 shrink-0" />
+        <CheckCircle2 size={15} className="text-emerald-600 mt-0.5 shrink-0" />
       ) : isActive ? (
-        <Loader2 size={16} className="text-blue-600 mt-0.5 shrink-0 animate-spin" />
+        <Loader2 size={15} className="text-blue-600 mt-0.5 shrink-0 animate-spin" />
       ) : (
-        <Circle size={16} className="text-gray-300 mt-0.5 shrink-0" />
+        <Circle size={15} className="text-gray-300 mt-0.5 shrink-0" />
       )}
       <span className="leading-5 text-[#4B5563]">{text}</span>
     </div>
@@ -128,8 +156,8 @@ function ResultItem({ type = "success", children, onFix }) {
 
   return (
     <div className="flex items-start justify-between gap-3 py-1.5">
-      <div className="flex items-start gap-2 text-[13px] text-[#4B5563] leading-5">
-        <Icon size={16} className={`${colorMap[type]} mt-0.5 shrink-0`} />
+      <div className="flex items-start gap-2 text-[12px] text-[#4B5563] leading-5">
+        <Icon size={15} className={`${colorMap[type]} mt-0.5 shrink-0`} />
         <span>{children}</span>
       </div>
 
@@ -137,14 +165,14 @@ function ResultItem({ type = "success", children, onFix }) {
         {onFix && (
           <button
             type="button"
-            className="inline-flex items-center gap-1 text-[12px] font-medium text-[#7E3AF2] hover:underline"
+            className="inline-flex items-center gap-1 text-[11px] font-medium text-[#7E3AF2] hover:underline"
             onClick={onFix}
           >
-            <Wand2 size={14} />
+            <Wand2 size={13} />
             Fix Now
           </button>
         )}
-        <CircleHelp size={16} className="text-gray-300" />
+        <CircleHelp size={15} className="text-gray-300" />
       </div>
     </div>
   );
@@ -173,11 +201,11 @@ function KPI({ label, value, delta, up }) {
   const tone = up ? "text-emerald-600" : "text-rose-600";
   return (
     <div className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2">
-      <div className="text-[11px] text-gray-500">{label}</div>
+      <div className="text-[10px] text-gray-500">{label}</div>
       <div className="mt-1 flex items-center gap-2">
-        <div className="text-[18px] font-semibold text-gray-800">{value}</div>
-        <span className={`inline-flex items-center gap-0.5 text-[11px] ${tone}`}>
-          <Icon size={14} />
+        <div className="text-[16px] font-semibold text-gray-800">{value}</div>
+        <span className={`inline-flex items-center gap-0.5 text-[10px] ${tone}`}>
+          <Icon size={13} />
           {delta}
         </span>
       </div>
@@ -193,14 +221,14 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
           value={kw}
           onChange={(e) => onKw(e.target.value)}
           placeholder="Filter by keywords"
-          className="w-full h-9 rounded-lg border border-gray-200 bg-white px-8 text-[13px] outline-none focus:border-blue-300"
+          className="w-full h-9 rounded-lg border border-gray-200 bg-white px-8 text-[12px] outline-none focus:border-blue-300"
         />
-        <SearchIcon size={14} className="absolute left-2.5 top-2.5 text-gray-400" />
+        <SearchIcon size={13} className="absolute left-2.5 top-2.5 text-gray-400" />
       </div>
       <select
         value={tail}
         onChange={(e) => onTail(e.target.value)}
-        className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[12px] text-gray-700"
+        className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-700"
       >
         <option>Long tail</option>
         <option>Short tail</option>
@@ -209,7 +237,7 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
       <select
         value={status}
         onChange={(e) => onStatus(e.target.value)}
-        className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[12px] text-gray-700"
+        className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-700"
       >
         <option>All Status</option>
         <option>Good</option>
@@ -234,11 +262,11 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
   return (
     <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
       <button onClick={onOpen} className="w-full px-3.5 py-3 flex items-start gap-3">
-        <span className={`text-[11px] px-2 py-0.5 border rounded-full font-semibold ${toneMap[tone]}`}>{badge}</span>
+        <span className={`text-[10px] px-2 py-0.5 border rounded-full font-semibold ${toneMap[tone]}`}>{badge}</span>
         <div className="min-w-0 flex-1 text-left">
           <div className="flex items-center gap-2">
             <div className="text-[13px] font-semibold text-gray-800">{title}</div>
-            <span className="text-[11px] text-gray-500">Source: {source}</span>
+            <span className="text-[10px] text-gray-500">Source: {source}</span>
           </div>
           <div className="mt-2 h-1.5 w-full rounded-full bg-gray-100">
             <div className={`h-1.5 rounded-full ${barMap[tone]}`} style={{ width: `${progress}%` }} />
@@ -246,18 +274,12 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
         </div>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
+          <IconHintButton
             onClick={(e) => {
               e.stopPropagation();
               onPaste?.();
             }}
-            className="hidden sm:inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2 py-1 text-[11px] text-gray-600 hover:bg-gray-50"
-            title="Paste to editor"
-          >
-            <ClipboardPaste size={14} />
-            Paste to editor
-          </button>
+          />
           <ChevronRight size={18} className="text-gray-400" />
         </div>
       </button>
@@ -270,7 +292,7 @@ function DrawerHeader({ title, onClose, countText }) {
     <div className="flex items-start justify-between">
       <div>
         <div className="text-[13px] font-semibold text-gray-800">{title}</div>
-        {countText ? <div className="text-[12px] text-gray-500 mt-0.5">{countText}</div> : null}
+        {countText ? <div className="text-[11px] text-gray-500 mt-0.5">{countText}</div> : null}
       </div>
       <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
         <X size={16} />
@@ -284,15 +306,15 @@ function StatTriplet({ mine, avg, results }) {
     <div className="mt-3 grid grid-cols-3 gap-2">
       <div className="rounded-xl border border-gray-200 bg-white px-3 py-2">
         <div className="text-[10px] text-gray-500">MY MENTION</div>
-        <div className="text-[18px] font-semibold text-gray-800 mt-0.5">{mine}</div>
+        <div className="text-[16px] font-semibold text-gray-800 mt-0.5">{mine}</div>
       </div>
       <div className="rounded-xl border border-gray-200 bg-white px-3 py-2">
         <div className="text-[10px] text-gray-500">AVG. MENTIONS</div>
-        <div className="text-[18px] font-semibold text-gray-800 mt-0.5">{avg}</div>
+        <div className="text-[16px] font-semibold text-gray-800 mt-0.5">{avg}</div>
       </div>
       <div className="rounded-xl border border-gray-200 bg-white px-3 py-2">
         <div className="text-[10px] text-gray-500">SEARCH RESULTS</div>
-        <div className="text-[18px] font-semibold text-gray-800 mt-0.5">{results}</div>
+        <div className="text-[16px] font-semibold text-gray-800 mt-0.5">{results}</div>
       </div>
     </div>
   );
@@ -310,16 +332,12 @@ function SourceCard({ url, title, snippet }) {
         </div>
       </button>
       {open && (
-        <div className="px-3.5 pb-3 -mt-1 text-[13px] text-gray-600">
+        <div className="px-3.5 pb-3 -mt-1 text-[12px] text-gray-600">
           <p className="leading-6">
             {snippet ?? (
               <>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do <span className="underline">eiusmod</span> tempor
-                incididunt ut labore et dolore magna aliqua.{" "}
-                <a className="underline" href="#" onClick={(e) => e.preventDefault()}>
-                  veniam
-                </a>
-                , quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat…
+                incididunt ut labore et dolore magna aliqua…
               </>
             )}
           </p>
@@ -327,6 +345,103 @@ function SourceCard({ url, title, snippet }) {
       )}
     </div>
   );
+}
+
+/* ===========================
+   Research tab: UI atoms
+=========================== */
+
+function Chip({ children }) {
+  return (
+    <span className="inline-flex items-center gap-1 rounded-full border border-gray-200 bg-white px-2 py-0.5 text-[11px] text-gray-700">
+      {children}
+    </span>
+  );
+}
+
+function HBadge({ level = "H1" }) {
+  const color =
+    level === "H1"
+      ? "bg-amber-50 text-amber-700 border-amber-200"
+      : level === "H2"
+      ? "bg-violet-50 text-violet-700 border-violet-200"
+      : "bg-emerald-50 text-emerald-700 border-emerald-200";
+  return (
+    <span className={`grid h-7 w-7 place-items-center rounded-md border text-[11px] font-semibold ${color}`}>
+      {String(level).replace("H","")}
+    </span>
+  );
+}
+
+function RowIconButton({ children, title }) {
+  return (
+    <button
+      type="button"
+      title={title}
+      className="grid h-7 w-7 place-items-center rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+    >
+      {children}
+    </button>
+  );
+}
+
+/* One heading row (Outline) */
+function OutlineRow({ level="H2", title, onPaste, onAddInstruction }) {
+  return (
+    <div className="rounded-xl border border-gray-200 bg-white">
+      <div className="flex items-center justify-between gap-3 px-3 py-2.5">
+        {/* left */}
+        <div className="flex min-w-0 items-center gap-3">
+          <HBadge level={level} />
+          <div className="min-w-0">
+            <div className="truncate text-[13px] font-medium text-gray-800">
+              {title}
+            </div>
+            <button
+              type="button"
+              onClick={onAddInstruction}
+              className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-gray-600 hover:underline"
+            >
+              + Add Instruction
+            </button>
+          </div>
+        </div>
+
+        {/* right actions (centered like your reference) */}
+        <div className="flex items-center gap-2 shrink-0">
+          <RowIconButton title="Paste to editor">
+            <ClipboardPaste size={12} onClick={onPaste} />
+          </RowIconButton>
+          <RowIconButton title="More">
+            <MoreHorizontal size={14} />
+          </RowIconButton>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+/* ---------------------------------------------
+   Outline extraction from editor HTML
+---------------------------------------------- */
+function extractHeadingsFromHTML(html) {
+  try {
+    if (!html || typeof window === "undefined") return [];
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const tags = ["h1", "h2", "h3"];
+    const out = [];
+    tags.forEach(tag => {
+      doc.querySelectorAll(tag).forEach(node => {
+        const text = (node.textContent || "").trim();
+        if (text) out.push({ level: tag.toUpperCase(), title: text });
+      });
+    });
+    return out;
+  } catch (e) {
+    return [];
+  }
 }
 
 /* =========================================================
@@ -340,10 +455,27 @@ export default function CEResearchPanel({
   seoMode = "basic", // "basic" | "advanced"
   metrics,
   onFix,
+  onPasteToEditor, // optional handler you can wire to CE.Canvas
+  editorContent = "",
 }) {
   const [phase, setPhase] = useState("idle"); // basic phases: idle | searching | results
   const [advancedTab, setAdvancedTab] = useState("optimize"); // optimize | links | faqs | research
   const [drawerOpen, setDrawerOpen] = useState(false); // advanced drawer (e.g., Title Readability)
+
+  // --- Research tab state & mock data ---
+  const [researchTab, setResearchTab] = useState("outline"); // "outline" | "competitors" | "heatmaps"
+  const [outline, setOutline] = useState([
+    { level: "H1", title: "Content marketing strategies for SAAS." },
+    { level: "H2", title: "Understanding SaaS Content Marketing" },
+    { level: "H2", title: "Identifying Target Audiences" },
+    { level: "H3", title: "Constructing Detailed Audience Personas" },
+  ]);
+
+  // if editorContent is passed in, sync headings
+  useEffect(() => {
+    const extracted = extractHeadingsFromHTML(editorContent);
+    if (extracted.length) setOutline(extracted);
+  }, [editorContent]);
 
   /* ----------------- BASIC: Phase logic ----------------- */
   const SEARCH_STEPS = [
@@ -400,7 +532,6 @@ export default function CEResearchPanel({
   const [tailType, setTailType] = useState("Long tail");
   const [statusFilter, setStatusFilter] = useState("All Status");
 
-  // mock cards (visual parity)
   const cards = useMemo(
     () => [
       { title: "Content Marketing", badge: "4/3", progress: 92, source: 15, tone: "green", key: "content" },
@@ -411,6 +542,112 @@ export default function CEResearchPanel({
     []
   );
 
+  /* ----------------- LINKS TAB (Advanced) ----------------- */
+
+  function BadgeScore({ score }) {
+    const tone =
+      score >= 15 ? "bg-amber-50 text-amber-700 border-amber-200" :
+      score >= 10 ? "bg-gray-100 text-gray-700 border-gray-200" :
+      "bg-emerald-50 text-emerald-700 border-emerald-200";
+    return (
+      <span className={`inline-flex h-7 min-w-[32px] items-center justify-center rounded-md border px-1 text-[12px] font-semibold ${tone}`}>
+        {score}
+      </span>
+    );
+  }
+
+  function LinkRow({ rankScore, domain, sources, onPaste }) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white">
+        <button className="w-full px-3 py-2 flex items-center justify-between gap-3">
+          {/* Left */}
+          <div className="flex min-w-0 items-center gap-3 text-left">
+            <BadgeScore score={rankScore} />
+            <div className="min-w-0">
+              <div className="text-[13px] font-semibold text-gray-800 truncate">{domain}</div>
+              <div className="text-[11px] text-gray-500">Source : {sources}</div>
+            </div>
+          </div>
+
+          {/* Right actions (centered vertically, no overlap) */}
+          <div className="flex items-center gap-2 shrink-0">
+            <IconHintButton onClick={(e) => { e.stopPropagation(); onPaste?.(domain); }} />
+            <ChevronRight size={18} className="text-gray-400" />
+          </div>
+        </button>
+      </div>
+    );
+  }
+
+  const [linkTab, setLinkTab] = useState("external"); // external | internal
+  const linkRowsExternal = [
+    { rankScore: 7,  domain: "Titlereadability.com",   sources: 15 },
+    { rankScore: 16, domain: "Strategiesmaker.com",    sources: 5  },
+    { rankScore: 13, domain: "Readabilityskills.gov.in", sources: 15 },
+    { rankScore: 10, domain: "Titlebility.org",        sources: 9  },
+  ];
+  const linkRowsInternal = [
+    { rankScore: 9,  domain: "yourdomain.com/blog/content-marketing", sources: 12 },
+    { rankScore: 11, domain: "yourdomain.com/strategy/guide",         sources: 7  },
+    { rankScore: 6,  domain: "yourdomain.com/resources/tools",        sources: 4  },
+  ];
+
+  /* ----------------- FAQ’S TAB (Advanced) ----------------- */
+
+  function BrandDot({ label }) {
+    return (
+      <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md border border-gray-200 bg-gray-50 text-[10px] font-semibold text-gray-700">
+        {label.slice(0,1).toUpperCase()}
+      </span>
+    );
+  }
+
+  function FAQRow({ iconLabel, title, source, onPaste }) {
+    return (
+      <div className="rounded-xl border border-gray-200 bg-white">
+        <button className="w-full px-3 py-2 flex items-center justify-between gap-3">
+          {/* Left */}
+          <div className="flex min-w-0 items-center gap-3 text-left">
+            <BrandDot label={iconLabel} />
+            <div className="min-w-0">
+              <div className="text-[13px] font-semibold text-gray-800 truncate">{title}</div>
+              <div className="text-[11px] text-gray-500">Source : {source}</div>
+            </div>
+          </div>
+
+          {/* Right actions */}
+          <div className="flex items-center gap-2 shrink-0">
+            <IconHintButton onClick={(e) => { e.stopPropagation(); onPaste?.(title); }} />
+            <ChevronRight size={18} className="text-gray-400" />
+          </div>
+        </button>
+      </div>
+    );
+  }
+
+  const [faqTab, setFaqTab] = useState("serp"); // serp | pa | quora | reddit
+  const faqByTab = {
+    serp: [
+      { iconLabel: "N", title: "What is SaaS content marketing?", source: "itzfizz.com" },
+      { iconLabel: "N", title: "Why is content marketing important …", source: "itzfizz.com" },
+      { iconLabel: "N", title: "How does content marketing differ…", source: "itzfizz.com" },
+      { iconLabel: "M", title: "How often should I publish content for…", source: "itzfizz.com" },
+      { iconLabel: "D", title: "What metrics should I track to measure…", source: "itzfizz.com" },
+    ],
+    pa: [
+      { iconLabel: "G", title: "People also ask: What are examples of content marketing?", source: "Google" },
+      { iconLabel: "G", title: "People also ask: How do you start content marketing?", source: "Google" },
+    ],
+    quora: [
+      { iconLabel: "Q", title: "What is the best way to get started with content marketing?", source: "Quora" },
+      { iconLabel: "Q", title: "What are underrated content marketing strategies?", source: "Quora" },
+    ],
+    reddit: [
+      { iconLabel: "R", title: "CMO: Content cadence that actually works in B2B?", source: "r/marketing" },
+      { iconLabel: "R", title: "Is content marketing dead in 2025?", source: "r/SEO" },
+    ],
+  };
+
   /* ----------------- RENDER SWITCH ----------------- */
   if (seoMode !== "advanced") {
     // ---------- BASIC PANEL ----------
@@ -418,7 +655,7 @@ export default function CEResearchPanel({
       return (
         <aside className="h-full rounded-r-[18px] border-l border-[var(--border)] bg-white/70 px-7 md:px-8 py-6 flex flex-col">
           <h3 className="text-[22px] font-semibold text-[var(--text-primary)] text-center">Research</h3>
-          <p className="mt-3 mb-5 text-center text-[13px] leading-relaxed text-[var(--muted)]">
+          <p className="mt-3 mb-5 text-center text-[12px] leading-relaxed text-[var(--muted)]">
             Process the top 20 Google search results
             <br className="hidden sm:block" />
             for the following search query:
@@ -444,7 +681,7 @@ export default function CEResearchPanel({
 
             <button
               onClick={handleStart}
-              className="mt-5 mx-auto block rounded-full border border-blue-300 px-6 py-2 text-[13px] font-medium text-blue-600 hover:bg-blue-50"
+              className="mt-5 mx-auto block rounded-full border border-blue-300 px-6 py-2 text-[12px] font-medium text-blue-600 hover:bg-blue-50"
             >
               Start
             </button>
@@ -456,13 +693,13 @@ export default function CEResearchPanel({
     if (phase === "searching") {
       return (
         <aside className="h-full rounded-r-[18px] border-l border-[var(--border)] bg-white/70 px-6 md:px-7 py-6">
-          <div className="flex items-center gap-2 text-[14px] font-semibold text-[var(--text-primary)]">
+          <div className="flex items-center gap-2 text-[13px] font-semibold text-[var(--text-primary)]">
             <Loader2 size={16} className="animate-spin text-blue-600" />
             Searching
             <Pill tone="info">Reference found</Pill>
           </div>
 
-          <div className="mt-4 text-[13px] text-[var(--text-primary)] font-semibold">
+          <div className="mt-4 text-[12px] text-[var(--text-primary)] font-semibold">
             {query?.trim() || "Content marketing strategies"}
           </div>
 
@@ -481,8 +718,8 @@ export default function CEResearchPanel({
       <aside className="h-full rounded-r-[18px] border-l border-[var(--border)] bg-white/70 px-6 md:px-7 py-6 flex flex-col gap-3">
         <div className="mb-1 flex items-center gap-2 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2">
           <TriangleAlert size={16} className="text-amber-700" />
-          <div className="text-[13px] font-medium text-amber-800">Fix this</div>
-          <div className="ml-auto text-[11px] text-amber-800/80">Once done, switch to ADVANCE for deep research</div>
+          <div className="text-[12px] font-medium text-amber-800">Fix this</div>
+          <div className="ml-auto text-[10px] text-amber-800/80">Once done, switch to ADVANCE for deep research</div>
         </div>
 
         <Section icon={ListChecks} title="Basic SEO" statusTone="good" statusText="All Good" defaultOpen>
@@ -532,11 +769,11 @@ export default function CEResearchPanel({
     );
   }
 
-  /* ---------- ADVANCED PANEL (Optimize) ---------- */
+  /* ---------- ADVANCED PANEL (Optimize / Links / FAQ’s / Research) ---------- */
   return (
     <aside className="h-full rounded-r-[18px] border-l border-[var(--border)] bg-white/70 px-5 md:px-6 py-5 flex flex-col gap-3">
-      {/* Sub-tabs */}
-      <div className="flex items-center gap-2">
+      {/* Sub-tabs — keep them one row */}
+      <div className="flex items-center gap-2 flex-nowrap">
         <SegTab icon={WandSparkles} active={advancedTab === "optimize"} onClick={() => setAdvancedTab("optimize")}>
           Optimize
         </SegTab>
@@ -551,7 +788,7 @@ export default function CEResearchPanel({
         </SegTab>
       </div>
 
-      {/* Optimize tab content (matches your screenshots) */}
+      {/* Optimize tab content (existing) */}
       {advancedTab === "optimize" && !drawerOpen && (
         <>
           {/* KPI row */}
@@ -582,7 +819,7 @@ export default function CEResearchPanel({
                 source={c.source}
                 tone={c.tone}
                 onOpen={() => setDrawerOpen(c.key)}
-                onPaste={() => {/* hook to your editor paste */}}
+                onPaste={() => onPasteToEditor?.(c.title)}
               />
             ))}
           </div>
@@ -614,14 +851,202 @@ export default function CEResearchPanel({
         </div>
       )}
 
-      {/* Placeholder content for other tabs (kept minimal) */}
-      {advancedTab !== "optimize" && (
-        <div className="mt-4 grid place-items-center rounded-xl border border-dashed border-gray-200 py-10 text-gray-500 text-[13px]">
-          {advancedTab === "links" && "Links analysis coming next…"}
-          {advancedTab === "faqs" && "FAQs suggestions coming next…"}
-          {advancedTab === "research" && "Competitor / SERP research coming next…"}
+      {/* LINKS TAB */}
+      {advancedTab === "links" && (
+        <div className="mt-1 rounded-2xl border border-gray-200 bg-white p-3">
+          {/* Top segmented tabs */}
+          <div className="flex items-center gap-6 border-b border-gray-100 px-1">
+            <button
+              className={`px-2 pb-2 text-[12px] font-semibold ${linkTab === "external" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"}`}
+              onClick={() => setLinkTab("external")}
+            >
+              External Link
+            </button>
+            <button
+              className={`px-2 pb-2 text-[12px] font-semibold ${linkTab === "internal" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"}`}
+              onClick={() => setLinkTab("internal")}
+            >
+              Internal link
+            </button>
+          </div>
+
+          {/* Summary block */}
+          <div className="mt-3 rounded-xl border border-gray-100 bg-gray-50 px-3 py-3">
+            <div className="text-[24px] font-bold leading-6 text-gray-900">786</div>
+            <div className="text-[11px] text-gray-600 -mt-0.5">Number of External Links</div>
+            <div className="text-[11px] text-gray-500 mt-1">
+              Top search results link to pages from <span className="font-medium">19 domains</span>
+            </div>
+          </div>
+
+          {/* Filter input */}
+          <div className="relative mt-3">
+            <input
+              className="w-full h-8 rounded-lg border border-gray-200 bg-white px-8 text-[12px] outline-none focus:border-blue-300"
+              placeholder="Filter by keywords"
+              value={kwFilter}
+              onChange={(e) => setKwFilter(e.target.value)}
+            />
+            <SearchIcon size={13} className="absolute left-2.5 top-2 text-gray-400" />
+          </div>
+
+          {/* List */}
+          <div className="mt-3 space-y-2">
+            {(linkTab === "external" ? linkRowsExternal : linkRowsInternal)
+              .filter((r) => r.domain.toLowerCase().includes(kwFilter.toLowerCase()))
+              .map((r, idx) => (
+                <LinkRow
+                  key={idx}
+                  rankScore={r.rankScore}
+                  domain={r.domain}
+                  sources={r.sources}
+                  onPaste={(text) => onPasteToEditor?.(text)}
+                />
+              ))}
+          </div>
         </div>
       )}
+
+      {/* FAQ’S TAB */}
+      {advancedTab === "faqs" && (
+        <div className="mt-1 rounded-2xl border border-gray-200 bg-white p-3">
+          {/* Sub tabs like SERP / People also ask / Quora / Reddit */}
+          <div className="flex items-center gap-3 border-b border-gray-100 px-1">
+            <button
+              className={`px-2 pb-2 text-[12px] font-semibold ${faqTab === "serp" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"}`}
+              onClick={() => setFaqTab("serp")}
+            >
+              SERP
+            </button>
+            <button
+              className={`px-2 pb-2 text-[12px] font-semibold ${faqTab === "pa" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"}`}
+              onClick={() => setFaqTab("pa")}
+            >
+              People also ask
+            </button>
+            <button
+              className={`px-2 pb-2 text-[12px] font-semibold ${faqTab === "quora" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"}`}
+              onClick={() => setFaqTab("quora")}
+            >
+              Quora
+            </button>
+            <button
+              className={`px-2 pb-2 text-[12px] font-semibold ${faqTab === "reddit" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"}`}
+              onClick={() => setFaqTab("reddit")}
+            >
+              Reddit
+            </button>
+          </div>
+
+          {/* Filter input */}
+          <div className="relative mt-3">
+            <input
+              className="w-full h-8 rounded-lg border border-gray-200 bg-white px-8 text-[12px] outline-none focus:border-blue-300"
+              placeholder="Filter by keywords"
+              value={kwFilter}
+              onChange={(e) => setKwFilter(e.target.value)}
+            />
+            <SearchIcon size={13} className="absolute left-2.5 top-2 text-gray-400" />
+          </div>
+
+          {/* Results list */}
+          <div className="mt-3 space-y-2">
+            {faqByTab[faqTab]
+              .filter((r) => r.title.toLowerCase().includes(kwFilter.toLowerCase()))
+              .map((r, idx) => (
+                <FAQRow
+                  key={idx}
+                  iconLabel={r.iconLabel}
+                  title={r.title}
+                  source={r.source}
+                  onPaste={(text) => onPasteToEditor?.(text)}
+                />
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* RESEARCH TAB */}
+      {advancedTab === "research" && (
+        <div className="mt-1 rounded-2xl border border-gray-200 bg-white p-3">
+          {/* top row: sub-tabs + quick actions */}
+          <div className="flex items-center justify-between gap-3">
+            <div className="flex items-center gap-6 border-b border-gray-100 px-1">
+              <button
+                onClick={() => setResearchTab("outline")}
+                className={`px-2 pb-2 text-[12px] font-semibold ${
+                  researchTab === "outline" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"
+                }`}
+              >
+                Outline
+              </button>
+              <button
+                onClick={() => setResearchTab("competitors")}
+                className={`px-2 pb-2 text-[12px] font-semibold ${
+                  researchTab === "competitors" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"
+                }`}
+              >
+                Competitor’s
+              </button>
+              <button
+                onClick={() => setResearchTab("heatmaps")}
+                className={`px-2 pb-2 text-[12px] font-semibold ${
+                  researchTab === "heatmaps" ? "text-gray-900 border-b-2 border-gray-900" : "text-gray-500"
+                }`}
+              >
+                Heatmap’s
+              </button>
+            </div>
+
+            {/* right-side actions (Headings count + buttons) */}
+            <div className="flex items-center gap-2">
+              <Chip>28 Headings</Chip>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 rounded-md border border-gray-200 bg-white px-2.5 py-1.5 text-[12px] font-medium text-gray-800 hover:bg-gray-50"
+              >
+                <Sparkles size={14} />
+                AI Headings
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1 rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1.5 text-[12px] font-semibold text-amber-700 hover:bg-amber-50"
+              >
+                <Plus size={14} />
+                Generate article
+              </button>
+            </div>
+          </div>
+
+          {/* Outline body */}
+          {researchTab === "outline" && (
+            <div className="mt-3 space-y-2">
+              {outline.map((h, i) => (
+                <OutlineRow
+                  key={i}
+                  level={h.level}
+                  title={h.title}
+                  onPaste={() => onPasteToEditor?.(h.title)}
+                  onAddInstruction={() => onPasteToEditor?.(`Add instruction for: ${h.title}`)}
+                />
+              ))}
+            </div>
+          )}
+
+          {researchTab === "competitors" && (
+            <div className="mt-4 grid place-items-center rounded-xl border border-dashed border-gray-200 py-10 text-gray-500 text-[12px]">
+              Competitor mapping view (domains, gaps, overlap) — wire data here.
+            </div>
+          )}
+
+          {researchTab === "heatmaps" && (
+            <div className="mt-4 grid place-items-center rounded-xl border border-dashed border-gray-200 py-10 text-gray-500 text-[12px]">
+              Heatmap of headings vs. SERP frequency — wire data here.
+            </div>
+          )}
+        </div>
+      )}
+
     </aside>
   );
 }
