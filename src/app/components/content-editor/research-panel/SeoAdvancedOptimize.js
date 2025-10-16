@@ -14,7 +14,6 @@ function IconHintButton({ onClick, label = "Paste to editor", size = 12, classNa
         aria-label={label}
         className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none"
       >
-        {/* next/image instead of <img> to satisfy @next/next/no-img-element */}
         <Image src="/assets/copy.svg" width={size} height={size} alt="Paste" />
       </button>
       <span className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-75 whitespace-nowrap">
@@ -74,9 +73,22 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
     gray: "bg-gray-100 text-gray-700 border-gray-200",
   };
   const barMap = { green: "bg-emerald-500", amber: "bg-amber-500", gray: "bg-gray-300" };
+
+  // NOTE: outer element changed from <button> to <div role="button"> to avoid nested <button>
   return (
     <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
-      <button onClick={onOpen} className="w-full px-3.5 py-3 flex items-start gap-3">
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onOpen}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onOpen?.();
+          }
+        }}
+        className="w-full px-3.5 py-3 flex items-start gap-3 cursor-pointer select-none focus:outline-none"
+      >
         <span className={`text-[10px] px-2 py-0.5 border rounded-full font-semibold ${toneMap[tone]}`}>{badge}</span>
         <div className="min-w-0 flex-1 text-left">
           <div className="flex items-center gap-2">
@@ -96,7 +108,7 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
           />
           <ChevronRight size={18} className="text-gray-400" />
         </div>
-      </button>
+      </div>
     </div>
   );
 }
