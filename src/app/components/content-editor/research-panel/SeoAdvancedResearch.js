@@ -98,6 +98,6 @@ export default function SeoAdvancedResearch({ editorContent, onPasteToEditor }) 
       {tab === "heatmaps" && (
         <div className="mt-4 grid place-items-center rounded-xl border border-dashed border-gray-200 py-10 text-gray-500 text-[12px]">Heatmap of headings vs. SERP frequency — wire data here.</div>
       )}
-    </div>
+    </div> 
   );
 }
