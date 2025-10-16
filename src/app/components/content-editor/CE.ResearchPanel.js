@@ -16,7 +16,7 @@ const TABS = [
   { key: "links", label: "Links", icon: LinkIcon },
   { key: "faqs", label: "FAQ’s", icon: HelpCircle },
   { key: "research", label: "Research", icon: FlaskConical },
-  { key: "details", label: "Details", icon: Info },
+  // ⬅️ No "details" here — it's controlled by the Metrics Strip pill
 ];
 
 export default function CEResearchPanel({
@@ -30,9 +30,13 @@ export default function CEResearchPanel({
   editorContent = "",
 }) {
   const [phase, setPhase] = useState("idle"); // idle | searching | results
-  const [tab, setTab] = useState("opt");      // opt | links | faqs | research | details
+  const [tab, setTab] = useState("opt");      // opt | links | faqs | research
 
-  if (seoMode !== "advanced") {
+  // Route by seoMode:
+  // - "basic"  => show SeoBasics (guided checklist)
+  // - "details"=> show SeoDetails (driven by Metrics Strip pill)
+  // - "advanced"=> show the advanced tabs below
+  if (seoMode === "basic") {
     return (
       <SeoBasics
         query={query}
@@ -46,19 +50,28 @@ export default function CEResearchPanel({
     );
   }
 
+  if (seoMode === "details") {
+    return <SeoDetails onPasteToEditor={onPasteToEditor} />;
+  }
+
+  // Advanced mode: show Optimize/Links/FAQ's/Research tabs
   return (
     <aside className="h-full rounded-r-[18px] border-l border-[var(--border)] bg-white/70 px-5 md:px-6 py-5 flex flex-col gap-3">
-      <div className="flex items-center gap-2 flex-nowrap">
+      <div className="flex items-center justify-between gap-1 w-full flex-nowrap">
         {TABS.slice(1).map(({ key, label, icon: Icon }) => (
           <button
             key={key}
             onClick={() => setTab(key)}
-            className={`inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-[12px] font-medium ${
-              tab === key ? "bg-white border-amber-300 text-amber-700" : "bg-white/70 border-gray-200 text-gray-600 hover:bg-white"
+            title={label}
+            className={`flex items-center justify-center gap-1 rounded-lg border flex-auto px-2.5 py-1.5 text-[12px] font-medium transition-colors ${
+              tab === key
+                ? "bg-white border-amber-300 text-amber-700"
+                : "bg-white/70 border-gray-200 text-gray-600 hover:bg-white"
             }`}
+            style={{ minWidth: "fit-content", whiteSpace: "nowrap" }}
           >
-            <Icon size={14} />
-            {label}
+            <Icon size={13} className="shrink-0" />
+            <span>{label}</span>
           </button>
         ))}
       </div>
@@ -69,7 +82,6 @@ export default function CEResearchPanel({
       {tab === "research" && (
         <SeoAdvancedResearch editorContent={editorContent} onPasteToEditor={onPasteToEditor} />
       )}
-      {tab === "details" && <SeoDetails onPasteToEditor={onPasteToEditor} />}
     </aside>
   );
 }

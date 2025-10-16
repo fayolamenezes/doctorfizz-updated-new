@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { Sparkles, Plus, ClipboardPaste, MoreHorizontal } from "lucide-react";
+import { Sparkles, Plus, MoreHorizontal } from "lucide-react";
 
 /* UI atoms from your file */
 function Chip({ children }) {
@@ -14,7 +14,7 @@ function HBadge({ level = "H1" }) {
 function RowIconButton({ children, title }) {
   return <button type="button" title={title} className="grid h-7 w-7 place-items-center rounded-md border border-gray-200 bg-white text-gray-600 hover:bg-gray-50">{children}</button>;
 }
-function OutlineRow({ level="H2", title, onPaste, onAddInstruction }) {
+function OutlineRow({ level = "H2", title, onPaste, onAddInstruction }) {
   return (
     <div className="rounded-xl border border-gray-200 bg-white">
       <div className="flex items-center justify-between gap-3 px-3 py-2.5">
@@ -22,17 +22,41 @@ function OutlineRow({ level="H2", title, onPaste, onAddInstruction }) {
           <HBadge level={level} />
           <div className="min-w-0">
             <div className="truncate text-[13px] font-medium text-gray-800">{title}</div>
-            <button type="button" onClick={onAddInstruction} className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-gray-600 hover:underline">+ Add Instruction</button>
+            <button
+              type="button"
+              onClick={onAddInstruction}
+              className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-gray-600 hover:underline"
+            >
+              + Add Instruction
+            </button>
           </div>
         </div>
+
         <div className="flex items-center gap-2 shrink-0">
-          <RowIconButton title="Paste to editor"><ClipboardPaste size={12} onClick={onPaste} /></RowIconButton>
-          <RowIconButton title="More"><MoreHorizontal size={14} /></RowIconButton>
+          {/* Paste button with hover tooltip */}
+          <div className="relative group">
+            <button
+              type="button"
+              onClick={onPaste}
+              aria-label="Paste to editor"
+              className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none"
+            >
+              <img src="/assets/copy.svg" width={12} height={12} alt="Paste" />
+            </button>
+            <span className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-75 whitespace-nowrap">
+              Paste to editor
+            </span>
+          </div>
+
+          <RowIconButton title="More">
+            <MoreHorizontal size={14} />
+          </RowIconButton>
         </div>
       </div>
     </div>
   );
 }
+
 
 /* extract headings */
 function extractHeadingsFromHTML(html) {

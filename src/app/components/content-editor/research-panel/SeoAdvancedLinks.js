@@ -4,16 +4,24 @@ import React, { useState } from "react";
 import { ChevronRight, Search as SearchIcon } from "lucide-react";
 
 /* helpers */
-function IconHintButton({ onClick, label = "Paste to editor" }) {
+function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
   return (
-    <button type="button" onClick={onClick} aria-label={label} className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none">
-      <div className="relative" style={{ width: 12, height: 12 }}>
-        <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[2px] bg-gray-600" />
-        <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-600" />
-      </div>
-    </button>
+    <div className={`relative group ${className}`}>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={label}
+        className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none"
+      >
+        <img src="/assets/copy.svg" width={size} height={size} alt="Paste" />
+      </button>
+      <span className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-75 whitespace-nowrap">
+        {label}
+      </span>
+    </div>
   );
 }
+
 function BadgeScore({ score }) {
   const tone = score >= 15 ? "bg-amber-50 text-amber-700 border-amber-200" : score >= 10 ? "bg-gray-100 text-gray-700 border-gray-200" : "bg-emerald-50 text-emerald-700 border-emerald-200";
   return <span className={`inline-flex h-7 min-w-[32px] items-center justify-center rounded-md border px-1 text-[12px] font-semibold ${tone}`}>{score}</span>;

@@ -1,17 +1,21 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight, ChevronRight, X, Search as SearchIcon } from "lucide-react";
 
 /* helpers */
 function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
   return (
     <div className={`relative group ${className}`}>
-      <button type="button" onClick={onClick} aria-label={label} className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none">
-        <div style={{ width: size, height: size }} className="relative">
-          <div className="absolute inset-x-0 top-1/2 -translate-y-1/2 h-[2px] bg-gray-600" />
-          <div className="absolute inset-y-0 left-1/2 -translate-x-1/2 w-[2px] bg-gray-600" />
-        </div>
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={label}
+        className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none"
+      >
+        {/* next/image instead of <img> to satisfy @next/next/no-img-element */}
+        <Image src="/assets/copy.svg" width={size} height={size} alt="Paste" />
       </button>
       <span className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-75 whitespace-nowrap">
         {label}
@@ -50,17 +54,25 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
         <SearchIcon size={13} className="absolute left-2.5 top-2.5 text-gray-400" />
       </div>
       <select value={tail} onChange={(e) => onTail(e.target.value)} className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-700">
-        <option>Long tail</option><option>Short tail</option><option>Exact</option>
+        <option>Long tail</option>
+        <option>Short tail</option>
+        <option>Exact</option>
       </select>
       <select value={status} onChange={(e) => onStatus(e.target.value)} className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-700">
-        <option>All Status</option><option>Good</option><option>Needs Fix</option>
+        <option>All Status</option>
+        <option>Good</option>
+        <option>Needs Fix</option>
       </select>
     </div>
   );
 }
 
 function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onPaste }) {
-  const toneMap = { green: "bg-emerald-50 text-emerald-700 border-emerald-200", amber: "bg-amber-50 text-amber-700 border-amber-200", gray: "bg-gray-100 text-gray-700 border-gray-200" };
+  const toneMap = {
+    green: "bg-emerald-50 text-emerald-700 border-emerald-200",
+    amber: "bg-amber-50 text-amber-700 border-amber-200",
+    gray: "bg-gray-100 text-gray-700 border-gray-200",
+  };
   const barMap = { green: "bg-emerald-500", amber: "bg-amber-500", gray: "bg-gray-300" };
   return (
     <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -76,7 +88,12 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
           </div>
         </div>
         <div className="flex items-center gap-2">
-          <IconHintButton onClick={(e) => { e.stopPropagation(); onPaste?.(); }} />
+          <IconHintButton
+            onClick={(e) => {
+              e.stopPropagation();
+              onPaste?.();
+            }}
+          />
           <ChevronRight size={18} className="text-gray-400" />
         </div>
       </button>
@@ -91,7 +108,9 @@ function DrawerHeader({ title, onClose, countText }) {
         <div className="text-[13px] font-semibold text-gray-800">{title}</div>
         {countText ? <div className="text-[11px] text-gray-500 mt-0.5">{countText}</div> : null}
       </div>
-      <button onClick={onClose} className="text-gray-400 hover:text-gray-600"><X size={16} /></button>
+      <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+        <X size={16} />
+      </button>
     </div>
   );
 }
@@ -99,7 +118,7 @@ function DrawerHeader({ title, onClose, countText }) {
 function StatTriplet({ mine, avg, results }) {
   return (
     <div className="mt-3 grid grid-cols-3 gap-2">
-      {[[ "MY MENTION", mine ],[ "AVG. MENTIONS", avg ],[ "SEARCH RESULTS", results ]].map(([label,value]) => (
+      {[["MY MENTION", mine], ["AVG. MENTIONS", avg], ["SEARCH RESULTS", results]].map(([label, value]) => (
         <div key={label} className="rounded-xl border border-gray-200 bg-white px-3 py-2">
           <div className="text-[10px] text-gray-500">{label}</div>
           <div className="text-[16px] font-semibold text-gray-800 mt-0.5">{value}</div>
@@ -120,7 +139,11 @@ function SourceCard({ url, title, snippet }) {
           <ChevronRight size={16} className={`text-gray-400 transition-transform ${open ? "rotate-90" : ""}`} />
         </div>
       </button>
-      {open && (<div className="px-3.5 pb-3 -mt-1 text-[12px] text-gray-600"><p className="leading-6">{snippet ?? "…"}</p></div>)}
+      {open && (
+        <div className="px-3.5 pb-3 -mt-1 text-[12px] text-gray-600">
+          <p className="leading-6">{snippet ?? "…"}</p>
+        </div>
+      )}
     </div>
   );
 }
@@ -131,12 +154,15 @@ export default function SeoAdvancedOptimize({ onPasteToEditor }) {
   const [tailType, setTailType] = useState("Long tail");
   const [statusFilter, setStatusFilter] = useState("All Status");
 
-  const cards = useMemo(() => [
-    { title: "Content Marketing", badge: "4/3", progress: 92, source: 15, tone: "green" },
-    { title: "Strategies", badge: "2/4", progress: 58, source: 5, tone: "amber" },
-    { title: "Link Readability", badge: "1/3", progress: 35, source: 15, tone: "gray" },
-    { title: "Title Readability", badge: "3/3", progress: 90, source: 15, tone: "green" },
-  ], []);
+  const cards = useMemo(
+    () => [
+      { title: "Content Marketing", badge: "4/3", progress: 92, source: 15, tone: "green" },
+      { title: "Strategies", badge: "2/4", progress: 58, source: 5, tone: "amber" },
+      { title: "Link Readability", badge: "1/3", progress: 35, source: 15, tone: "gray" },
+      { title: "Title Readability", badge: "3/3", progress: 90, source: 15, tone: "green" },
+    ],
+    []
+  );
 
   return (
     <>
