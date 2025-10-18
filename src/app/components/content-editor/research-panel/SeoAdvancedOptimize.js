@@ -4,7 +4,9 @@ import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight, ChevronRight, X, Search as SearchIcon } from "lucide-react";
 
-/* helpers */
+/* =========================
+   Copy button
+========================= */
 function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
   return (
     <div className={`relative group ${className}`}>
@@ -12,25 +14,36 @@ function IconHintButton({ onClick, label = "Paste to editor", size = 12, classNa
         type="button"
         onClick={onClick}
         aria-label={label}
-        className="grid place-items-center h-7 w-7 rounded-md border border-gray-200 bg-white/90 text-gray-600 shadow-sm hover:bg-gray-50 focus:outline-none"
+        className="grid place-items-center h-8 w-8 rounded-md border border-gray-200 bg-white text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none
+                   dark:border-[var(--border)] dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)] dark:hover:bg-[var(--bg-hover)]"
       >
-        <Image src="/assets/copy.svg" width={size} height={size} alt="Paste" />
+        <Image src="/assets/copy.svg" width={size} height={size} alt="Paste" className="opacity-80" />
       </button>
-      <span className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity duration-75 whitespace-nowrap">
+      <span
+        className="pointer-events-none absolute -top-7 right-0 rounded-md border border-gray-200 bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 transition-opacity duration-100 whitespace-nowrap
+                   group-hover:opacity-100 group-focus-within:opacity-100
+                   dark:border-[var(--border)] dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)]"
+      >
         {label}
       </span>
     </div>
   );
 }
 
+/* =========================
+   KPI chip
+========================= */
 function KPI({ label, value, delta, up }) {
   const Icon = up ? ArrowUpRight : ArrowDownRight;
-  const tone = up ? "text-emerald-600" : "text-rose-600";
+  const tone = up
+    ? "text-emerald-600 dark:text-emerald-400"
+    : "text-rose-600 dark:text-rose-400";
   return (
-    <div className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2">
-      <div className="text-[10px] text-gray-500">{label}</div>
+    <div className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2
+                    dark:border-[var(--border)] dark:bg-[var(--bg-panel)]">
+      <div className="text-[10px] text-gray-500 dark:text-[var(--muted)]">{label}</div>
       <div className="mt-1 flex items-center gap-2">
-        <div className="text-[16px] font-semibold text-gray-800">{value}</div>
+        <div className="text-[16px] font-semibold text-gray-900 dark:text-[var(--text-primary)]">{value}</div>
         <span className={`inline-flex items-center gap-0.5 text-[10px] ${tone}`}>
           <Icon size={13} />
           {delta}
@@ -40,6 +53,9 @@ function KPI({ label, value, delta, up }) {
   );
 }
 
+/* =========================
+   Filter bar
+========================= */
 function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
   return (
     <div className="mt-3 flex items-center gap-2">
@@ -48,16 +64,28 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
           value={kw}
           onChange={(e) => onKw(e.target.value)}
           placeholder="Filter by keywords"
-          className="w-full h-9 rounded-lg border border-gray-200 bg-white px-8 text-[12px] outline-none focus:border-blue-300"
+          className="w-full h-9 rounded-lg border border-gray-200 bg-white px-8 text-[12px] text-gray-800 outline-none focus:border-amber-400
+                     placeholder-gray-400
+                     dark:border-[var(--border)] dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)] dark:placeholder-[var(--muted)]"
         />
-        <SearchIcon size={13} className="absolute left-2.5 top-2.5 text-gray-400" />
+        <SearchIcon size={13} className="absolute left-2.5 top-2.5 text-gray-400 dark:text-[var(--muted)]" />
       </div>
-      <select value={tail} onChange={(e) => onTail(e.target.value)} className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-700">
+      <select
+        value={tail}
+        onChange={(e) => onTail(e.target.value)}
+        className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-800
+                   dark:border-[var(--border)] dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)]"
+      >
         <option>Long tail</option>
         <option>Short tail</option>
         <option>Exact</option>
       </select>
-      <select value={status} onChange={(e) => onStatus(e.target.value)} className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-700">
+      <select
+        value={status}
+        onChange={(e) => onStatus(e.target.value)}
+        className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-800
+                   dark:border-[var(--border)] dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)]"
+      >
         <option>All Status</option>
         <option>Good</option>
         <option>Needs Fix</option>
@@ -66,17 +94,25 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
   );
 }
 
+/* =========================
+   Score card
+========================= */
 function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onPaste }) {
   const toneMap = {
-    green: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    amber: "bg-amber-50 text-amber-700 border-amber-200",
-    gray: "bg-gray-100 text-gray-700 border-gray-200",
+    green: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/25 dark:text-emerald-300 dark:border-emerald-700/60",
+    amber: "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/25 dark:text-amber-300 dark:border-amber-700/60",
+    gray:  "bg-gray-100 text-gray-700 border-gray-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700",
   };
-  const barMap = { green: "bg-emerald-500", amber: "bg-amber-500", gray: "bg-gray-300" };
+  const barMap = {
+    green: "bg-emerald-500 dark:bg-emerald-400",
+    amber: "bg-amber-500 dark:bg-amber-400",
+    gray:  "bg-gray-300 dark:bg-neutral-600",
+  };
 
-  // NOTE: outer element changed from <button> to <div role="button"> to avoid nested <button>
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-sm">
+    <div className="rounded-xl border border-gray-200 bg-white shadow-sm
+                    dark:border-[var(--border)] dark:bg-[var(--bg-panel)]">
+      {/* role=button to avoid nested <button> */}
       <div
         role="button"
         tabIndex={0}
@@ -87,18 +123,21 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
             onOpen?.();
           }
         }}
-        className="w-full px-3.5 py-3 flex items-start gap-3 cursor-pointer select-none focus:outline-none"
+        className="w-full px-3.5 py-3 flex items-start gap-3 cursor-pointer select-none focus:outline-none
+                   hover:bg-gray-50 dark:hover:bg-[var(--bg-hover)]"
       >
         <span className={`text-[10px] px-2 py-0.5 border rounded-full font-semibold ${toneMap[tone]}`}>{badge}</span>
+
         <div className="min-w-0 flex-1 text-left">
           <div className="flex items-center gap-2">
-            <div className="text-[13px] font-semibold text-gray-800">{title}</div>
-            <span className="text-[10px] text-gray-500">Source: {source}</span>
+            <div className="text-[13px] font-semibold text-gray-900 dark:text-[var(--text-primary)]">{title}</div>
+            <span className="text-[10px] text-gray-500 dark:text-[var(--muted)]">Source: {source}</span>
           </div>
-          <div className="mt-2 h-1.5 w-full rounded-full bg-gray-100">
+          <div className="mt-2 h-1.5 w-full rounded-full bg-gray-100 dark:bg-neutral-800">
             <div className={`h-1.5 rounded-full ${barMap[tone]}`} style={{ width: `${progress}%` }} />
           </div>
         </div>
+
         <div className="flex items-center gap-2">
           <IconHintButton
             onClick={(e) => {
@@ -106,21 +145,24 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
               onPaste?.();
             }}
           />
-          <ChevronRight size={18} className="text-gray-400" />
+          <ChevronRight size={18} className="text-gray-400 dark:text-[var(--muted)]" />
         </div>
       </div>
     </div>
   );
 }
 
+/* =========================
+   Drawer bits
+========================= */
 function DrawerHeader({ title, onClose, countText }) {
   return (
     <div className="flex items-start justify-between">
       <div>
-        <div className="text-[13px] font-semibold text-gray-800">{title}</div>
-        {countText ? <div className="text-[11px] text-gray-500 mt-0.5">{countText}</div> : null}
+        <div className="text-[13px] font-semibold text-gray-900 dark:text-[var(--text-primary)]">{title}</div>
+        {countText ? <div className="text-[11px] text-gray-500 dark:text-[var(--muted)] mt-0.5">{countText}</div> : null}
       </div>
-      <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
+      <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:text-[var(--muted)] dark:hover:text-[var(--text-primary)]">
         <X size={16} />
       </button>
     </div>
@@ -130,10 +172,18 @@ function DrawerHeader({ title, onClose, countText }) {
 function StatTriplet({ mine, avg, results }) {
   return (
     <div className="mt-3 grid grid-cols-3 gap-2">
-      {[["MY MENTION", mine], ["AVG. MENTIONS", avg], ["SEARCH RESULTS", results]].map(([label, value]) => (
-        <div key={label} className="rounded-xl border border-gray-200 bg-white px-3 py-2">
-          <div className="text-[10px] text-gray-500">{label}</div>
-          <div className="text-[16px] font-semibold text-gray-800 mt-0.5">{value}</div>
+      {[
+        ["MY MENTION", mine],
+        ["AVG. MENTIONS", avg],
+        ["SEARCH RESULTS", results],
+      ].map(([label, value]) => (
+        <div
+          key={label}
+          className="rounded-xl border border-gray-200 bg-white px-3 py-2
+                     dark:border-[var(--border)] dark:bg-[var(--bg-panel)]"
+        >
+          <div className="text-[10px] text-gray-500 dark:text-[var(--muted)]">{label}</div>
+          <div className="text-[16px] font-semibold text-gray-900 dark:text-[var(--text-primary)] mt-0.5">{value}</div>
         </div>
       ))}
     </div>
@@ -143,16 +193,28 @@ function StatTriplet({ mine, avg, results }) {
 function SourceCard({ url, title, snippet }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className={`rounded-xl border ${open ? "border-amber-200 bg-amber-50" : "border-gray-200 bg-white"} shadow-sm`}>
-      <button onClick={() => setOpen((s) => !s)} className="w-full px-3.5 py-3 text-left">
-        <div className="text-[11px] text-gray-500 truncate">{url}</div>
+    <div
+      className={`rounded-xl border shadow-sm transition-colors ${
+        open
+          ? "border-amber-200 bg-amber-50 dark:border-amber-700/60 dark:bg-amber-900/20"
+          : "border-gray-200 bg-white dark:border-[var(--border)] dark:bg-[var(--bg-panel)]"
+      }`}
+    >
+      <button
+        onClick={() => setOpen((s) => !s)}
+        className="w-full px-3.5 py-3 text-left rounded-xl hover:bg-gray-50 dark:hover:bg-[var(--bg-hover)]"
+      >
+        <div className="text-[11px] text-gray-500 dark:text-[var(--muted)] truncate">{url}</div>
         <div className="mt-1 flex items-center justify-between gap-2">
-          <div className="text-[13px] font-medium text-gray-800 truncate">{title}</div>
-          <ChevronRight size={16} className={`text-gray-400 transition-transform ${open ? "rotate-90" : ""}`} />
+          <div className="text-[13px] font-medium text-gray-900 dark:text-[var(--text-primary)] truncate">{title}</div>
+          <ChevronRight
+            size={16}
+            className={`text-gray-400 dark:text-[var(--muted)] transition-transform ${open ? "rotate-90" : ""}`}
+          />
         </div>
       </button>
       {open && (
-        <div className="px-3.5 pb-3 -mt-1 text-[12px] text-gray-600">
+        <div className="px-3.5 pb-3 -mt-1 text-[12px] text-gray-700 dark:text-[var(--text)]">
           <p className="leading-6">{snippet ?? "…"}</p>
         </div>
       )}
@@ -160,6 +222,9 @@ function SourceCard({ url, title, snippet }) {
   );
 }
 
+/* =========================
+   Main
+========================= */
 export default function SeoAdvancedOptimize({ onPasteToEditor }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [kwFilter, setKwFilter] = useState("");
@@ -186,7 +251,14 @@ export default function SeoAdvancedOptimize({ onPasteToEditor }) {
             <KPI label="IMAGES" value={3} delta={1} up={true} />
           </div>
 
-          <FilterBar kw={kwFilter} onKw={setKwFilter} tail={tailType} onTail={setTailType} status={statusFilter} onStatus={setStatusFilter} />
+          <FilterBar
+            kw={kwFilter}
+            onKw={setKwFilter}
+            tail={tailType}
+            onTail={setTailType}
+            status={statusFilter}
+            onStatus={setStatusFilter}
+          />
 
           <div className="mt-3 space-y-2">
             {cards.map((c, i) => (
@@ -206,8 +278,15 @@ export default function SeoAdvancedOptimize({ onPasteToEditor }) {
       )}
 
       {drawerOpen && (
-        <div className="mt-1 rounded-2xl border border-gray-200 bg-white p-3">
-          <DrawerHeader title="Title Readability" countText="15 Search result mention this topic" onClose={() => setDrawerOpen(false)} />
+        <div
+          className="mt-1 rounded-2xl border border-gray-200 bg-white p-3
+                     dark:border-[var(--border)] dark:bg-[var(--bg-panel)]"
+        >
+          <DrawerHeader
+            title="Title Readability"
+            countText="15 Search result mention this topic"
+            onClose={() => setDrawerOpen(false)}
+          />
           <StatTriplet mine={2} avg={5} results={3} />
           <div className="mt-3 space-y-2">
             <SourceCard url="https://www.greenleafinsights.com" title="How to start a blog in 10 steps: a beginner’s guide" />

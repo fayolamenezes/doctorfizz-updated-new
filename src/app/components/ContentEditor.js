@@ -2,11 +2,11 @@
 "use client";
 
 import React, { useEffect, useMemo, useState } from "react";
-import CENavbar      from "./content-editor/CE.Navbar";
+import CENavbar       from "./content-editor/CE.Navbar";
 import CEMetricsStrip from "./content-editor/CE.MetricsStrip";
 import CEContentArea  from "./content-editor/CE.ContentArea";
 
-/** Plain-text extractor for a chunk of HTML. */
+/** Extract plain text from HTML */
 function htmlToText(html) {
   if (!html) return "";
   const div = document.createElement("div");
@@ -16,14 +16,14 @@ function htmlToText(html) {
 
 const clamp = (n, a = 0, b = 100) => Math.max(a, Math.min(b, n));
 
-/** Treat whitespace-only or tag-only HTML as blank. */
+/** Detect “empty” HTML that only contains tags or spaces */
 function isBlankHtml(html) {
   if (!html) return true;
   return html.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() === "";
 }
 
 export default function ContentEditor({ data, onBackToDashboard }) {
-  // Defaults for non-empty docs
+  // --- Defaults for new docs ---
   const PRIMARY_KEYWORD = (data?.primaryKeyword || "content marketing").toLowerCase();
   const LSI = useMemo(
     () =>
@@ -62,7 +62,6 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     <p>Use keyword research, internal linking, and on-page SEO. Add clear CTAs, social proof, and objection handling to increase conversions.</p>
   `;
 
-  // If "New document" dispatched a single space, it's truthy and stays blank here.
   const [title, setTitle] = useState(data?.title || "Content Editor : AI in education");
   const [content, setContent] = useState(data?.content || DEFAULT_CONTENT);
 
@@ -79,16 +78,15 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     lsiKeywords: 0,
   });
 
-  // Apply payload when opening from Dashboard card or New doc
+  // --- When loading data from dashboard ---
   useEffect(() => {
     if (!data) return;
     if (data.title) setTitle(data.title);
     if (typeof data.content === "string") setContent(data.content);
   }, [data]);
 
-  // Recompute metrics whenever content changes
+  // --- Recompute metrics whenever content changes ---
   useEffect(() => {
-    // NEW: if the doc is blank, force zeros so nothing shows 100%
     if (isBlankHtml(content)) {
       setMetrics({
         plagiarism: 0,
@@ -104,18 +102,15 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     const words = text.match(/[a-z0-9']+/gi) || [];
     const wordCount = words.length;
 
-    // Primary keyword score — best near ~1.3% density
     const pkEsc = PRIMARY_KEYWORD.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const pkOcc = (text.match(new RegExp(`\\b${pkEsc}\\b`, "gi")) || []).length;
-    const density = pkOcc / Math.max(1, wordCount); // 0..1
+    const density = pkOcc / Math.max(1, wordCount);
     const ideal = 0.013;
     const pkScore = clamp(100 - (Math.abs(density - ideal) / ideal) * 100);
 
-    // LSI coverage
     const lsiHits = LSI.filter((k) => text.includes(k)).length;
     const lsiPct = clamp((lsiHits / Math.max(1, LSI.length)) * 100);
 
-    // Simulated plagiarism
     const uniqueWords = new Set(words).size;
     const uniqueness = uniqueWords / Math.max(1, wordCount);
     const plag = clamp((1 - uniqueness) * 120);
@@ -129,9 +124,10 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     });
   }, [content, PRIMARY_KEYWORD, LSI]);
 
+  // --- Render (theming via CSS variables) ---
   return (
-    <div className="min-h-screen">
-      <main className="bg-[var(--bg-panel)] px-2 py-6 sm:px-1 lg:px-2 xl:px-3">
+    <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300">
+      <main className="bg-[var(--bg-panel)] px-2 py-6 sm:px-1 lg:px-2 xl:px-3 transition-colors duration-300">
         <CENavbar title={title} onBack={onBackToDashboard} onTitleChange={setTitle} />
 
         <CEMetricsStrip
@@ -148,7 +144,6 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           query={query}
           onQueryChange={setQuery}
           onStart={() => {}}
-          /** pass-through so Research Panel reacts to pills + shows live chips */
           seoMode={seoMode}
           metrics={metrics}
           content={content}

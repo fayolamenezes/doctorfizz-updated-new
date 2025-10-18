@@ -21,19 +21,17 @@ const CECanvas = forwardRef(function CECanvas(
   ref
 ) {
   const editorRef = useRef(null);
-
   const savedRangeRef = useRef(null);
   const undoStack = useRef([]);
   const redoStack = useRef([]);
   const seededRef = useRef(false);
-  const lastCommitRef = useRef({ foreColor: null, hiliteColor: null });
   const autosaveTimer = useRef(null);
 
   const AUTOSAVE_MS = 800;
   const AUTOSAVE_KEY = `ce:autosave:${title || "untitled"}`;
 
   /** =========================
-   * Utility: sanitize and emptiness check
+   * Utility: sanitize + blank check
    * ========================= */
   function sanitizeToHtml(input) {
     const str = String(input || "");
@@ -47,7 +45,7 @@ const CECanvas = forwardRef(function CECanvas(
       .join("");
   }
 
-  const isTrulyEmpty = React.useCallback(() => {
+  const isTrulyEmpty = useCallback(() => {
     return (
       String(content || "")
         .replace(/<[^>]*>/g, "")
@@ -144,7 +142,7 @@ const CECanvas = forwardRef(function CECanvas(
   }
 
   /** =========================
-   * Core highlighter (memoized)
+   * Highlighter core
    * ========================= */
   const runHighlights = useCallback(() => {
     if (!highlightEnabled) return;
@@ -155,17 +153,17 @@ const CECanvas = forwardRef(function CECanvas(
     unwrapHighlights(el);
 
     if (primaryKeyword)
-      highlightTerm(el, primaryKeyword, { bg: "rgba(34,197,94,0.28)" });
+      highlightTerm(el, primaryKeyword, { bg: "rgba(34,197,94,0.25)" });
     if (lsiKeywords && lsiKeywords.length)
       lsiKeywords.forEach((kw) =>
-        highlightTerm(el, kw, { bg: "rgba(245,158,11,0.28)" })
+        highlightTerm(el, kw, { bg: "rgba(245,158,11,0.25)" })
       );
 
     restoreSelectionSnapshot();
   }, [highlightEnabled, primaryKeyword, lsiKeywords]);
 
   /** =========================
-   * Autosave + history + sync
+   * Autosave + state sync
    * ========================= */
   function scheduleAutosave(html) {
     if (autosaveTimer.current) clearTimeout(autosaveTimer.current);
@@ -222,7 +220,7 @@ const CECanvas = forwardRef(function CECanvas(
   }, [AUTOSAVE_KEY, isTrulyEmpty, setContent, content, runHighlights]);
 
   /** =========================
-   * External content sync
+   * External sync
    * ========================= */
   useEffect(() => {
     const el = editorRef.current;
@@ -243,7 +241,7 @@ const CECanvas = forwardRef(function CECanvas(
   }));
 
   /** =========================
-   * execCommand (unchanged)
+   * execCommand
    * ========================= */
   function execCommand(cmd, value) {
     const el = editorRef.current;
@@ -255,17 +253,12 @@ const CECanvas = forwardRef(function CECanvas(
       document.execCommand("styleWithCSS", false, true);
     } catch {}
 
-    // simplified to show core structure only
     switch (cmd) {
       case "bold":
       case "italic":
       case "underline":
       case "strikeThrough":
         document.execCommand(cmd, false, null);
-        break;
-      case "undo":
-      case "redo":
-        // handled above
         break;
       default:
         document.execCommand(cmd, false, value);
@@ -279,15 +272,15 @@ const CECanvas = forwardRef(function CECanvas(
 
   return (
     <section
-      className="rounded-b-[12px] border border-t-0 border-[var(--border)] bg-white/70 px-6 md:px-8 py-6"
+      className="rounded-b-[12px] border border-t-0 border-[var(--border)] bg-[var(--bg-panel)] px-6 md:px-8 py-6 transition-colors"
       aria-label="Editor canvas"
     >
-      <h2 className="text-[26px] md:text-[28px] font-bold text-[var(--text-primary)] mb-4">
+      <h2 className="text-[26px] md:text-[28px] font-bold text-[var(--text-primary)] mb-4 transition-colors">
         {title}
       </h2>
 
       {showStarter && (
-        <div className="mb-6 text-[var(--text)]">
+        <div className="mb-6 text-[var(--text)] transition-colors">
           <ul className="space-y-3">
             <li className="flex items-center gap-3 text-[15px]">
               <FileText size={18} className="opacity-70" />
@@ -317,7 +310,7 @@ const CECanvas = forwardRef(function CECanvas(
         ref={editorRef}
         contentEditable
         suppressContentEditableWarning
-        className="min-h-[420px] rounded-md border border-[var(--border)] bg-white px-4 py-4 leading-7 text-[15px] text-[var(--text)] focus:outline-none prose prose-p:my-3 prose-h1:text-2xl prose-h2:text-xl prose-ul:list-disc prose-ul:pl-6"
+        className="min-h-[420px] rounded-md border border-[var(--border)] bg-[var(--bg-panel)] px-4 py-4 leading-7 text-[15px] text-[var(--text-primary)] focus:outline-none prose prose-p:my-3 prose-h1:text-2xl prose-h2:text-xl prose-ul:list-disc prose-ul:pl-6 transition-colors"
         onInput={() => bubble({ pushHistory: true, notifyParent: true })}
         onKeyUp={saveSelectionSnapshot}
         onMouseUp={saveSelectionSnapshot}

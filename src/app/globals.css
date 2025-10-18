@@ -228,3 +228,13 @@ html.dark .slides-accent {
     --brand-gradient: var(--brand-gradient-overlay), var(--brand-gradient-strong);
   }
 }
+
+/* === Exceptions for SeoAdvancedOptimize === */
+.seo-adv .bg-gray-100  { background-color: #f3f4f6 !important; } /* progress track + gray badge */
+.seo-adv .bg-emerald-50{ background-color: #ecfdf5 !important; } /* green badge */
+.seo-adv .bg-amber-50  { background-color: #fef3c7 !important; } /* amber badge */
+
+/* keep card borders/text crisp in light mode inside this component */
+.seo-adv .border-gray-200 { border-color: #e5e7eb !important; }
+.seo-adv .text-gray-900   { color: #111827 !important; }
+.seo-adv .text-gray-700   { color: #374151 !important; }

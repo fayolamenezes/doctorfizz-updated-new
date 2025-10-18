@@ -27,7 +27,7 @@ export default function CEContentArea({
     []
   );
 
-  // Local, live metrics (falls back if parent doesn’t supply)
+  // Local, live metrics (fallback if parent doesn’t supply)
   const [seoMode] = useState(seoModeProp ?? "advanced");
   const [metricsInternal, setMetricsInternal] = useState({
     plagiarism: 0,
@@ -36,9 +36,9 @@ export default function CEContentArea({
     wordTarget: 1480,
     lsiKeywords: 0,
     statuses: {
-      wordCount: { label: "—", color: "text-gray-500" },
-      primaryKeyword: { label: "—", color: "text-gray-500" },
-      lsiKeywords: { label: "—", color: "text-gray-500" },
+      wordCount: { label: "—", color: "text-[var(--muted)]" },
+      primaryKeyword: { label: "—", color: "text-[var(--muted)]" },
+      lsiKeywords: { label: "—", color: "text-[var(--muted)]" },
     },
   });
 
@@ -60,7 +60,7 @@ export default function CEContentArea({
         primaryKeyword: 0,
         lsiKeywords: 0,
         statuses: {
-          wordCount: { label: "Empty", color: "text-gray-500" },
+          wordCount: { label: "Empty", color: "text-[var(--muted)]" },
           primaryKeyword: { label: "Needs Review", color: "text-red-600" },
           lsiKeywords: { label: "Needs Review", color: "text-red-600" },
         },
@@ -102,15 +102,15 @@ export default function CEContentArea({
             : { label: "Needs Review", color: "text-red-600" },
       },
     });
-  }, [content, PRIMARY_KEYWORD, LSI_KEYWORDS]); // metrics logic lives here. 
+  }, [content, PRIMARY_KEYWORD, LSI_KEYWORDS]);
 
   const metrics = metricsProp ?? metricsInternal;
   const effectiveSeoMode = seoModeProp ?? seoMode;
 
   return (
-    <div className="grid grid-cols-[2fr_1fr] items-stretch gap-0 rounded-[18px] overflow-hidden border border-[var(--border)] bg-white/70">
+    <div className="grid grid-cols-[2fr_1fr] items-stretch gap-0 rounded-[18px] overflow-hidden border border-[var(--border)] bg-[var(--bg-panel)] transition-colors">
       {/* LEFT: toolbar + canvas */}
-      <div className="min-w-0">
+      <div className="min-w-0 border-r border-[var(--border)] bg-[var(--bg-panel)] transition-colors">
         <CEToolbar
           activeTab={activeTab}
           onTabChange={onTabChange}
@@ -118,20 +118,21 @@ export default function CEContentArea({
           editorRef={editorRef}
         />
 
-        <CECanvas
-          ref={editorRef}
-          title={title}
-          content={content}
-          setContent={setContent}
-          primaryKeyword={PRIMARY_KEYWORD}
-          lsiKeywords={LSI_KEYWORDS}
-          highlightEnabled
-        />
-        {/* ⛔️ Removed the inline “📝/🎯/🔑” summary block that was here.  */}
+        <div className="bg-[var(--bg-panel)] transition-colors">
+          <CECanvas
+            ref={editorRef}
+            title={title}
+            content={content}
+            setContent={setContent}
+            primaryKeyword={PRIMARY_KEYWORD}
+            lsiKeywords={LSI_KEYWORDS}
+            highlightEnabled
+          />
+        </div>
       </div>
 
       {/* RIGHT: research panel */}
-      <div className="min-w-[320px]">
+      <div className="min-w-[320px] border-l border-[var(--border)] bg-[var(--bg-panel)] transition-colors">
         <CEResearchPanel
           query={query}
           onQueryChange={onQueryChange}

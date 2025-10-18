@@ -24,7 +24,7 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
   const noFocus = (e) => e.preventDefault();
 
   // Memoize exec so hooks depending on it stay stable (fixes exhaustive-deps)
-  const exec = React.useCallback(
+  const exec = useCallback(
     (cmd, val) => editorRef?.current?.exec?.(cmd, val),
     [editorRef]
   );
@@ -52,7 +52,7 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
     const onInput = (e) => { lastVal = e.target.value; }; // no exec here
     const onChange = (e) => {
       // Commit exactly once when the picker is closed/confirmed.
-      exec("saveSelection");               // ensure selection is restored
+      exec("saveSelection");
       exec(command, lastVal || e.target.value);
       setTextPaletteOpen(false);
       setHilitePaletteOpen(false);
@@ -78,7 +78,9 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
       <button
         onClick={() => onTabChange?.(id)}
         className={`h-[34px] px-3 text-[13px] border-b-2 -mb-px transition-colors ${
-          is ? "border-black text-black font-medium" : "border-transparent text-gray-500 hover:text-black"
+          is
+            ? "border-black text-black font-medium"
+            : "border-transparent text-gray-500 hover:text-black"
         }`}
       >
         {children}
@@ -91,7 +93,7 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
       title={title}
       onMouseDown={noFocus}
       onClick={onClick}
-      className="h-7 w-7 grid place-items-center rounded hover:bg-gray-100 text-gray-700"
+      className="h-7 w-7 grid place-items-center rounded hover:bg-gray-100 text-gray-700 transition-colors"
     >
       {children}
     </button>
@@ -124,7 +126,7 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
   const Palette = ({ title, colors, onPick, onCustom }) => (
     <div
       ref={popoverRef}
-      className="absolute z-50 mt-1 rounded-xl border border-[var(--border)] bg-white shadow-lg p-3"
+      className="absolute z-50 mt-1 rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] shadow-lg p-3 transition-colors"
       style={{ width: 224 }}
     >
       <div className="grid grid-cols-8 gap-2 mb-2">
@@ -154,7 +156,7 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
   };
 
   return (
-    <div className="w-full bg-white/70 border border-[var(--border)] border-b-0 border-r-0 rounded-tl-[12px]">
+    <div className="w-full bg-[var(--bg-panel)] border border-[var(--border)] border-b-0 border-r-0 rounded-tl-[12px] transition-colors">
       {/* Tabs Row */}
       <div className="flex items-center justify-between px-2 pt-[3px]">
         <div className="flex items-center gap-1">
@@ -170,7 +172,7 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
       </div>
 
       {/* Actions Row */}
-      <div className="flex items-center gap-[2px] px-2 py-[3px] border-t border-[var(--border)] bg-white/70 relative">
+      <div className="flex items-center gap-[2px] px-2 py-[3px] border-t border-[var(--border)] bg-[var(--bg-panel)] relative transition-colors">
         <IconBtn title="Undo" onClick={() => exec("undo")}><Undo2 size={14} /></IconBtn>
         <IconBtn title="Redo" onClick={() => exec("redo")}><Redo2 size={14} /></IconBtn>
 
@@ -179,17 +181,17 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
         {/* Heading */}
         <div className="relative">
           <button
-            className="px-2 h-7 rounded border border-[var(--border)] text-[13px] hover:bg-gray-100 inline-flex items-center gap-1"
+            className="px-2 h-7 rounded border border-[var(--border)] text-[13px] hover:bg-gray-100 inline-flex items-center gap-1 transition-colors"
             onMouseDown={noFocus}
             onClick={() => {
-              exec("saveSelection");       // save selection before opening
+              exec("saveSelection");
               setHeadOpen((s) => !s);
             }}
           >
             Heading 3 <ChevronDown size={12} />
           </button>
           {headOpen && (
-            <div className="absolute z-40 mt-1 min-w-[150px] rounded-md border border-[var(--border)] bg-white shadow-sm">
+            <div className="absolute z-40 mt-1 min-w-[150px] rounded-md border border-[var(--border)] bg-[var(--bg-panel)] shadow-sm transition-colors">
               {[
                 { label: "Paragraph", block: "p" },
                 { label: "Heading 1", block: "h1" },
@@ -279,14 +281,14 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
         {/* Insert */}
         <div className="relative">
           <button
-            className="px-2 h-7 rounded border border-[var(--border)] text-[13px] hover:bg-gray-100 inline-flex items-center gap-1"
+            className="px-2 h-7 rounded border border-[var(--border)] text-[13px] hover:bg-gray-100 inline-flex items-center gap-1 transition-colors"
             onMouseDown={noFocus}
             onClick={() => setInsOpen((s) => !s)}
           >
             Insert <ChevronDown size={12} />
           </button>
           {insOpen && (
-            <div className="absolute z-40 mt-1 min-w=[160px] rounded-md border border-[var(--border)] bg-white shadow-sm">
+            <div className="absolute z-40 mt-1 min-w=[160px] rounded-md border border-[var(--border)] bg-[var(--bg-panel)] shadow-sm transition-colors">
               <button className="w-full text-left px-3 py-1.5 text-[13px] hover:bg-gray-100"
                 onMouseDown={noFocus} onClick={() => { exec("insertHorizontalRule"); setInsOpen(false); }}>
                 Horizontal Rule
@@ -311,12 +313,12 @@ export default function CEToolbar({ activeTab, onTabChange, lastEdited, editorRe
             title="Text size"
             onMouseDown={noFocus}
             onClick={() => setSizeOpen((s) => !s)}
-            className="ml-1 h-7 px-1.5 rounded hover:bg-gray-100 text-gray-700 text-[12px] font-medium inline-flex items-center gap-1"
+            className="ml-1 h-7 px-1.5 rounded hover:bg-gray-100 text-gray-700 text-[12px] font-medium inline-flex items-center gap-1 transition-colors"
           >
             T<span className="text-[10px] align-super">x</span> <ChevronDown size={12} />
           </button>
           {sizeOpen && (
-            <div className="absolute z-40 mt-1 min-w-[130px] rounded-md border border-[var(--border)] bg-white shadow-sm p-1">
+            <div className="absolute z-40 mt-1 min-w-[130px] rounded-md border border-[var(--border)] bg-[var(--bg-panel)] shadow-sm p-1 transition-colors">
               {[12, 14, 16, 18, 20, 24].map((px) => (
                 <button key={px} className="w-full text-left px-3 py-1.5 text-[13px] hover:bg-gray-100"
                   onMouseDown={noFocus} onClick={() => { exec("fontSizePx", px); setSizeOpen(false); }}>
