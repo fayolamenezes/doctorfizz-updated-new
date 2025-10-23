@@ -4,9 +4,6 @@ import React, { useMemo, useState } from "react";
 import Image from "next/image";
 import { ArrowUpRight, ArrowDownRight, ChevronRight, X, Search as SearchIcon } from "lucide-react";
 
-/* =========================
-   Copy button
-========================= */
 function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
   return (
     <div className={`relative group ${className}`}>
@@ -30,14 +27,9 @@ function IconHintButton({ onClick, label = "Paste to editor", size = 12, classNa
   );
 }
 
-/* =========================
-   KPI chip
-========================= */
 function KPI({ label, value, delta, up }) {
   const Icon = up ? ArrowUpRight : ArrowDownRight;
-  const tone = up
-    ? "text-emerald-600 dark:text-emerald-400"
-    : "text-rose-600 dark:text-rose-400";
+  const tone = up ? "text-emerald-600 dark:text-emerald-400" : "text-rose-600 dark:text-rose-400";
   return (
     <div className="flex-1 rounded-xl border border-gray-200 bg-white px-3 py-2
                     dark:border-[var(--border)] dark:bg-[var(--bg-panel)]">
@@ -53,9 +45,6 @@ function KPI({ label, value, delta, up }) {
   );
 }
 
-/* =========================
-   Filter bar
-========================= */
 function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
   return (
     <div className="mt-3 flex items-center gap-2">
@@ -76,6 +65,7 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
         className="h-9 rounded-lg border border-gray-200 bg-white px-2 text-[11px] text-gray-800
                    dark:border-[var(--border)] dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)]"
       >
+        <option>All</option>
         <option>Long tail</option>
         <option>Short tail</option>
         <option>Exact</option>
@@ -94,9 +84,6 @@ function FilterBar({ kw, onKw, tail, onTail, status, onStatus }) {
   );
 }
 
-/* =========================
-   Score card
-========================= */
 function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onPaste }) {
   const toneMap = {
     green: "bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/25 dark:text-emerald-300 dark:border-emerald-700/60",
@@ -112,7 +99,6 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
   return (
     <div className="rounded-xl border border-gray-200 bg-white shadow-sm
                     dark:border-[var(--border)] dark:bg-[var(--bg-panel)]">
-      {/* role=button to avoid nested <button> */}
       <div
         role="button"
         tabIndex={0}
@@ -152,9 +138,6 @@ function ScoreCard({ title, badge, progress, source, tone = "green", onOpen, onP
   );
 }
 
-/* =========================
-   Drawer bits
-========================= */
 function DrawerHeader({ title, onClose, countText }) {
   return (
     <div className="flex items-start justify-between">
@@ -222,24 +205,32 @@ function SourceCard({ url, title, snippet }) {
   );
 }
 
-/* =========================
-   Main
-========================= */
 export default function SeoAdvancedOptimize({ onPasteToEditor }) {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState(null);
   const [kwFilter, setKwFilter] = useState("");
-  const [tailType, setTailType] = useState("Long tail");
+  const [tailType, setTailType] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All Status");
 
   const cards = useMemo(
     () => [
-      { title: "Content Marketing", badge: "4/3", progress: 92, source: 15, tone: "green" },
-      { title: "Strategies", badge: "2/4", progress: 58, source: 5, tone: "amber" },
-      { title: "Link Readability", badge: "1/3", progress: 35, source: 15, tone: "gray" },
-      { title: "Title Readability", badge: "3/3", progress: 90, source: 15, tone: "green" },
+      { title: "Content Marketing", badge: "4/3", progress: 92, source: 15, tone: "green", status: "Good",      tail: "Short tail" },
+      { title: "Strategies",        badge: "2/4", progress: 58, source: 5,  tone: "amber", status: "Needs Fix", tail: "Long tail" },
+      { title: "Link Readability",  badge: "1/3", progress: 35, source: 15, tone: "gray",  status: "Needs Fix", tail: "Exact"     },
+      { title: "Title Readability", badge: "3/3", progress: 90, source: 15, tone: "green", status: "Good",      tail: "Short tail" },
     ],
     []
   );
+
+  const filtered = useMemo(() => {
+    const kw = kwFilter.trim().toLowerCase();
+    return cards.filter((c) => {
+      const kwOk = !kw || c.title.toLowerCase().includes(kw);
+      const tailOk = tailType === "All" || c.tail === tailType;
+      const statusOk = statusFilter === "All Status" || (c.status || "").toLowerCase() === statusFilter.toLowerCase();
+      return kwOk && tailOk && statusOk;
+    });
+  }, [cards, kwFilter, tailType, statusFilter]);
 
   return (
     <>
@@ -261,18 +252,27 @@ export default function SeoAdvancedOptimize({ onPasteToEditor }) {
           />
 
           <div className="mt-3 space-y-2">
-            {cards.map((c, i) => (
+            {filtered.map((c, i) => (
               <ScoreCard
-                key={i}
+                key={`${c.title}-${i}`}
                 title={c.title}
                 badge={c.badge}
                 progress={c.progress}
                 source={c.source}
                 tone={c.tone}
-                onOpen={() => setDrawerOpen(true)}
+                onOpen={() => {
+                  setSelectedCard(c);
+                  setDrawerOpen(true);
+                }}
                 onPaste={() => onPasteToEditor?.(c.title)}
               />
             ))}
+
+            {filtered.length === 0 && (
+              <div className="text-[12px] text-gray-500 dark:text-[var(--muted)] px-1 py-2">
+                No items match the current filters.
+              </div>
+            )}
           </div>
         </>
       )}
@@ -283,9 +283,12 @@ export default function SeoAdvancedOptimize({ onPasteToEditor }) {
                      dark:border-[var(--border)] dark:bg-[var(--bg-panel)]"
         >
           <DrawerHeader
-            title="Title Readability"
+            title={selectedCard?.title || "Title Readability"}
             countText="15 Search result mention this topic"
-            onClose={() => setDrawerOpen(false)}
+            onClose={() => {
+              setDrawerOpen(false);
+              setSelectedCard(null);
+            }}
           />
           <StatTriplet mine={2} avg={5} results={3} />
           <div className="mt-3 space-y-2">

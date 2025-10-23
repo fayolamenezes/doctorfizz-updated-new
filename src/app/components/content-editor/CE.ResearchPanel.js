@@ -1,6 +1,7 @@
+// components/content-editor/CE.ResearchPanel.js
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   WandSparkles,
   Link as LinkIcon,
@@ -22,8 +23,22 @@ const TABS = [
   { key: "links", label: "Links", icon: LinkIcon },
   { key: "faqs", label: "FAQ’s", icon: HelpCircle },
   { key: "research", label: "Research", icon: FlaskConical },
-  // ⬅️ No "details" tab here — it's controlled by the Metrics Strip pill (seoMode === "details")
+  // "details" is controlled by the Metrics Strip (seoMode === "details")
 ];
+
+// helpers
+const norm = (s) =>
+  String(s || "")
+    .toLowerCase()
+    .replace(/\s+/g, " ")
+    .trim();
+
+function pickPagesFromConfig(json) {
+  // Supports both { pages: [...] } and bare array [...]
+  if (Array.isArray(json?.pages)) return json.pages;
+  if (Array.isArray(json)) return json;
+  return [];
+}
 
 export default function CEResearchPanel({
   query = "",
@@ -37,6 +52,66 @@ export default function CEResearchPanel({
 }) {
   const [phase, setPhase] = useState("idle"); // idle | searching | results
   const [tab, setTab] = useState("opt"); // opt | links | faqs | research
+  const [cfgLoading, setCfgLoading] = useState(false);
+  const [cfgError, setCfgError] = useState(null);
+  const [pages, setPages] = useState([]);
+
+  // Fetch /data/contenteditor.json (read-only)
+  useEffect(() => {
+    let mounted = true;
+    (async () => {
+      try {
+        setCfgLoading(true);
+        setCfgError(null);
+        const res = await fetch("/data/contenteditor.json", { cache: "no-store" });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const json = await res.json();
+        if (!mounted) return;
+        setPages(pickPagesFromConfig(json));
+      } catch (e) {
+        if (!mounted) return;
+        setCfgError(String(e));
+      } finally {
+        if (mounted) setCfgLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
+  // Pick current page by matching live query → primaryKeyword, else ui.query, else first
+  const currentPage = useMemo(() => {
+    if (!pages.length) return null;
+    const q = norm(query);
+    const byPK = pages.find((p) => norm(p?.primaryKeyword) === q);
+    if (byPK) return byPK;
+    const byUI = pages.find((p) => norm(p?.ui?.query) === q);
+    if (byUI) return byUI;
+    return pages[0];
+  }, [pages, query]);
+
+  // Map to your JSON shapes:
+  // - Basics: page.seoBasics
+  // - Optimize: page.advanced.optimize
+  // - Links: page.linksTab.external (internal not present in your JSON; we pass [])
+  // - FAQs: page.faqs.{serp, peopleAlsoAsk, quora, reddit}
+  // - Details: page.details (passed only to SeoDetails)
+  const basicsData = currentPage?.seoBasics || null;
+  const optimizeData = currentPage?.advanced?.optimize || null;
+  const linksExternal = currentPage?.linksTab?.external || [];
+  const linksInternal = currentPage?.linksTab?.internal || []; // usually not present; safe default
+  const faqs = currentPage?.faqs || {
+    serp: [],
+    peopleAlsoAsk: [],
+    quora: [],
+    reddit: [],
+  };
+  const detailsData = currentPage?.details || null;
+
+  // Optional extra fields for the "Research" tab if you add them later
+  const outline = currentPage?.research?.outline || [];
+  const competitors = currentPage?.research?.competitors || [];
 
   // Gate: only after a non-empty query AND Basics has started (searching/results)
   const canAccess = !!query?.trim() && (phase === "searching" || phase === "results");
@@ -52,6 +127,10 @@ export default function CEResearchPanel({
         onPasteToEditor={onPasteToEditor}
         phase={phase}
         setPhase={setPhase}
+        currentPage={currentPage}
+        cfgLoading={cfgLoading}
+        cfgError={cfgError}
+        basicsData={basicsData}
       />
     );
   }
@@ -74,7 +153,13 @@ export default function CEResearchPanel({
         </aside>
       );
     }
-    return <SeoDetails onPasteToEditor={onPasteToEditor} />;
+    return (
+      <SeoDetails
+        onPasteToEditor={onPasteToEditor}
+        currentPage={currentPage}
+        detailsData={detailsData}
+      />
+    );
   }
 
   // ADVANCED mode: Optimize / Links / FAQ’s / Research tabs — disabled until canAccess
@@ -128,16 +213,62 @@ export default function CEResearchPanel({
         </div>
       )}
 
+      {/* Loading/Error states for JSON fetch (advanced view) */}
+      {canAccess && cfgLoading && (
+        <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] px-3 py-2 text-[12px] text-[var(--muted)]">
+          Loading research…
+        </div>
+      )}
+      {canAccess && cfgError && (
+        <div className="rounded-xl border border-rose-300 bg-rose-50/70 dark:bg-rose-950/40 px-3 py-2 text-[12px] text-rose-800 dark:text-rose-200">
+          Failed to load data: {cfgError}
+        </div>
+      )}
+
       {/* Advanced panels (only visible when unlocked) */}
-      {canAccess && (
+      {canAccess && !cfgLoading && !cfgError && (
         <>
-          {tab === "opt" && <SeoAdvancedOptimize onPasteToEditor={onPasteToEditor} />}
-          {tab === "links" && <SeoAdvancedLinks onPasteToEditor={onPasteToEditor} />}
-          {tab === "faqs" && <SeoAdvancedFaqs onPasteToEditor={onPasteToEditor} />}
+          {tab === "opt" && (
+            <SeoAdvancedOptimize
+              onPasteToEditor={onPasteToEditor}
+              // mapped from JSON: advanced.optimize
+              optimizeData={optimizeData}
+              currentPage={currentPage}
+              basicsData={basicsData}
+            />
+          )}
+
+          {tab === "links" && (
+            <SeoAdvancedLinks
+              onPasteToEditor={onPasteToEditor}
+              // mapped from JSON: linksTab.external (internal may be empty)
+              linksExternal={linksExternal}
+              linksInternal={linksInternal}
+              currentPage={currentPage}
+            />
+          )}
+
+          {tab === "faqs" && (
+            <SeoAdvancedFaqs
+              onPasteToEditor={onPasteToEditor}
+              // mapped from JSON: faqs.{serp, peopleAlsoAsk, quora, reddit}
+              faqs={faqs}
+              currentPage={currentPage}
+            />
+          )}
+
           {tab === "research" && (
             <SeoAdvancedResearch
               editorContent={editorContent}
               onPasteToEditor={onPasteToEditor}
+              // optional extras if you later add `research` in JSON
+              outline={outline}
+              competitors={competitors}
+              currentPage={currentPage}
+              basicsData={basicsData}
+              optimizeData={optimizeData}
+              linksExternal={linksExternal}
+              faqs={faqs}
             />
           )}
         </>

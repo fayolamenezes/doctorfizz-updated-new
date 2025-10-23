@@ -1,4 +1,4 @@
-
+// app/page.js (or wherever this file lives)
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -88,6 +88,9 @@ export default function Home() {
   // holds payload for editor (null => open empty document)
   const [editorData, setEditorData] = useState(null);
 
+  // NEW: catalog from public/data/contenteditor.json
+  const [catalog, setCatalog] = useState([]);
+
   const infoRef = useRef(null);
 
   // --- NEW: on first load, if URL hash is #editor, land on Content Editor
@@ -96,6 +99,14 @@ export default function Home() {
     if (window.location.hash === "#editor") {
       setCurrentStep("contentEditor");
     }
+  }, []);
+
+  // --- NEW: Load Content Editor catalog once
+  useEffect(() => {
+    fetch("/data/contenteditor.json")
+      .then((r) => r.json())
+      .then(setCatalog)
+      .catch(() => setCatalog([]));
   }, []);
 
   // Sidebar click-outside
@@ -117,8 +128,18 @@ export default function Home() {
   // Listen for custom events to switch between Dashboard and Content Editor
   useEffect(() => {
     const toEditor = (e) => {
-      // e.detail contains payload from Dashboard Start or null from "New document"
-      setEditorData(e?.detail ?? null);
+      // e.detail may be { title } or { domain }, or null (for new doc)
+      const p = e?.detail ?? null;
+      if (!p) {
+        setEditorData(null);
+        setCurrentStep("contentEditor");
+        return;
+      }
+      const match =
+        catalog.find((x) => x.title === p.title) ||
+        catalog.find((x) => x.domain === p.domain) ||
+        null;
+      setEditorData(match ?? p);
       setCurrentStep("contentEditor");
     };
     const toDashboard = () => {
@@ -131,7 +152,7 @@ export default function Home() {
       window.removeEventListener("content-editor:open", toEditor);
       window.removeEventListener("content-editor:back", toDashboard);
     };
-  }, []);
+  }, [catalog]);
 
   // --- NEW: keep the URL hash in sync ONLY for Content Editor
   useEffect(() => {
@@ -241,7 +262,16 @@ export default function Home() {
           <Dashboard
             // Start from a card: pass payload to open editor with content
             onOpenContentEditor={(payload) => {
-              setEditorData(payload ?? null);
+              if (!payload) {
+                setEditorData(null);
+                setCurrentStep("contentEditor");
+                return;
+              }
+              const match =
+                catalog.find((x) => x.title === payload.title) ||
+                catalog.find((x) => x.domain === payload.domain) ||
+                null;
+              setEditorData(match ?? payload);
               setCurrentStep("contentEditor");
             }}
           />

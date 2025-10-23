@@ -1,12 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import Image from "next/image";
-import { ChevronRight, Search as SearchIcon } from "lucide-react";
+import { ChevronRight, Search as SearchIcon, X } from "lucide-react";
 
-/* =========================
-   Copy button (uses tokens)
-========================= */
 function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
   return (
     <div className={`relative group ${className}`}>
@@ -30,11 +27,7 @@ function IconHintButton({ onClick, label = "Paste to editor", size = 12, classNa
   );
 }
 
-/* =========================
-   Rank badge
-========================= */
 function BadgeScore({ score }) {
-  // 3 tones that still read well in dark mode
   const tone =
     score >= 15
       ? "bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-900/25 dark:text-amber-300 dark:border-amber-700/60"
@@ -49,9 +42,6 @@ function BadgeScore({ score }) {
   );
 }
 
-/* =========================
-   Single list row
-========================= */
 function LinkRow({ rankScore, domain, sources, onPaste }) {
   return (
     <div className="rounded-2xl border border-[var(--border)] bg-white shadow-sm
@@ -86,32 +76,46 @@ function LinkRow({ rankScore, domain, sources, onPaste }) {
   );
 }
 
-/* =========================
-   Main
-========================= */
-export default function SeoAdvancedLinks({ onPasteToEditor }) {
+function DrawerHeader({ title, onClose, countText }) {
+  return (
+    <div className="flex items-start justify-between">
+      <div>
+        <div className="text-[13px] font-semibold text-gray-900 dark:text-[var(--text-primary)]">{title}</div>
+        {countText ? <div className="text-[11px] text-gray-500 dark:text-[var(--muted)] mt-0.5">{countText}</div> : null}
+      </div>
+      <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:text-[var(--muted)] dark:hover:text-[var(--text-primary)]">
+        <X size={16} />
+      </button>
+    </div>
+  );
+}
+
+export default function SeoAdvancedLinks({ onPasteToEditor, currentPage, cfgLoading, cfgError }) {
   const [kwFilter, setKwFilter] = useState("");
   const [linkTab, setLinkTab] = useState("external");
 
-  const linkRowsExternal = [
-    { rankScore: 7, domain: "Titlereadability.com", sources: 15 },
-    { rankScore: 16, domain: "Strategiesmaker.com", sources: 5 },
-    { rankScore: 13, domain: "Readabilityskills.gov.in", sources: 15 },
-    { rankScore: 10, domain: "Titlebility.org", sources: 9 },
-  ];
+  const linksData = currentPage?.linksTab || {};
+  const externalRows = Array.isArray(linksData.external) ? linksData.external : [];
+  const internalRows = Array.isArray(linksData.internal) ? linksData.internal : [];
+  const externalTotal = typeof linksData.externalTotal === "number" ? linksData.externalTotal : 786;
 
-  const linkRowsInternal = [
-    { rankScore: 9, domain: "yourdomain.com/blog/content-marketing", sources: 12 },
-    { rankScore: 11, domain: "yourdomain.com/strategy/guide", sources: 7 },
-    { rankScore: 6, domain: "yourdomain.com/resources/tools", sources: 4 },
-  ];
+  const totalDomains = externalRows.length || 19;
+
+  const rows = (linkTab === "external" ? externalRows : internalRows).map((r) => ({
+    rankScore: r.rankScore ?? r.value ?? 0,
+    domain: r.domain ?? r.url ?? "",
+    sources: r.sources ?? r.source ?? 0,
+  }));
+
+  const filtered = rows.filter((r) =>
+    r.domain.toLowerCase().includes(kwFilter.trim().toLowerCase())
+  );
 
   return (
     <div
       className="mt-1 rounded-2xl border border-[var(--border)] bg-white p-4
                  dark:bg-[var(--bg-panel)]"
     >
-      {/* Tabs header */}
       <div className="flex items-center gap-6 border-b border-[var(--border)] px-1">
         <button
           onClick={() => setLinkTab("external")}
@@ -135,23 +139,21 @@ export default function SeoAdvancedLinks({ onPasteToEditor }) {
         </button>
       </div>
 
-      {/* Overview card */}
       <div
         className="mt-3 rounded-2xl border border-[var(--border)] bg-gray-100/80 px-4 py-3
                    text-gray-800 shadow-inner
                    dark:bg-[var(--bg-hover)] dark:text-[var(--text-primary)]"
       >
-        <div className="text-[28px] leading-7 font-extrabold">786</div>
+        <div className="text-[28px] leading-7 font-extrabold">{externalTotal}</div>
         <div className="text-[12px] mt-0.5 text-gray-600 dark:text-[var(--muted)]">
           Number of External Links
         </div>
         <div className="text-[12px] mt-1 text-gray-600 dark:text-[var(--muted)]">
           Top search results link to pages from{" "}
-          <span className="font-semibold text-gray-900 dark:text-[var(--text-primary)]">19 domains</span>
+          <span className="font-semibold text-gray-900 dark:text-[var(--text-primary)]">{totalDomains} domains</span>
         </div>
       </div>
 
-      {/* Filter */}
       <div className="relative mt-3">
         <input
           className="w-full h-10 rounded-xl border border-[var(--border)] bg-white px-9 text-[13px] text-gray-800 placeholder-gray-400 outline-none focus:border-amber-400
@@ -163,13 +165,17 @@ export default function SeoAdvancedLinks({ onPasteToEditor }) {
         <SearchIcon size={14} className="absolute left-3 top-[11px] text-gray-400 dark:text-[var(--muted)]" />
       </div>
 
-      {/* List */}
       <div className="mt-3 space-y-3">
-        {(linkTab === "external" ? linkRowsExternal : linkRowsInternal)
-          .filter((r) => r.domain.toLowerCase().includes(kwFilter.toLowerCase()))
-          .map((r, idx) => (
-            <LinkRow key={idx} {...r} onPaste={(text) => onPasteToEditor?.(text)} />
-          ))}
+        {cfgLoading && <div className="text-[12px] text-gray-500 dark:text-[var(--muted)]">Loading link data…</div>}
+        {cfgError && <div className="text-[12px] text-rose-600">Failed to load: {cfgError}</div>}
+        {!cfgLoading && !cfgError && filtered.map((r, idx) => (
+          <LinkRow key={idx} {...r} onPaste={(text) => onPasteToEditor?.(text)} />
+        ))}
+        {!cfgLoading && !cfgError && filtered.length === 0 && (
+          <div className="text-[12px] text-gray-500 dark:text-[var(--muted)] px-1 py-2">
+            No links match the current filter.
+          </div>
+        )}
       </div>
     </div>
   );

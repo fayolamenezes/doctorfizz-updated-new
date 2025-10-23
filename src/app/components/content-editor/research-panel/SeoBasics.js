@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Settings,
   Loader2,
@@ -144,13 +144,35 @@ export default function SeoBasics({
   onPasteToEditor,
   phase,
   setPhase,
+  /* injected by CE.ResearchPanel */
+  currentPage,
+  cfgLoading,
+  cfgError,
+  basicsData, // ← currentPage?.seoBasics from JSON
 }) {
-  const SEARCH_STEPS = [
-    "Exploring effective content marketing strategies to enhance your brand’s reach and engagement.",
-    "The Focus Keyword was used in the SEO Meta description.",
-    "The Focus Keyword was used in the URL.",
-    "The Focus Keyword appears in the first 10% of the content…..",
-  ];
+  // Fallbacks in case JSON is missing pieces
+  const safeBasics = basicsData || {
+    basicSEO: [],
+    additional: [],
+    titleReadability: { score: null, notes: [], expansion: "" },
+    contentReadability: { score: null, notes: [], expansion: "" },
+    steps: [],
+  };
+
+  // Steps come from JSON if present; else defaults.
+  const SEARCH_STEPS = useMemo(
+    () =>
+      Array.isArray(safeBasics.steps) && safeBasics.steps.length
+        ? safeBasics.steps
+        : [
+            "Crawling top results & extracting headings…",
+            "Checking keyword usage in title & meta…",
+            "Scanning first 10% of content for focus term…",
+            "Collecting readability & structure hints…",
+          ],
+    [safeBasics.steps]
+  );
+
   const STEP_DELAY = 900;
   const END_PAUSE = 700;
 
@@ -187,7 +209,7 @@ export default function SeoBasics({
       cancelled = true;
       if (typeof cleanup === "function") cleanup();
     };
-  }, [phase, setPhase]);
+  }, [phase, setPhase, SEARCH_STEPS.length]); // ← ESLint-safe deps
 
   const handleStart = () => {
     onStart?.(query);
@@ -198,11 +220,12 @@ export default function SeoBasics({
   if (phase === "idle") {
     return (
       <aside className="h-full rounded-r-[18px] border-l border-gray-200 bg-white px-7 md:px-8 py-6 flex flex-col">
-        <h3 className="text-[22px] font-semibold text-gray-900 text-center">Research</h3>
+        <h3 className="text-[22px] font-semibold text-gray-900 text-center">
+          {safeBasics.title || "Research"}
+        </h3>
         <p className="mt-3 mb-5 text-center text-[12px] leading-relaxed text-gray-600">
-          Process the top 20 Google search results
-          <br className="hidden sm:block" />
-          for the following search query:
+          {safeBasics.description ||
+            "Process the top 20 Google search results for your keyword."}
         </p>
 
         <div className="mx-auto w-full max-w-[420px]">
@@ -210,7 +233,11 @@ export default function SeoBasics({
             <input
               value={query}
               onChange={(e) => onQueryChange?.(e.target.value)}
-              placeholder="Enter search query"
+              placeholder={
+                safeBasics.placeholder ||
+                currentPage?.primaryKeyword?.trim() ||
+                "Enter search query"
+              }
               className="w-full h-9 rounded-lg border border-gray-200 bg-white px-8 pr-10 text-sm outline-none focus:border-blue-300"
             />
             <SearchIcon size={14} className="absolute left-2 top-2.5 text-gray-500" />
@@ -245,7 +272,10 @@ export default function SeoBasics({
         </div>
 
         <div className="mt-4 text-[12px] text-gray-900 font-semibold">
-          {query?.trim() || "Content marketing strategies"}
+          {query?.trim() ||
+            currentPage?.ui?.query ||
+            currentPage?.primaryKeyword ||
+            "Content marketing strategies"}
         </div>
 
         <div className="mt-3 space-y-2">
@@ -261,75 +291,163 @@ export default function SeoBasics({
   /* ---------- PHASE: results ---------- */
   return (
     <aside className="h-full rounded-r-[18px] border-l border-gray-200 bg-white px-6 md:px-7 py-6 flex flex-col gap-3">
-      <div className="mb-1 flex items-center gap-2 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2">
-        <TriangleAlert size={16} className="text-amber-700" />
-        <div className="text-[12px] font-medium text-amber-800">Fix this</div>
-        <div className="ml-auto text-[10px] text-amber-800/80">
-          Once done, switch to ADVANCE for deep research
+      {cfgLoading && (
+        <div className="rounded-[10px] border border-gray-200 bg-gray-50 px-3 py-2 text-[12px] text-gray-700">
+          Loading SEO basics…
         </div>
-      </div>
-
-      <Section icon={ListChecks} title="Basic SEO" statusTone="good" statusText="All Good" defaultOpen>
-        <div className="space-y-1.5">
-          <ResultItem type="success">
-            Hurray! You are using the Focus Keyword in SEO Title.
-          </ResultItem>
-          <ResultItem type="success">
-            The Focus Keyword was used in the SEO Meta description.
-          </ResultItem>
-          <ResultItem type="success">The Focus Keyword was used in the URL.</ResultItem>
-          <ResultItem type="success">
-            The Focus Keyword appears in the first 10% of the content.
-          </ResultItem>
+      )}
+      {cfgError && (
+        <div className="rounded-[10px] border border-rose-200 bg-rose-50 px-3 py-2 text-[12px] text-rose-700">
+          Failed to load data: {cfgError}
         </div>
-      </Section>
+      )}
 
-      <Section icon={TriangleAlert} title="Additional" statusTone="bad" statusText="4 Errors" defaultOpen>
-        <div className="space-y-1.5">
-          <ResultItem type="error" onFix={() => onFix?.("title-dup-keyword")}>
-            The focus keyword appears twice in the title, which may look spammy. —{" "}
-            <span className="font-medium">Revise to use it only once.</span>
-          </ResultItem>
-          <ResultItem type="error" onFix={() => onFix?.("meta-variation-missing")}>
-            Missing Keyword Variation in Meta Description.
-          </ResultItem>
-          <ResultItem type="error" onFix={() => onFix?.("slug-shorten")}>
-            Your URL includes unnecessary words:{" "}
-            <span className="font-mono text-[12px]">
-              /best-seo-tools-2025-for-digital-marketing-guide/
-            </span>
-            . Shorten it.
-          </ResultItem>
-          <ResultItem
-            type="error"
-            onFix={() =>
-              onPasteToEditor?.("Add a clear statement about how these tools improve rankings.")
+      {!cfgLoading && !cfgError && (
+        <>
+          <div className="mb-1 flex items-center gap-2 rounded-[10px] border border-amber-200 bg-amber-50 px-3 py-2">
+            <TriangleAlert size={16} className="text-amber-700" />
+            <div className="text-[12px] font-medium text-amber-800">Fix this</div>
+            <div className="ml-auto text-[10px] text-amber-800/80">
+              Once done, switch to ADVANCE for deep research
+            </div>
+          </div>
+
+          {/* BASIC SEO from JSON: seoBasics.basicSEO[] */}
+          <Section
+            icon={ListChecks}
+            title="Basic SEO"
+            statusTone="good"
+            statusText={
+              safeBasics.basicSEO?.length ? "All Good" : "No Data"
             }
+            defaultOpen
           >
-            The first paragraph does not directly address the user’s search intent.
-          </ResultItem>
-        </div>
-      </Section>
+            <div className="space-y-1.5">
+              {(safeBasics.basicSEO?.length
+                ? safeBasics.basicSEO
+                : [
+                    "Write a unique, descriptive title with the primary keyword once.",
+                    "Use one H1, logical H2/H3 hierarchy, and scannable lists.",
+                    "Add meta description with clear benefit and CTA.",
+                  ]
+              ).map((line, i) => (
+                <ResultItem key={i} type="success">
+                  {line}
+                </ResultItem>
+              ))}
+            </div>
+          </Section>
 
-      <Section icon={List} title="Title Readability" statusTone="good" statusText="All Good" defaultOpen={false}>
-        <div className="space-y-1.5">
-          <ResultItem type="success">Your title is concise (under 60 characters).</ResultItem>
-          <ResultItem type="success">
-            It clearly states the benefit: “Best SEO Tools 2025 to Improve Google Rankings”.
-          </ResultItem>
-          <ResultItem type="success">Numbers and year add relevance.</ResultItem>
-          <ResultItem type="success">Title is engaging and easy to scan.</ResultItem>
-        </div>
-      </Section>
+          {/* ADDITIONAL from JSON: seoBasics.additional[] */}
+          <Section
+            icon={TriangleAlert}
+            title="Additional"
+            statusTone={safeBasics.additional?.length ? "warn" : "default"}
+            statusText={
+              safeBasics.additional?.length
+                ? `${safeBasics.additional.length} Tips`
+                : "No Data"
+            }
+            defaultOpen
+          >
+            <div className="space-y-1.5">
+              {(safeBasics.additional || []).map((line, i) => (
+                <ResultItem
+                  key={i}
+                  type="warning"
+                  onFix={onFix ? () => onFix(`additional-${i}`) : undefined}
+                >
+                  {line}
+                </ResultItem>
+              ))}
 
-      <Section icon={List} title="Content Readability" statusTone="good" statusText="All Good" defaultOpen={false}>
-        <div className="space-y-1.5">
-          <ResultItem type="success">Sentences are short and active.</ResultItem>
-          <ResultItem type="success">Headings (H2, H3) break down the content logically.</ResultItem>
-          <ResultItem type="success">Lists and tables are used for clarity.</ResultItem>
-          <ResultItem type="success">Paragraphs average 2–3 sentences, making it skimmable.</ResultItem>
-        </div>
-      </Section>
+              {/* explicit “Fix Now” examples kept */}
+              <ResultItem type="error" onFix={() => onFix?.("title-dup-keyword")}>
+                The focus keyword appears twice in the title, which may look spammy. —{" "}
+                <span className="font-medium">Revise to use it only once.</span>
+              </ResultItem>
+              <ResultItem type="error" onFix={() => onFix?.("meta-variation-missing")}>
+                Missing Keyword Variation in Meta Description.
+              </ResultItem>
+              <ResultItem type="error" onFix={() => onFix?.("slug-shorten")}>
+                Your URL includes unnecessary words:{" "}
+                <span className="font-mono text-[12px]">
+                  /best-seo-tools-2025-for-digital-marketing-guide/
+                </span>
+                . Shorten it.
+              </ResultItem>
+              <ResultItem
+                type="error"
+                onFix={() =>
+                  onPasteToEditor?.(
+                    "Add a clear statement about how these tools improve rankings."
+                  )
+                }
+              >
+                The first paragraph does not directly address the user’s search intent.
+              </ResultItem>
+            </div>
+          </Section>
+
+          {/* TITLE READABILITY from JSON */}
+          <Section
+            icon={List}
+            title="Title Readability"
+            statusTone="good"
+            statusText={
+              safeBasics.titleReadability?.score != null
+                ? `Score ${safeBasics.titleReadability.score}`
+                : "No Score"
+            }
+            defaultOpen={false}
+          >
+            <div className="space-y-1.5">
+              {(safeBasics.titleReadability?.notes || []).map((n, i) => (
+                <ResultItem key={i} type="success">
+                  {n}
+                </ResultItem>
+              ))}
+              {safeBasics.titleReadability?.expansion ? (
+                <div
+                  className="mt-2 rounded-md border border-gray-200 bg-gray-50 p-2 text-[12px] text-gray-700"
+                  dangerouslySetInnerHTML={{
+                    __html: safeBasics.titleReadability.expansion,
+                  }}
+                />
+              ) : null}
+            </div>
+          </Section>
+
+          {/* CONTENT READABILITY from JSON */}
+          <Section
+            icon={List}
+            title="Content Readability"
+            statusTone="good"
+            statusText={
+              safeBasics.contentReadability?.score != null
+                ? `Score ${safeBasics.contentReadability.score}`
+                : "No Score"
+            }
+            defaultOpen={false}
+          >
+            <div className="space-y-1.5">
+              {(safeBasics.contentReadability?.notes || []).map((n, i) => (
+                <ResultItem key={i} type="success">
+                  {n}
+                </ResultItem>
+              ))}
+              {safeBasics.contentReadability?.expansion ? (
+                <div
+                  className="mt-2 rounded-md border border-gray-200 bg-gray-50 p-2 text-[12px] text-gray-700"
+                  dangerouslySetInnerHTML={{
+                    __html: safeBasics.contentReadability.expansion,
+                  }}
+                />
+              ) : null}
+            </div>
+          </Section>
+        </>
+      )}
     </aside>
   );
 }
