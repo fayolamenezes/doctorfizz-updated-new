@@ -1,25 +1,20 @@
-// components/ContentEditor.js 
+// components/ContentEditor.js
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState, useCallback } from "react";
 import CENavbar       from "./content-editor/CE.Navbar";
 import CEMetricsStrip from "./content-editor/CE.MetricsStrip";
 import CEContentArea  from "./content-editor/CE.ContentArea";
 
-/* ---------- utils ---------- */
+/* utils */
 function isBlankHtml(html) {
   if (!html) return true;
   return String(html).replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").trim() === "";
 }
-const norm = (s) =>
-  String(s || "")
-    .toLowerCase()
-    .replace(/\s+/g, " ")
-    .trim();
+const norm = (s) => String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
 
-/* ========================================================== */
 export default function ContentEditor({ data, onBackToDashboard }) {
-  /* ---------- load contenteditor.json from public/data ---------- */
+  /* load contenteditor.json (optional for downstream comps) */
   const [config, setConfig] = useState(null);
   const [configError, setConfigError] = useState(null);
 
@@ -38,46 +33,35 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     return () => { mounted = false; };
   }, []);
 
-  /* ---------- pick page config by slug or title ---------- */
-  const pageKey =
-    data?.slug ||
-    data?.page ||
-    data?.id ||
-    norm(data?.title) ||
-    "";
-
+  /* page config lookup */
+  const pageKey = data?.slug || data?.page || data?.id || norm(data?.title) || "";
   const pageConfig = useMemo(() => {
     if (!config?.pages?.length) return null;
-
     let hit =
       config.pages.find((p) => norm(p.slug) === norm(pageKey)) ||
       config.pages.find((p) => norm(p.id) === norm(pageKey));
-
     if (!hit && data?.title) {
       hit = config.pages.find((p) => norm(p.title) === norm(data.title));
     }
-
     return hit || config.pages[0] || null;
   }, [config, pageKey, data?.title]);
 
-  /* ---------- state ---------- */
+  /* editor state */
   const [title, setTitle] = useState(data?.title || "Untitled");
-  const [content, setContent] = useState(
-    typeof data?.content === "string" ? data.content : ""
-  );
+  const [content, setContent] = useState(typeof data?.content === "string" ? data.content : "");
   const [activeTab, setActiveTab] = useState("content");
   const [seoMode, setSeoMode] = useState("basic");
   const [lastEdited, setLastEdited] = useState(data?.ui?.lastEdited || "1 day ago");
   const [query, setQuery] = useState(data?.ui?.query || data?.primaryKeyword || "");
+  const [basicsUnlocked, setBasicsUnlocked] = useState(false);
 
-  /* ---------- resolved keywords/targets (config → data → defaults) ---------- */
   const PRIMARY_KEYWORD = useMemo(
     () =>
       norm(
-        query || // ← live UI query first
-        data?.primaryKeyword ||
-        pageConfig?.primaryKeyword ||
-        "content marketing"
+        query ||
+          data?.primaryKeyword ||
+          pageConfig?.primaryKeyword ||
+          "content marketing"
       ),
     [query, data?.primaryKeyword, pageConfig?.primaryKeyword]
   );
@@ -110,19 +94,6 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     pageConfig?.wordTarget ??
     1480;
 
-  /* ---------- default content includes the PK so PK% isn’t stuck at 0 ---------- */
-  const DEFAULT_CONTENT = useMemo(() => {
-    const safeTitle = (data?.title || "Content Title")
-      .split(" ")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
-    return `
-      <h1>${safeTitle}</h1>
-      <p>Start writing about <strong>${PRIMARY_KEYWORD}</strong>. Include related ideas like ${LSI.slice(0,3).join(", ")} and keep it natural.</p>
-    `;
-  }, [data?.title, PRIMARY_KEYWORD, LSI]);
-
-  /* ---------- metrics state (computed by CE.ContentArea) ---------- */
   const [metrics, setMetrics] = useState({
     plagiarism: 0,
     primaryKeyword: 0,
@@ -131,29 +102,52 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     lsiKeywords: 0,
   });
 
-  /* ---------- keep URL on #editor and restore persisted state ---------- */
+  /* persistence + fresh-new guard */
   const restoredRef = useRef(false);
+  const newDocRef = useRef(false);
 
   useEffect(() => {
-    // force hash to #editor
     if (typeof window !== "undefined" && window.location.hash !== "#editor") {
       window.location.hash = "#editor";
     }
 
-    // restore saved state once
     try {
-      const raw = typeof window !== "undefined" && localStorage.getItem("content-editor-state");
-      if (raw) {
-        const saved = JSON.parse(raw);
-        if (saved.title) setTitle(saved.title);
-        if (saved.content) setContent(saved.content);
-        if (typeof saved.query === "string") setQuery(saved.query);
+      const url = new URL(window.location.href);
+      const hasNewFlag =
+        url.searchParams.get("new") === "1" || window.location.hash.includes("#new");
+
+      if (!hasNewFlag) {
+        const raw = localStorage.getItem("content-editor-state");
+        if (raw) {
+          const saved = JSON.parse(raw);
+          if (saved.title) setTitle(saved.title);
+          if (typeof saved.content === "string") setContent(saved.content);
+          if (typeof saved.query === "string") setQuery(saved.query);
+        }
+      } else {
+        localStorage.removeItem("content-editor-state");
+        setTitle("Untitled");
+        setContent("");
+        setQuery("");
+        setActiveTab("content");
+        setSeoMode("basic");
+        setLastEdited("just now");
+        setBasicsUnlocked(false);
+        setMetrics((m) => ({
+          ...m,
+          plagiarism: 0,
+          primaryKeyword: 0,
+          wordCount: 0,
+          lsiKeywords: 0,
+          wordTarget: WORD_TARGET_FROM_DATA,
+        }));
+        newDocRef.current = true;
       }
     } catch {}
-    restoredRef.current = true;
-  }, []);
 
-  // persist editor state in localStorage
+    restoredRef.current = true;
+  }, [WORD_TARGET_FROM_DATA]);
+
   useEffect(() => {
     try {
       const payload = { title, content, query };
@@ -161,33 +155,73 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     } catch {}
   }, [title, content, query]);
 
-  /* ---------- sync from dashboard payload/config changes ---------- */
-  useEffect(() => {
-    if (!restoredRef.current) {
-      if (data?.title) setTitle(data.title);
-      if (typeof data?.content === "string") {
-        setContent(data.content);
-      } else {
-        setContent(DEFAULT_CONTENT);
-      }
-      setQuery(data?.ui?.query || data?.primaryKeyword || "");
-    } else if (!data?.content && isBlankHtml(content)) {
-      setContent(DEFAULT_CONTENT);
-    }
+  /* central reset helper (memoized to satisfy exhaustive-deps) */
+  const resetToNewDocument = useCallback(
+    (payload = {}) => {
+      const nextTitle = payload.title || "Untitled";
+      const nextContent = typeof payload.content === "string" ? payload.content : "";
+      setTitle(nextTitle);
+      setContent(nextContent);
+      setQuery("");
+      setActiveTab("content");
+      setSeoMode("basic");
+      setLastEdited("just now");
+      setBasicsUnlocked(false);
+      setMetrics((m) => ({
+        ...m,
+        plagiarism: 0,
+        primaryKeyword: 0,
+        wordCount: 0,
+        lsiKeywords: 0,
+        wordTarget:
+          data?.metrics?.wordTarget ??
+          data?.wordTarget ??
+          pageConfig?.wordTarget ??
+          1480,
+      }));
+      try {
+        localStorage.setItem(
+          "content-editor-state",
+          JSON.stringify({ title: nextTitle, content: nextContent, query: "" })
+        );
+      } catch {}
+      newDocRef.current = true;
+    },
+    [data?.metrics?.wordTarget, data?.wordTarget, pageConfig?.wordTarget]
+  );
 
+  /* listen for multiple "new doc" event names */
+  useEffect(() => {
+    const handler = (e) => resetToNewDocument(e?.detail || {});
+    const names = ["content-editor:new", "content-editor:open", "new-document"];
+    names.forEach((n) => window.addEventListener(n, handler));
+    return () => names.forEach((n) => window.removeEventListener(n, handler));
+  }, [resetToNewDocument]);
+
+  /* sync when parent `data` changes, but don't clobber a fresh new doc */
+  useEffect(() => {
+    if (!restoredRef.current || newDocRef.current) return;
+
+    if (data?.title) setTitle(data.title);
+    if (typeof data?.content === "string") {
+      setContent(data.content);
+    } else if (!data?.content && isBlankHtml(content)) {
+      setContent("");
+    }
+    setQuery(data?.ui?.query || data?.primaryKeyword || "");
     setLastEdited(data?.ui?.lastEdited || "1 day ago");
+
     setMetrics((m) => ({
       ...m,
       wordTarget:
-        (data?.metrics?.wordTarget ??
-          data?.wordTarget ??
-          pageConfig?.wordTarget ??
-          m.wordTarget ??
-          1480),
+        data?.metrics?.wordTarget ??
+        data?.wordTarget ??
+        pageConfig?.wordTarget ??
+        m.wordTarget ??
+        1480,
     }));
-  }, [data, pageConfig, DEFAULT_CONTENT, content]);
+  }, [data, pageConfig, content]);
 
-  /* ---------- render ---------- */
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300">
       <main className="bg-[var(--bg-panel)] px-2 py-6 sm:px-1 lg:px-2 xl:px-3 transition-colors duration-300">
@@ -203,6 +237,7 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           metrics={metrics}
           seoMode={seoMode}
           onChangeSeoMode={setSeoMode}
+          canAccessAdvanced={basicsUnlocked}
         />
 
         <CEContentArea
@@ -212,7 +247,7 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           lastEdited={lastEdited}
           query={query}
           onQueryChange={setQuery}
-          onStart={() => {}}
+          onStart={() => setBasicsUnlocked(true)}  // auto-unlock when Basics → Start
           seoMode={seoMode}
           metrics={metrics}
           setMetrics={setMetrics}
@@ -221,7 +256,6 @@ export default function ContentEditor({ data, onBackToDashboard }) {
             setContent(html);
             setLastEdited("a few seconds ago");
           }}
-          // pass the live-resolved primary keyword & LSI (highlighting + fallback)
           primaryKeyword={PRIMARY_KEYWORD}
           lsiKeywords={LSI}
         />
