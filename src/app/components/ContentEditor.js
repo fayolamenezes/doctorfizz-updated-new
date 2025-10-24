@@ -122,26 +122,16 @@ export default function ContentEditor({ data, onBackToDashboard }) {
   const restoredRef = useRef(false);
   const newDocRef = useRef(false);
 
+  // Mount: handle ?new/#new once, normalize to #editor, restore saved state
   useEffect(() => {
-    if (typeof window !== "undefined" && window.location.hash !== "#editor") {
-      window.location.hash = "#editor";
-    }
-
     try {
       const url = new URL(window.location.href);
-      const hasNewFlag =
-        url.searchParams.get("new") === "1" || window.location.hash.includes("#new");
+      const hadNewParam = url.searchParams.get("new") === "1";
+      const hadNewHash = (url.hash || "").includes("#new");
+      const hasNewFlag = hadNewParam || hadNewHash;
 
-      if (!hasNewFlag) {
-        const raw = localStorage.getItem("content-editor-state");
-        if (raw) {
-          const saved = JSON.parse(raw);
-          if (saved.title) setTitle(saved.title);
-          if (typeof saved.content === "string") setContent(saved.content);
-          if (typeof saved.query === "string") setQuery(saved.query);
-        }
-      } else {
-        // NEW document boot
+      if (hasNewFlag) {
+        // NEW document boot (handle once)
         localStorage.removeItem("content-editor-state");
         setTitle("Untitled");
         setContent("");
@@ -163,12 +153,34 @@ export default function ContentEditor({ data, onBackToDashboard }) {
         // Force remount & tell research to reset
         setEditorSessionId((n) => n + 1);
         broadcastResearchReset("");
+
+        // Clean URL so refresh doesn’t repeat NEW
+        url.searchParams.delete("new");
+        url.hash = "#editor";
+        window.history.replaceState(null, "", url.toString());
+      } else {
+        // Normal restore from localStorage (do NOT read title/content/query to avoid deps)
+        const raw = localStorage.getItem("content-editor-state");
+        if (raw) {
+          try {
+            const saved = JSON.parse(raw);
+            if (typeof saved.title === "string") setTitle(saved.title);
+            if (typeof saved.content === "string") setContent(saved.content);
+            if (typeof saved.query === "string") setQuery(saved.query);
+          } catch {}
+        }
+        // Normalize hash to #editor (no flicker)
+        if (url.hash !== "#editor") {
+          url.hash = "#editor";
+          window.history.replaceState(null, "", url.toString());
+        }
       }
     } catch {}
 
     restoredRef.current = true;
-  }, [WORD_TARGET_FROM_DATA]);
+  }, [WORD_TARGET_FROM_DATA]); // runs once per mount (plus if word target changes)
 
+  // Persist minimal state on edits (does NOT include activeTab/seoMode to keep scope small)
   useEffect(() => {
     try {
       const payload = { title, content, query };
@@ -213,6 +225,14 @@ export default function ContentEditor({ data, onBackToDashboard }) {
       // Force remount & tell research to reset
       setEditorSessionId((n) => n + 1);
       broadcastResearchReset("");
+
+      // Normalize URL after programmatic new
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("new");
+        url.hash = "#editor";
+        window.history.replaceState(null, "", url.toString());
+      } catch {}
     },
     [data?.metrics?.wordTarget, data?.wordTarget, pageConfig?.wordTarget]
   );
@@ -229,32 +249,38 @@ export default function ContentEditor({ data, onBackToDashboard }) {
   useEffect(() => {
     if (!restoredRef.current || newDocRef.current) return;
 
-    if (data?.title) setTitle(data.title);
+    // Title
+    if (typeof data?.title === "string" && data.title !== title) {
+      setTitle(data.title);
+    }
+
+    // Content
     if (typeof data?.content === "string") {
-      setContent(data.content);
+      if (data.content !== content) setContent(data.content);
     } else if (!data?.content && isBlankHtml(content)) {
-      setContent("");
+      if (content !== "") setContent("");
     }
+
+    // Query + lastEdited
     const nextQuery = data?.ui?.query || data?.primaryKeyword || "";
-    setQuery(nextQuery);
-    setLastEdited(data?.ui?.lastEdited || "1 day ago");
+    if (nextQuery !== query) setQuery(nextQuery);
 
-    setMetrics((m) => ({
-      ...m,
-      wordTarget:
-        data?.metrics?.wordTarget ??
-        data?.wordTarget ??
-        pageConfig?.wordTarget ??
-        m.wordTarget ??
-        1480,
-    }));
+    const nextLastEdited = data?.ui?.lastEdited || "1 day ago";
+    if (nextLastEdited !== lastEdited) setLastEdited(nextLastEdited);
 
-    // If loading cleared the query, ensure Research resets
-    if (!nextQuery) {
-      setEditorSessionId((n) => n + 1);
-      broadcastResearchReset("");
+    // Metrics.wordTarget (avoid re-setting same value)
+    const nextWordTarget =
+      data?.metrics?.wordTarget ??
+      data?.wordTarget ??
+      pageConfig?.wordTarget ??
+      metrics.wordTarget ??
+      1480;
+
+    if (nextWordTarget !== metrics.wordTarget) {
+      setMetrics((m) => ({ ...m, wordTarget: nextWordTarget }));
     }
-  }, [data, pageConfig, content]);
+    // Intentionally exclude `content` to avoid loops; guard updates above.
+  }, [data, pageConfig, title, query, lastEdited, metrics.wordTarget, content]);
 
   return (
     <div className="min-h-screen bg-[var(--bg)] text-[var(--text)] transition-colors duration-300">
