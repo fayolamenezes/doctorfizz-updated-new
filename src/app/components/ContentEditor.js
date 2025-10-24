@@ -13,6 +13,19 @@ function isBlankHtml(html) {
 }
 const norm = (s) => String(s || "").toLowerCase().replace(/\s+/g, " ").trim();
 
+/** Tell Research panel to reset and clear any persisted UI state it may use. */
+function broadcastResearchReset(nextQuery = "") {
+  try {
+    localStorage.removeItem("research-panel-state");
+    localStorage.removeItem("research:lastHost");
+    localStorage.removeItem("research:lastKeyword");
+  } catch {}
+  try {
+    window.dispatchEvent(new CustomEvent("research:reset"));
+    window.dispatchEvent(new CustomEvent("content-editor:query-changed", { detail: { query: nextQuery } }));
+  } catch {}
+}
+
 export default function ContentEditor({ data, onBackToDashboard }) {
   /* load contenteditor.json (optional for downstream comps) */
   const [config, setConfig] = useState(null);
@@ -54,6 +67,9 @@ export default function ContentEditor({ data, onBackToDashboard }) {
   const [lastEdited, setLastEdited] = useState(data?.ui?.lastEdited || "1 day ago");
   const [query, setQuery] = useState(data?.ui?.query || data?.primaryKeyword || "");
   const [basicsUnlocked, setBasicsUnlocked] = useState(false);
+
+  /* session id to force-remount CEContentArea (and its children like Research) */
+  const [editorSessionId, setEditorSessionId] = useState(0);
 
   const PRIMARY_KEYWORD = useMemo(
     () =>
@@ -125,6 +141,7 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           if (typeof saved.query === "string") setQuery(saved.query);
         }
       } else {
+        // NEW document boot
         localStorage.removeItem("content-editor-state");
         setTitle("Untitled");
         setContent("");
@@ -142,6 +159,10 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           wordTarget: WORD_TARGET_FROM_DATA,
         }));
         newDocRef.current = true;
+
+        // Force remount & tell research to reset
+        setEditorSessionId((n) => n + 1);
+        broadcastResearchReset("");
       }
     } catch {}
 
@@ -152,6 +173,8 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     try {
       const payload = { title, content, query };
       localStorage.setItem("content-editor-state", JSON.stringify(payload));
+      // keep Research in sync if user changes/clears keyword
+      window.dispatchEvent(new CustomEvent("content-editor:query-changed", { detail: { query } }));
     } catch {}
   }, [title, content, query]);
 
@@ -186,6 +209,10 @@ export default function ContentEditor({ data, onBackToDashboard }) {
         );
       } catch {}
       newDocRef.current = true;
+
+      // Force remount & tell research to reset
+      setEditorSessionId((n) => n + 1);
+      broadcastResearchReset("");
     },
     [data?.metrics?.wordTarget, data?.wordTarget, pageConfig?.wordTarget]
   );
@@ -208,7 +235,8 @@ export default function ContentEditor({ data, onBackToDashboard }) {
     } else if (!data?.content && isBlankHtml(content)) {
       setContent("");
     }
-    setQuery(data?.ui?.query || data?.primaryKeyword || "");
+    const nextQuery = data?.ui?.query || data?.primaryKeyword || "";
+    setQuery(nextQuery);
     setLastEdited(data?.ui?.lastEdited || "1 day ago");
 
     setMetrics((m) => ({
@@ -220,6 +248,12 @@ export default function ContentEditor({ data, onBackToDashboard }) {
         m.wordTarget ??
         1480,
     }));
+
+    // If loading cleared the query, ensure Research resets
+    if (!nextQuery) {
+      setEditorSessionId((n) => n + 1);
+      broadcastResearchReset("");
+    }
   }, [data, pageConfig, content]);
 
   return (
@@ -240,13 +274,20 @@ export default function ContentEditor({ data, onBackToDashboard }) {
           canAccessAdvanced={basicsUnlocked}
         />
 
+        {/* Force remount of the whole content area (Research included) on new doc */}
         <CEContentArea
+          key={editorSessionId}
           title={title}
           activeTab={activeTab}
           onTabChange={setActiveTab}
           lastEdited={lastEdited}
           query={query}
-          onQueryChange={setQuery}
+          onQueryChange={(q) => {
+            setQuery(q);
+            try {
+              window.dispatchEvent(new CustomEvent("content-editor:query-changed", { detail: { query: q } }));
+            } catch {}
+          }}
           onStart={() => setBasicsUnlocked(true)}  // auto-unlock when Basics → Start
           seoMode={seoMode}
           metrics={metrics}
