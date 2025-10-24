@@ -12,7 +12,11 @@ function IconHintButton({ onClick, label = "Paste to editor", size = 12, classNa
     <div className={`relative group ${className}`}>
       <button
         type="button"
-        onClick={onClick}
+        onClick={(e) => {
+          // Prevent bubbling into the row's click target
+          e.stopPropagation();
+          onClick?.(e);
+        }}
         aria-label={label}
         className="grid place-items-center h-8 w-8 rounded-md border border-[var(--border)] bg-white/90 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none
                    dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)] dark:hover:bg-[var(--bg-hover)]"
@@ -56,12 +60,25 @@ function EmptyState({ title = "No results", subtitle = "Try a different filter o
 }
 
 /* ===============================
-   Row
+   Row (outer element is no longer <button>)
 ================================ */
 function FAQRow({ iconLabel, title, source, onPaste, subtitle }) {
+  // Activate with keyboard like a button
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      // no default row action other than visual focus; add callback here if needed
+    }
+  };
+
   return (
     <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] transition-colors">
-      <button className="w-full px-3 py-2 flex items-center justify-between gap-3 text-left hover:bg-[var(--bg-hover)] transition-colors">
+      <div
+        role="button"
+        tabIndex={0}
+        onKeyDown={onKeyDown}
+        className="w-full px-3 py-2 flex items-center justify-between gap-3 text-left hover:bg-[var(--bg-hover)] transition-colors focus:outline-none focus:ring-2 focus:ring-amber-300 rounded-xl"
+      >
         <div className="flex min-w-0 items-center gap-3">
           <BrandDot label={iconLabel} />
           <div className="min-w-0">
@@ -75,14 +92,13 @@ function FAQRow({ iconLabel, title, source, onPaste, subtitle }) {
         </div>
         <div className="flex items-center gap-2 shrink-0">
           <IconHintButton
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               onPaste?.(title);
             }}
           />
           <ChevronRight size={18} className="text-[var(--muted)]" />
         </div>
-      </button>
+      </div>
     </div>
   );
 }
@@ -167,7 +183,7 @@ export default function SeoAdvancedFaqs({
       const src = pickString(page?.domain, page?.title, "source");
       const faqs = page?.faqs || {};
 
-    // SERP tab — expects array of { title, content }
+      // SERP tab — expects array of { title, content }
       if (Array.isArray(faqs.serp)) {
         for (const item of faqs.serp) {
           const t = pickString(item?.title, item?.question);
@@ -228,7 +244,6 @@ export default function SeoAdvancedFaqs({
     return { serpRows: serp, paRows: paa, quoraRows: quora, redditRows: reddit };
   }, [raw, domain, queryFilter]);
 
-  // Stable, dependency-complete filter (no ephemeral objects)
   const filtered = useMemo(() => {
     const rows =
       faqTab === "serp" ? serpRows :
@@ -242,7 +257,6 @@ export default function SeoAdvancedFaqs({
   }, [faqTab, kwFilter, serpRows, paRows, quoraRows, redditRows]);
 
   function handlePaste(text, row) {
-    // Prefer pasting a neat block with answer and/or link if available
     const lines = [
       row?.title ? `Q: ${row.title}` : text,
       row?.fullText ? `A: ${row.fullText}` : undefined,

@@ -27,6 +27,11 @@ const CECanvas = forwardRef(function CECanvas(
   const seededRef = useRef(false);
   const autosaveTimer = useRef(null);
 
+  // “source-of-truth” guards
+  const lastLocalHtmlRef = useRef("");          // last html we emitted via setContent
+  const lastLocalEditAtRef = useRef(0);         // timestamp of last local edit
+  const LOCAL_GRACE_MS = 600;                   // window to ignore stale external props
+
   const AUTOSAVE_MS = 800;
   const AUTOSAVE_KEY = `ce:autosave:${title || "untitled"}`;
 
@@ -86,7 +91,8 @@ const CECanvas = forwardRef(function CECanvas(
     return after;
   };
 
-  const highlightTerm = (root, term, style) => {
+  // LINT-CLEAN: memoize and use as a dep
+  const highlightTerm = useCallback((root, term, style) => {
     if (!term || term.length < 2) return;
     const safe = term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
     const rx = new RegExp(`\\b${safe}\\b`, "gi");
@@ -117,7 +123,7 @@ const CECanvas = forwardRef(function CECanvas(
         if (!node || !node.nodeValue) break;
       }
     }
-  };
+  }, []);
 
   /** =========================
    * Selection helpers
@@ -160,7 +166,7 @@ const CECanvas = forwardRef(function CECanvas(
       );
 
     restoreSelectionSnapshot();
-  }, [highlightEnabled, primaryKeyword, lsiKeywords]);
+  }, [highlightEnabled, primaryKeyword, lsiKeywords, highlightTerm]);
 
   /** =========================
    * Autosave + state sync
@@ -177,7 +183,12 @@ const CECanvas = forwardRef(function CECanvas(
   function bubble({ pushHistory = true, notifyParent = true } = {}) {
     const el = editorRef.current;
     const html = el?.innerHTML || "";
-    if (notifyParent) setContent?.(html);
+    if (notifyParent) {
+      setContent?.(html);
+      // mark this as the newest local truth
+      lastLocalHtmlRef.current = html;
+      lastLocalEditAtRef.current = Date.now();
+    }
     if (pushHistory) {
       const last = undoStack.current[undoStack.current.length - 1];
       if (last !== html) {
@@ -205,10 +216,12 @@ const CECanvas = forwardRef(function CECanvas(
       if (saved) {
         el.innerHTML = saved;
         setContent?.(saved);
+        lastLocalHtmlRef.current = saved;
       }
     } else if (!seededRef.current) {
       const html = sanitizeToHtml(content);
       if (el.innerHTML !== html) el.innerHTML = html;
+      lastLocalHtmlRef.current = html;
     }
 
     if (!seededRef.current) {
@@ -220,20 +233,33 @@ const CECanvas = forwardRef(function CECanvas(
   }, [AUTOSAVE_KEY, isTrulyEmpty, setContent, content, runHighlights]);
 
   /** =========================
-   * External sync
+   * External sync (GUARDED)
    * ========================= */
   useEffect(() => {
     const el = editorRef.current;
     if (!el) return;
-    const html = sanitizeToHtml(content);
-    if (el.innerHTML !== html) {
-      el.innerHTML = html;
-      if (seededRef.current) {
-        undoStack.current.push(html);
-        redoStack.current = [];
-      }
-      requestAnimationFrame(runHighlights);
+
+    const htmlFromProp = sanitizeToHtml(content);
+    const currentDom = el.innerHTML;
+
+    // If prop HTML equals what we already show, do nothing
+    if (htmlFromProp === currentDom) return;
+
+    // If prop HTML equals what we just emitted locally, treat as ack — do nothing
+    if (htmlFromProp === lastLocalHtmlRef.current) return;
+
+    // If a local edit just happened, ignore this stale external write
+    const justLocallyEdited =
+      Date.now() - lastLocalEditAtRef.current < LOCAL_GRACE_MS;
+    if (justLocallyEdited) return;
+
+    // Otherwise, accept external update (e.g., loading a different doc)
+    el.innerHTML = htmlFromProp;
+    if (seededRef.current) {
+      undoStack.current.push(htmlFromProp);
+      redoStack.current = [];
     }
+    requestAnimationFrame(runHighlights);
   }, [content, runHighlights]);
 
   useImperativeHandle(ref, () => ({
@@ -247,23 +273,107 @@ const CECanvas = forwardRef(function CECanvas(
     const el = editorRef.current;
     if (!el) return;
     el.focus();
+    // Restore the last user selection for toolbar actions
     restoreSelectionSnapshot();
 
     try {
       document.execCommand("styleWithCSS", false, true);
     } catch {}
 
+    // --- helpers for wrapping current selection
+    const sel = window.getSelection?.();
+    const hasSel = sel && sel.rangeCount > 0 && !sel.getRangeAt(0).collapsed;
+    const wrapSelectionWith = (tag, style = "") => {
+      if (!hasSel) return;
+      const range = sel.getRangeAt(0);
+      const frag = range.cloneContents();
+      const wrapper = document.createElement(tag);
+      if (style) wrapper.setAttribute("style", style);
+      wrapper.appendChild(frag);
+      range.deleteContents();
+      range.insertNode(wrapper);
+      // move caret after wrapper
+      range.setStartAfter(wrapper);
+      range.setEndAfter(wrapper);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    };
+
     switch (cmd) {
+      /** ---------- custom commands from CEToolbar ---------- */
+      case "saveSelection":
+        // called before color pickers, etc.
+        saveSelectionSnapshot();
+        return; // nothing else to do now
+
+      case "fontSizePx": {
+        const px = Number(value) || 16;
+        wrapSelectionWith("span", `font-size:${px}px;`);
+        break;
+      }
+
+      case "code": {
+        // simple inline code wrapper
+        wrapSelectionWith("code");
+        break;
+      }
+
+      case "undo": {
+        if (undoStack.current.length > 1) {
+          const cur = undoStack.current.pop();
+          redoStack.current.push(cur);
+          const prev = undoStack.current[undoStack.current.length - 1] || "";
+          el.innerHTML = prev;
+          setContent?.(prev);
+          lastLocalHtmlRef.current = prev;
+          lastLocalEditAtRef.current = Date.now();
+        } else {
+          document.execCommand("undo", false, null);
+        }
+        break;
+      }
+
+      case "redo": {
+        if (redoStack.current.length > 0) {
+          const next = redoStack.current.pop();
+          undoStack.current.push(next);
+          el.innerHTML = next;
+          setContent?.(next);
+          lastLocalHtmlRef.current = next;
+          lastLocalEditAtRef.current = Date.now();
+        } else {
+          document.execCommand("redo", false, null);
+        }
+        break;
+      }
+
+      /** ---------- common editing commands ---------- */
       case "bold":
       case "italic":
       case "underline":
       case "strikeThrough":
-        document.execCommand(cmd, false, null);
+      case "insertUnorderedList":
+      case "insertOrderedList":
+      case "justifyLeft":
+      case "justifyCenter":
+      case "justifyRight":
+      case "justifyFull":
+      case "createLink":
+      case "unlink":
+      case "foreColor":
+      case "hiliteColor":
+        document.execCommand(cmd, false, value);
         break;
+
       default:
+        // fallback for other supported commands
         document.execCommand(cmd, false, value);
         break;
     }
+
+    // Mark this as a local truth BEFORE parent re-renders
+    lastLocalHtmlRef.current = el.innerHTML;
+    lastLocalEditAtRef.current = Date.now();
 
     bubble({ pushHistory: true, notifyParent: true });
   }
