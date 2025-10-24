@@ -68,7 +68,7 @@ function IconHintButton({ onClick, label = "Paste to editor", size = 12, classNa
 }
 
 /* ===============================
-   Outline Row (indented like the reference)
+   Outline Row
 ================================ */
 function OutlineRow({ level = "H2", title, onPaste, onAddInstruction }) {
   const indent =
@@ -107,11 +107,61 @@ function OutlineRow({ level = "H2", title, onPaste, onAddInstruction }) {
 }
 
 /* ===============================
+   Small UI helpers for Competitors/Heatmaps
+================================ */
+function Stat({ label, value, sub }) {
+  return (
+    <div className="rounded-xl border border-[var(--border)] bg-[var(--bg-panel)] p-3">
+      <div className="text-[10px] uppercase tracking-wide text-[var(--muted)]">{label}</div>
+      <div className="mt-1 text-[18px] font-semibold text-[var(--text-primary)]">{value}</div>
+      {sub ? <div className="text-[11px] text-[var(--muted)]">{sub}</div> : null}
+    </div>
+  );
+}
+
+function SimpleTable({ columns = [], rows = [] }) {
+  return (
+    <div className="overflow-x-auto rounded-xl border border-[var(--border)]">
+      <table className="min-w-full text-left text-[12px]">
+        <thead className="bg-[var(--bg-panel)] text-[var(--muted)]">
+          <tr>
+            {columns.map((c) => (
+              <th key={c.key} className="px-3 py-2 font-semibold">{c.label}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-[var(--border)]">
+          {rows.length === 0 ? (
+            <tr><td className="px-3 py-3 text-[var(--muted)]" colSpan={columns.length}>No data.</td></tr>
+          ) : rows.map((r, idx) => (
+            <tr key={idx} className="hover:bg-[var(--bg-hover)]">
+              {columns.map((c) => (
+                <td key={c.key} className="px-3 py-2">
+                  {typeof c.render === "function" ? c.render(r[c.key], r) : r[c.key]}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+
+// Sticky section label used inside scrollable Heatmaps pane
+function SectionLabel({ children }) {
+  return (
+    <div className="sticky top-0 z-10 bg-[var(--bg-panel)]/90 backdrop-blur px-1 py-1 border-b border-[var(--border)] text-[12px] font-semibold text-[var(--text-primary)]">
+      {children}
+    </div>
+  );
+}
+
+/* ===============================
    Helpers
 ================================ */
 function normalizePages(json) {
   if (!json) return [];
-  // Accept either an array of pages, or an object with .pages
   if (Array.isArray(json)) return json;
   if (Array.isArray(json.pages)) return json.pages;
   return [json];
@@ -168,7 +218,7 @@ export default function SeoAdvancedResearch({
   onPasteToEditor,
   /** If provided, we scope strictly to this domain/URL */
   domain,
-  /** Visual height for the outline list */
+  /** Visual height for the outline/heatmaps list */
   maxListHeight = "30rem",
 }) {
   const [tab, setTab] = useState("outline"); // outline | competitors | heatmaps
@@ -182,6 +232,7 @@ export default function SeoAdvancedResearch({
     (async () => {
       try {
         setLoading(true);
+        // Update this path if you use the enriched filename.
         const res = await fetch("/data/contenteditor.json", {
           cache: "no-store",
           signal: ctrl.signal,
@@ -201,10 +252,7 @@ export default function SeoAdvancedResearch({
     return () => ctrl.abort();
   }, []);
 
-  // Derive the ACTIVE host:
-  // 1) prop `domain`
-  // 2) page whose ui.query or primaryKeyword matches the saved editor query
-  // 3) the only unique host present in the file (if exactly one)
+  // Derive the ACTIVE host
   const activeHost = useMemo(() => {
     const arr = normalizePages(raw);
     if (!arr.length) return "";
@@ -214,7 +262,7 @@ export default function SeoAdvancedResearch({
     // Try the saved editor query from localStorage
     let savedQuery = "";
     try {
-      const rawLS = localStorage.getItem("content-editor-state");
+      const rawLS = typeof window !== "undefined" ? localStorage.getItem("content-editor-state") : null;
       if (rawLS) {
         const saved = JSON.parse(rawLS);
         savedQuery = String(saved?.query || "").toLowerCase().trim();
@@ -229,26 +277,24 @@ export default function SeoAdvancedResearch({
       if (hit) return pageHost(hit);
     }
 
-    // If the file effectively targets a single domain, use it
     const hosts = Array.from(new Set(arr.map(pageHost).filter(Boolean)));
     if (hosts.length === 1) return hosts[0];
-
     return "";
   }, [raw, domain]);
 
-  // Filter pages for the active host (strict match; no fallback to other domains)
+  // Filter pages for the active host (strict match)
   const pages = useMemo(() => {
     const arr = normalizePages(raw);
     if (!arr.length || !activeHost) return [];
     return arr.filter((p) => pageHost(p) === activeHost);
   }, [raw, activeHost]);
 
-  // Build outline strictly from JSON `headings` for the matched domain;
-  // fall back to parsing the current editor's HTML only if nothing in JSON.
+  /* ===============================
+     Outline data
+  ================================ */
   const outline = useMemo(() => {
     const seen = new Set();
     const out = [];
-
     const push = (level, title) => {
       const key = `${level}|${title}`.toLowerCase();
       if (title && !seen.has(key)) {
@@ -256,25 +302,77 @@ export default function SeoAdvancedResearch({
         out.push({ level: level || "H2", title });
       }
     };
-
     for (const page of pages) {
       const heads = Array.isArray(page?.headings) ? page.headings : null;
       if (heads && heads.length) {
         heads.forEach((h) => push(h.level || "H2", h.title || ""));
       }
     }
-
     if (out.length) return out;
-
-    // Optional fallback to current editor content
     const fromEditor = extractHeadingsFromHTML(editorContent);
     fromEditor.forEach((h) => push(h.level, h.title));
-
     return out;
   }, [pages, editorContent]);
 
-  const count = outline.length;
+  /* ===============================
+     Competitors data
+  ================================ */
+  const competitors = useMemo(() => {
+    const all = [];
+    for (const p of pages) {
+      const doms = p?.competitorsTab?.domains;
+      if (Array.isArray(doms)) {
+        doms.forEach((d) => {
+          if (!d?.domain) return;
+          all.push({
+            domain: d.domain,
+            authority: d.authority ?? null,
+            estimatedTrafficK: d.estimatedTrafficK ?? null,
+            commonKeywords: d.commonKeywords ?? null,
+            sampleUrls: Array.isArray(d.sampleUrls) ? d.sampleUrls : [],
+          });
+        });
+      }
+    }
+    const seen = new Set();
+    const deduped = [];
+    for (const row of all) {
+      if (seen.has(row.domain)) continue;
+      seen.add(row.domain);
+      deduped.push(row);
+    }
+    return deduped;
+  }, [pages]);
 
+  /* ===============================
+     Heatmaps data
+  ================================ */
+  const heatmaps = useMemo(() => {
+    const out = {
+      headingsFrequency: [],
+      termHeat: [],
+      serpFeatureCoverage: [],
+      headingSerpMatrix: [],
+    };
+    const pushAll = (arr, key) => {
+      if (Array.isArray(arr)) out[key].push(...arr);
+    };
+    for (const p of pages) {
+      const h = p?.heatmapsTab;
+      if (!h) continue;
+      pushAll(h.headingsFrequency, "headingsFrequency");
+      pushAll(h.termHeat, "termHeat");
+      pushAll(h.serpFeatureCoverage, "serpFeatureCoverage");
+      pushAll(h.headingSerpMatrix, "headingSerpMatrix");
+    }
+    return out;
+  }, [pages]);
+
+  const outlineCount = outline.length;
+
+  /* ===============================
+     Render
+  ================================ */
   return (
     <div className="mt-1 rounded-2xl border border-[var(--border)] bg-[var(--bg-panel)] p-3 transition-colors">
       <div className="flex items-center justify-between gap-3">
@@ -312,9 +410,9 @@ export default function SeoAdvancedResearch({
           </button>
         </div>
 
-        {/* Actions (placeholders) */}
+        {/* Actions */}
         <div className="flex items-center gap-2">
-          <Chip>{count} Headings</Chip>
+          <Chip>{outlineCount} Headings</Chip>
           <button
             type="button"
             className="inline-flex items-center gap-1 rounded-md border border-[var(--border)] bg-[var(--bg-panel)] px-2.5 py-1.5 text-[12px] font-medium text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors"
@@ -332,7 +430,7 @@ export default function SeoAdvancedResearch({
         </div>
       </div>
 
-      {/* Outline list */}
+      {/* Outline */}
       {tab === "outline" && (
         <div className="mt-3 overflow-y-auto pr-1" style={{ maxHeight: maxListHeight }}>
           {loading ? (
@@ -343,7 +441,7 @@ export default function SeoAdvancedResearch({
             <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
               {error}
             </div>
-          ) : count === 0 ? (
+          ) : outlineCount === 0 ? (
             <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
               No headings found for this domain.
             </div>
@@ -363,15 +461,157 @@ export default function SeoAdvancedResearch({
         </div>
       )}
 
+      {/* Competitors */}
       {tab === "competitors" && (
-        <div className="mt-4 grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
-          Competitor mapping view — placeholder.
+        <div className="mt-3 space-y-3">
+          {loading ? (
+            <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
+              Loading competitors…
+            </div>
+          ) : error ? (
+            <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
+              {error}
+            </div>
+          ) : competitors.length === 0 ? (
+            <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
+              No competitor data in JSON for this domain.
+            </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <Stat label="Competitors" value={competitors.length} />
+                <Stat
+                  label="Avg. Authority"
+                  value={
+                    Math.round(
+                      (competitors.reduce((s, c) => s + (Number(c.authority) || 0), 0) / competitors.length) || 0
+                    )
+                  }
+                />
+                <Stat
+                  label="Avg. Est. Traffic (K)"
+                  value={
+                    Math.round(
+                      (competitors.reduce((s, c) => s + (Number(c.estimatedTrafficK) || 0), 0) / competitors.length) || 0
+                    )
+                  }
+                />
+                <Stat
+                  label="Avg. Common Keywords"
+                  value={
+                    Math.round(
+                      (competitors.reduce((s, c) => s + (Number(c.commonKeywords) || 0), 0) / competitors.length) || 0
+                    )
+                  }
+                />
+              </div>
+
+              <SimpleTable
+                columns={[
+                  { key: "domain", label: "Domain" },
+                  { key: "authority", label: "Authority" },
+                  { key: "estimatedTrafficK", label: "Est. Traffic (K)" },
+                  { key: "commonKeywords", label: "Common Keywords" },
+                  {
+                    key: "sampleUrls",
+                    label: "Sample URLs",
+                    render: (val) => (
+                      <div className="flex flex-wrap gap-2">
+                        {(val || []).slice(0, 3).map((u, idx) => (
+                          <a
+                            key={idx}
+                            href={u}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="truncate max-w-[16rem] text-[11px] underline text-[var(--text-primary)]"
+                            title={u}
+                          >
+                            {u}
+                          </a>
+                        ))}
+                      </div>
+                    ),
+                  },
+                ]}
+                rows={competitors}
+              />
+            </>
+          )}
         </div>
       )}
 
+      {/* Heatmaps (now fixed-height scroll area) */}
       {tab === "heatmaps" && (
-        <div className="mt-4 grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
-          Heatmap of headings vs. SERP frequency — placeholder.
+        <div className="mt-3 overflow-y-auto pr-1 space-y-4" style={{ maxHeight: maxListHeight }}>
+          {loading ? (
+            <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
+              Loading heatmaps…
+            </div>
+          ) : error ? (
+            <div className="grid place-items-center rounded-xl border border-dashed border-[var(--border)] py-10 text-[var(--muted)] text-[12px]">
+              {error}
+            </div>
+          ) : (
+            <>
+              {/* Headings Frequency */}
+              <div className="space-y-2">
+                <SectionLabel>Headings Frequency</SectionLabel>
+                <SimpleTable
+                  columns={[
+                    { key: "heading", label: "Heading" },
+                    { key: "count", label: "Count" },
+                  ]}
+                  rows={heatmaps.headingsFrequency || []}
+                />
+              </div>
+
+              {/* Term Heat */}
+              <div className="space-y-2">
+                <SectionLabel>Term Heat</SectionLabel>
+                <SimpleTable
+                  columns={[
+                    { key: "term", label: "Term" },
+                    { key: "score", label: "Score" },
+                  ]}
+                  rows={heatmaps.termHeat || []}
+                />
+              </div>
+
+              {/* SERP Feature Coverage */}
+              <div className="space-y-2">
+                <SectionLabel>SERP Feature Coverage</SectionLabel>
+                <SimpleTable
+                  columns={[
+                    { key: "feature", label: "Feature" },
+                    {
+                      key: "presence",
+                      label: "Present",
+                      render: (v) => (
+                        <span className={`px-2 py-0.5 rounded-md border ${v ? "border-emerald-300 text-emerald-700 bg-emerald-50" : "border-gray-300 text-gray-600 bg-gray-50"}`}>
+                          {v ? "Yes" : "No"}
+                        </span>
+                      ),
+                    },
+                    { key: "count", label: "Count" },
+                  ]}
+                  rows={heatmaps.serpFeatureCoverage || []}
+                />
+              </div>
+
+              {/* Heading ↔ SERP Matrix */}
+              <div className="space-y-2">
+                <SectionLabel>Heading ↔ SERP Matrix</SectionLabel>
+                <SimpleTable
+                  columns={[
+                    { key: "heading", label: "Heading" },
+                    { key: "serpMentions", label: "SERP Mentions" },
+                    { key: "avgPosition", label: "Avg. Position" },
+                  ]}
+                  rows={heatmaps.headingSerpMatrix || []}
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
     </div>

@@ -260,7 +260,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bing.com",
+          "authority": 40,
+          "estimatedTrafficK": 254,
+          "commonKeywords": 58,
+          "sampleUrls": [
+            "https://bing.com/guide/core-web-vitals",
+            "https://bing.com/guide/search-snippets",
+            "https://bing.com/guide/structured-data"
+          ]
+        },
+        {
+          "domain": "duckduckgo.com",
+          "authority": 41,
+          "estimatedTrafficK": 258,
+          "commonKeywords": 170,
+          "sampleUrls": [
+            "https://duckduckgo.com/guide/core-web-vitals",
+            "https://duckduckgo.com/guide/search-snippets",
+            "https://duckduckgo.com/guide/structured-data"
+          ]
+        },
+        {
+          "domain": "yahoo.com",
+          "authority": 40,
+          "estimatedTrafficK": 118,
+          "commonKeywords": 74,
+          "sampleUrls": [
+            "https://yahoo.com/guide/core-web-vitals",
+            "https://yahoo.com/guide/search-snippets",
+            "https://yahoo.com/guide/structured-data"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "core web vitals",
+          "score": 80
+        },
+        {
+          "term": "search snippets",
+          "score": 73
+        },
+        {
+          "term": "structured data",
+          "score": 66
+        },
+        {
+          "term": "helpful content",
+          "score": 59
+        },
+        {
+          "term": "crawl budget",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 22
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 7
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 27,
+          "avgPosition": 11.3
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 33,
+          "avgPosition": 10.1
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "amazon.in",
@@ -523,7 +640,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "flipkart.com",
+          "authority": 65,
+          "estimatedTrafficK": 146,
+          "commonKeywords": 99,
+          "sampleUrls": [
+            "https://flipkart.com/guide/bullet-points",
+            "https://flipkart.com/guide/A+-content",
+            "https://flipkart.com/guide/seller-central"
+          ]
+        },
+        {
+          "domain": "myntra.com",
+          "authority": 76,
+          "estimatedTrafficK": 182,
+          "commonKeywords": 77,
+          "sampleUrls": [
+            "https://myntra.com/guide/bullet-points",
+            "https://myntra.com/guide/A+-content",
+            "https://myntra.com/guide/seller-central"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 78,
+          "estimatedTrafficK": 276,
+          "commonKeywords": 52,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/bullet-points",
+            "https://snapdeal.com/guide/A+-content",
+            "https://snapdeal.com/guide/seller-central"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "bullet points",
+          "score": 80
+        },
+        {
+          "term": "A+ content",
+          "score": 73
+        },
+        {
+          "term": "seller central",
+          "score": 66
+        },
+        {
+          "term": "search terms",
+          "score": 59
+        },
+        {
+          "term": "pricing strategy",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 21
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 21,
+          "avgPosition": 10.0
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 18,
+          "avgPosition": 3.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "flipkart.com",
@@ -786,7 +1020,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "amazon.in",
+          "authority": 43,
+          "estimatedTrafficK": 254,
+          "commonKeywords": 171,
+          "sampleUrls": [
+            "https://amazon.in/guide/big-billion-days",
+            "https://amazon.in/guide/on-page-seo",
+            "https://amazon.in/guide/product-feed"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 63,
+          "estimatedTrafficK": 154,
+          "commonKeywords": 181,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/big-billion-days",
+            "https://snapdeal.com/guide/on-page-seo",
+            "https://snapdeal.com/guide/product-feed"
+          ]
+        },
+        {
+          "domain": "meesho.com",
+          "authority": 63,
+          "estimatedTrafficK": 289,
+          "commonKeywords": 40,
+          "sampleUrls": [
+            "https://meesho.com/guide/big-billion-days",
+            "https://meesho.com/guide/on-page-seo",
+            "https://meesho.com/guide/product-feed"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "big billion days",
+          "score": 80
+        },
+        {
+          "term": "on-page seo",
+          "score": 73
+        },
+        {
+          "term": "product feed",
+          "score": 66
+        },
+        {
+          "term": "ratings & reviews",
+          "score": 59
+        },
+        {
+          "term": "schema markup",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 17
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 20,
+          "avgPosition": 11.7
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 23,
+          "avgPosition": 10.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "myntra.com",
@@ -1049,7 +1400,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "ajio.com",
+          "authority": 64,
+          "estimatedTrafficK": 131,
+          "commonKeywords": 102,
+          "sampleUrls": [
+            "https://ajio.com/guide/category-pages",
+            "https://ajio.com/guide/ugc-reviews",
+            "https://ajio.com/guide/image-seo"
+          ]
+        },
+        {
+          "domain": "flipkart.com",
+          "authority": 59,
+          "estimatedTrafficK": 128,
+          "commonKeywords": 100,
+          "sampleUrls": [
+            "https://flipkart.com/guide/category-pages",
+            "https://flipkart.com/guide/ugc-reviews",
+            "https://flipkart.com/guide/image-seo"
+          ]
+        },
+        {
+          "domain": "amazon.in",
+          "authority": 75,
+          "estimatedTrafficK": 52,
+          "commonKeywords": 125,
+          "sampleUrls": [
+            "https://amazon.in/guide/category-pages",
+            "https://amazon.in/guide/ugc-reviews",
+            "https://amazon.in/guide/image-seo"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "category pages",
+          "score": 80
+        },
+        {
+          "term": "ugc reviews",
+          "score": 73
+        },
+        {
+          "term": "image seo",
+          "score": 66
+        },
+        {
+          "term": "seasonal trends",
+          "score": 59
+        },
+        {
+          "term": "size guides",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 33
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 28,
+          "avgPosition": 10.5
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 23,
+          "avgPosition": 11.0
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "meesho.com",
@@ -1312,7 +1780,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "glowroad.com",
+          "authority": 66,
+          "estimatedTrafficK": 124,
+          "commonKeywords": 123,
+          "sampleUrls": [
+            "https://glowroad.com/guide/social-commerce",
+            "https://glowroad.com/guide/catalog-creation",
+            "https://glowroad.com/guide/pricing-hacks"
+          ]
+        },
+        {
+          "domain": "shop101.com",
+          "authority": 41,
+          "estimatedTrafficK": 95,
+          "commonKeywords": 132,
+          "sampleUrls": [
+            "https://shop101.com/guide/social-commerce",
+            "https://shop101.com/guide/catalog-creation",
+            "https://shop101.com/guide/pricing-hacks"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 63,
+          "estimatedTrafficK": 211,
+          "commonKeywords": 110,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/social-commerce",
+            "https://snapdeal.com/guide/catalog-creation",
+            "https://snapdeal.com/guide/pricing-hacks"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "social commerce",
+          "score": 80
+        },
+        {
+          "term": "catalog creation",
+          "score": 73
+        },
+        {
+          "term": "pricing hacks",
+          "score": 66
+        },
+        {
+          "term": "delivery promise",
+          "score": 59
+        },
+        {
+          "term": "trust badges",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 23
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 7
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 15,
+          "avgPosition": 9.8
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 28,
+          "avgPosition": 6.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "itzfizz.com",
@@ -1575,7 +2160,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "schbang.com",
+          "authority": 54,
+          "estimatedTrafficK": 82,
+          "commonKeywords": 106,
+          "sampleUrls": [
+            "https://schbang.com/guide/seo-services",
+            "https://schbang.com/guide/performance-marketing",
+            "https://schbang.com/guide/content-strategy"
+          ]
+        },
+        {
+          "domain": "watconsult.com",
+          "authority": 42,
+          "estimatedTrafficK": 144,
+          "commonKeywords": 100,
+          "sampleUrls": [
+            "https://watconsult.com/guide/seo-services",
+            "https://watconsult.com/guide/performance-marketing",
+            "https://watconsult.com/guide/content-strategy"
+          ]
+        },
+        {
+          "domain": "webchutney.com",
+          "authority": 67,
+          "estimatedTrafficK": 257,
+          "commonKeywords": 142,
+          "sampleUrls": [
+            "https://webchutney.com/guide/seo-services",
+            "https://webchutney.com/guide/performance-marketing",
+            "https://webchutney.com/guide/content-strategy"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "seo services",
+          "score": 80
+        },
+        {
+          "term": "performance marketing",
+          "score": 73
+        },
+        {
+          "term": "content strategy",
+          "score": 66
+        },
+        {
+          "term": "case studies",
+          "score": 59
+        },
+        {
+          "term": "local seo",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 27
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 15,
+          "avgPosition": 8.9
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 16,
+          "avgPosition": 2.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "loyora.com",
@@ -1838,7 +2540,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "livspace.com",
+          "authority": 71,
+          "estimatedTrafficK": 281,
+          "commonKeywords": 94,
+          "sampleUrls": [
+            "https://livspace.com/guide/restaurant-interiors",
+            "https://livspace.com/guide/school-furniture",
+            "https://livspace.com/guide/custom-carpentry"
+          ]
+        },
+        {
+          "domain": "homelane.com",
+          "authority": 75,
+          "estimatedTrafficK": 162,
+          "commonKeywords": 111,
+          "sampleUrls": [
+            "https://homelane.com/guide/restaurant-interiors",
+            "https://homelane.com/guide/school-furniture",
+            "https://homelane.com/guide/custom-carpentry"
+          ]
+        },
+        {
+          "domain": "designcafe.com",
+          "authority": 61,
+          "estimatedTrafficK": 253,
+          "commonKeywords": 185,
+          "sampleUrls": [
+            "https://designcafe.com/guide/restaurant-interiors",
+            "https://designcafe.com/guide/school-furniture",
+            "https://designcafe.com/guide/custom-carpentry"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "restaurant interiors",
+          "score": 80
+        },
+        {
+          "term": "school furniture",
+          "score": 73
+        },
+        {
+          "term": "custom carpentry",
+          "score": 66
+        },
+        {
+          "term": "branding",
+          "score": 59
+        },
+        {
+          "term": "3d renders",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 24
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 34,
+          "avgPosition": 7.5
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 34,
+          "avgPosition": 2.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "waterstonindia.com",
@@ -2101,7 +2920,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "kajariaceramics.com",
+          "authority": 74,
+          "estimatedTrafficK": 186,
+          "commonKeywords": 169,
+          "sampleUrls": [
+            "https://kajariaceramics.com/guide/bathroom-tiles",
+            "https://kajariaceramics.com/guide/faucets",
+            "https://kajariaceramics.com/guide/toilet-seats"
+          ]
+        },
+        {
+          "domain": "somanyceramics.com",
+          "authority": 66,
+          "estimatedTrafficK": 205,
+          "commonKeywords": 63,
+          "sampleUrls": [
+            "https://somanyceramics.com/guide/bathroom-tiles",
+            "https://somanyceramics.com/guide/faucets",
+            "https://somanyceramics.com/guide/toilet-seats"
+          ]
+        },
+        {
+          "domain": "hindware.com",
+          "authority": 58,
+          "estimatedTrafficK": 182,
+          "commonKeywords": 174,
+          "sampleUrls": [
+            "https://hindware.com/guide/bathroom-tiles",
+            "https://hindware.com/guide/faucets",
+            "https://hindware.com/guide/toilet-seats"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "bathroom tiles",
+          "score": 80
+        },
+        {
+          "term": "faucets",
+          "score": 73
+        },
+        {
+          "term": "toilet seats",
+          "score": 66
+        },
+        {
+          "term": "vanity units",
+          "score": 59
+        },
+        {
+          "term": "tile showroom",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 28
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 18,
+          "avgPosition": 2.2
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 34,
+          "avgPosition": 2.7
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "paakashala.com",
@@ -2364,7 +3300,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "adigas.com",
+          "authority": 74,
+          "estimatedTrafficK": 238,
+          "commonKeywords": 45,
+          "sampleUrls": [
+            "https://adigas.com/guide/menu-online",
+            "https://adigas.com/guide/franchise",
+            "https://adigas.com/guide/home-delivery"
+          ]
+        },
+        {
+          "domain": "a2brestaurant.com",
+          "authority": 45,
+          "estimatedTrafficK": 166,
+          "commonKeywords": 179,
+          "sampleUrls": [
+            "https://a2brestaurant.com/guide/menu-online",
+            "https://a2brestaurant.com/guide/franchise",
+            "https://a2brestaurant.com/guide/home-delivery"
+          ]
+        },
+        {
+          "domain": "saravanabhavan.com",
+          "authority": 76,
+          "estimatedTrafficK": 334,
+          "commonKeywords": 174,
+          "sampleUrls": [
+            "https://saravanabhavan.com/guide/menu-online",
+            "https://saravanabhavan.com/guide/franchise",
+            "https://saravanabhavan.com/guide/home-delivery"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "menu online",
+          "score": 80
+        },
+        {
+          "term": "franchise",
+          "score": 73
+        },
+        {
+          "term": "home delivery",
+          "score": 66
+        },
+        {
+          "term": "google reviews",
+          "score": 59
+        },
+        {
+          "term": "opening hours",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 24
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 30,
+          "avgPosition": 8.7
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 20,
+          "avgPosition": 11.3
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "bigbasket.com",
@@ -2627,7 +3680,124 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bigbasket-competitor1.com",
+          "authority": 58,
+          "estimatedTrafficK": 271,
+          "commonKeywords": 115,
+          "sampleUrls": [
+            "https://bigbasket-competitor1.com/guide/fresh-produce",
+            "https://bigbasket-competitor1.com/guide/same-day-delivery",
+            "https://bigbasket-competitor1.com/guide/subscription"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor2.com",
+          "authority": 65,
+          "estimatedTrafficK": 288,
+          "commonKeywords": 53,
+          "sampleUrls": [
+            "https://bigbasket-competitor2.com/guide/fresh-produce",
+            "https://bigbasket-competitor2.com/guide/same-day-delivery",
+            "https://bigbasket-competitor2.com/guide/subscription"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor3.com",
+          "authority": 58,
+          "estimatedTrafficK": 142,
+          "commonKeywords": 193,
+          "sampleUrls": [
+            "https://bigbasket-competitor3.com/guide/fresh-produce",
+            "https://bigbasket-competitor3.com/guide/same-day-delivery",
+            "https://bigbasket-competitor3.com/guide/subscription"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 5
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "fresh produce",
+          "score": 80
+        },
+        {
+          "term": "same day delivery",
+          "score": 73
+        },
+        {
+          "term": "subscription",
+          "score": 66
+        },
+        {
+          "term": "brand pages",
+          "score": 59
+        },
+        {
+          "term": "recipe seo",
+          "score": 52
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 28
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 16,
+          "avgPosition": 6.6
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 19,
+          "avgPosition": 5.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "google.com",
@@ -2878,7 +4048,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bing.com",
+          "authority": 40,
+          "estimatedTrafficK": 124,
+          "commonKeywords": 154,
+          "sampleUrls": [
+            "https://bing.com/guide/core-web-vitals",
+            "https://bing.com/guide/google-my-business-optimization",
+            "https://bing.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "duckduckgo.com",
+          "authority": 56,
+          "estimatedTrafficK": 175,
+          "commonKeywords": 131,
+          "sampleUrls": [
+            "https://duckduckgo.com/guide/core-web-vitals",
+            "https://duckduckgo.com/guide/google-my-business-optimization",
+            "https://duckduckgo.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "yahoo.com",
+          "authority": 71,
+          "estimatedTrafficK": 305,
+          "commonKeywords": 151,
+          "sampleUrls": [
+            "https://yahoo.com/guide/core-web-vitals",
+            "https://yahoo.com/guide/google-my-business-optimization",
+            "https://yahoo.com/guide/google-ads-best-practices"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "core web vitals",
+          "score": 80
+        },
+        {
+          "term": "google my business optimization",
+          "score": 73
+        },
+        {
+          "term": "google ads best practices",
+          "score": 66
+        },
+        {
+          "term": "google analytics tutorial",
+          "score": 59
+        },
+        {
+          "term": "youtube seo tips",
+          "score": 52
+        },
+        {
+          "term": "google ranking factors",
+          "score": 45
+        },
+        {
+          "term": "structured data for google",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 19
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 34,
+          "avgPosition": 12.0
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 31,
+          "avgPosition": 6.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "google.com",
@@ -3129,7 +4424,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bing.com",
+          "authority": 49,
+          "estimatedTrafficK": 210,
+          "commonKeywords": 123,
+          "sampleUrls": [
+            "https://bing.com/guide/core-web-vitals",
+            "https://bing.com/guide/google-my-business-optimization",
+            "https://bing.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "duckduckgo.com",
+          "authority": 41,
+          "estimatedTrafficK": 126,
+          "commonKeywords": 72,
+          "sampleUrls": [
+            "https://duckduckgo.com/guide/core-web-vitals",
+            "https://duckduckgo.com/guide/google-my-business-optimization",
+            "https://duckduckgo.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "yahoo.com",
+          "authority": 56,
+          "estimatedTrafficK": 140,
+          "commonKeywords": 178,
+          "sampleUrls": [
+            "https://yahoo.com/guide/core-web-vitals",
+            "https://yahoo.com/guide/google-my-business-optimization",
+            "https://yahoo.com/guide/google-ads-best-practices"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "core web vitals",
+          "score": 80
+        },
+        {
+          "term": "google my business optimization",
+          "score": 73
+        },
+        {
+          "term": "google ads best practices",
+          "score": 66
+        },
+        {
+          "term": "google analytics tutorial",
+          "score": 59
+        },
+        {
+          "term": "youtube seo tips",
+          "score": 52
+        },
+        {
+          "term": "google ranking factors",
+          "score": 45
+        },
+        {
+          "term": "structured data for google",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 22
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 32,
+          "avgPosition": 11.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 31,
+          "avgPosition": 2.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "google.com",
@@ -3380,7 +4800,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bing.com",
+          "authority": 54,
+          "estimatedTrafficK": 230,
+          "commonKeywords": 45,
+          "sampleUrls": [
+            "https://bing.com/guide/core-web-vitals",
+            "https://bing.com/guide/google-my-business-optimization",
+            "https://bing.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "duckduckgo.com",
+          "authority": 74,
+          "estimatedTrafficK": 133,
+          "commonKeywords": 69,
+          "sampleUrls": [
+            "https://duckduckgo.com/guide/core-web-vitals",
+            "https://duckduckgo.com/guide/google-my-business-optimization",
+            "https://duckduckgo.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "yahoo.com",
+          "authority": 79,
+          "estimatedTrafficK": 202,
+          "commonKeywords": 120,
+          "sampleUrls": [
+            "https://yahoo.com/guide/core-web-vitals",
+            "https://yahoo.com/guide/google-my-business-optimization",
+            "https://yahoo.com/guide/google-ads-best-practices"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "core web vitals",
+          "score": 80
+        },
+        {
+          "term": "google my business optimization",
+          "score": 73
+        },
+        {
+          "term": "google ads best practices",
+          "score": 66
+        },
+        {
+          "term": "google analytics tutorial",
+          "score": 59
+        },
+        {
+          "term": "youtube seo tips",
+          "score": 52
+        },
+        {
+          "term": "google ranking factors",
+          "score": 45
+        },
+        {
+          "term": "structured data for google",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 19
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 22,
+          "avgPosition": 6.0
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 32,
+          "avgPosition": 10.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "google.com",
@@ -3631,7 +5176,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bing.com",
+          "authority": 66,
+          "estimatedTrafficK": 65,
+          "commonKeywords": 76,
+          "sampleUrls": [
+            "https://bing.com/guide/core-web-vitals",
+            "https://bing.com/guide/google-my-business-optimization",
+            "https://bing.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "duckduckgo.com",
+          "authority": 64,
+          "estimatedTrafficK": 178,
+          "commonKeywords": 125,
+          "sampleUrls": [
+            "https://duckduckgo.com/guide/core-web-vitals",
+            "https://duckduckgo.com/guide/google-my-business-optimization",
+            "https://duckduckgo.com/guide/google-ads-best-practices"
+          ]
+        },
+        {
+          "domain": "yahoo.com",
+          "authority": 59,
+          "estimatedTrafficK": 171,
+          "commonKeywords": 50,
+          "sampleUrls": [
+            "https://yahoo.com/guide/core-web-vitals",
+            "https://yahoo.com/guide/google-my-business-optimization",
+            "https://yahoo.com/guide/google-ads-best-practices"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "core web vitals",
+          "score": 80
+        },
+        {
+          "term": "google my business optimization",
+          "score": 73
+        },
+        {
+          "term": "google ads best practices",
+          "score": 66
+        },
+        {
+          "term": "google analytics tutorial",
+          "score": 59
+        },
+        {
+          "term": "youtube seo tips",
+          "score": 52
+        },
+        {
+          "term": "google ranking factors",
+          "score": 45
+        },
+        {
+          "term": "structured data for google",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 14
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 18,
+          "avgPosition": 6.9
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 21,
+          "avgPosition": 10.3
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "amazon.in",
@@ -3882,7 +5552,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "flipkart.com",
+          "authority": 61,
+          "estimatedTrafficK": 224,
+          "commonKeywords": 57,
+          "sampleUrls": [
+            "https://flipkart.com/guide/amazon-product-listing-optimization",
+            "https://flipkart.com/guide/amazon-seller-tips-India",
+            "https://flipkart.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "myntra.com",
+          "authority": 50,
+          "estimatedTrafficK": 309,
+          "commonKeywords": 166,
+          "sampleUrls": [
+            "https://myntra.com/guide/amazon-product-listing-optimization",
+            "https://myntra.com/guide/amazon-seller-tips-India",
+            "https://myntra.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 42,
+          "estimatedTrafficK": 294,
+          "commonKeywords": 67,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/amazon-product-listing-optimization",
+            "https://snapdeal.com/guide/amazon-seller-tips-India",
+            "https://snapdeal.com/guide/online-shopping-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "amazon product listing optimization",
+          "score": 80
+        },
+        {
+          "term": "amazon seller tips India",
+          "score": 73
+        },
+        {
+          "term": "online shopping India",
+          "score": 66
+        },
+        {
+          "term": "amazon advertising India",
+          "score": 59
+        },
+        {
+          "term": "product page conversion optimization",
+          "score": 52
+        },
+        {
+          "term": "fast delivery ecommerce India",
+          "score": 45
+        },
+        {
+          "term": "marketplace SEO",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 21
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 26,
+          "avgPosition": 3.1
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 21,
+          "avgPosition": 7.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "amazon.in",
@@ -4133,7 +5928,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "flipkart.com",
+          "authority": 66,
+          "estimatedTrafficK": 310,
+          "commonKeywords": 68,
+          "sampleUrls": [
+            "https://flipkart.com/guide/amazon-product-listing-optimization",
+            "https://flipkart.com/guide/amazon-seller-tips-India",
+            "https://flipkart.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "myntra.com",
+          "authority": 73,
+          "estimatedTrafficK": 97,
+          "commonKeywords": 130,
+          "sampleUrls": [
+            "https://myntra.com/guide/amazon-product-listing-optimization",
+            "https://myntra.com/guide/amazon-seller-tips-India",
+            "https://myntra.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 40,
+          "estimatedTrafficK": 232,
+          "commonKeywords": 101,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/amazon-product-listing-optimization",
+            "https://snapdeal.com/guide/amazon-seller-tips-India",
+            "https://snapdeal.com/guide/online-shopping-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "amazon product listing optimization",
+          "score": 80
+        },
+        {
+          "term": "amazon seller tips India",
+          "score": 73
+        },
+        {
+          "term": "online shopping India",
+          "score": 66
+        },
+        {
+          "term": "amazon advertising India",
+          "score": 59
+        },
+        {
+          "term": "product page conversion optimization",
+          "score": 52
+        },
+        {
+          "term": "fast delivery ecommerce India",
+          "score": 45
+        },
+        {
+          "term": "marketplace SEO",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 18
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 32,
+          "avgPosition": 6.8
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 25,
+          "avgPosition": 7.6
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "amazon.in",
@@ -4384,7 +6304,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "flipkart.com",
+          "authority": 58,
+          "estimatedTrafficK": 216,
+          "commonKeywords": 80,
+          "sampleUrls": [
+            "https://flipkart.com/guide/amazon-product-listing-optimization",
+            "https://flipkart.com/guide/amazon-seller-tips-India",
+            "https://flipkart.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "myntra.com",
+          "authority": 66,
+          "estimatedTrafficK": 253,
+          "commonKeywords": 136,
+          "sampleUrls": [
+            "https://myntra.com/guide/amazon-product-listing-optimization",
+            "https://myntra.com/guide/amazon-seller-tips-India",
+            "https://myntra.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 55,
+          "estimatedTrafficK": 121,
+          "commonKeywords": 197,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/amazon-product-listing-optimization",
+            "https://snapdeal.com/guide/amazon-seller-tips-India",
+            "https://snapdeal.com/guide/online-shopping-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "amazon product listing optimization",
+          "score": 80
+        },
+        {
+          "term": "amazon seller tips India",
+          "score": 73
+        },
+        {
+          "term": "online shopping India",
+          "score": 66
+        },
+        {
+          "term": "amazon advertising India",
+          "score": 59
+        },
+        {
+          "term": "product page conversion optimization",
+          "score": 52
+        },
+        {
+          "term": "fast delivery ecommerce India",
+          "score": 45
+        },
+        {
+          "term": "marketplace SEO",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 17
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 17,
+          "avgPosition": 3.9
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 32,
+          "avgPosition": 3.6
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "amazon.in",
@@ -4635,7 +6680,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "flipkart.com",
+          "authority": 53,
+          "estimatedTrafficK": 123,
+          "commonKeywords": 69,
+          "sampleUrls": [
+            "https://flipkart.com/guide/amazon-product-listing-optimization",
+            "https://flipkart.com/guide/amazon-seller-tips-India",
+            "https://flipkart.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "myntra.com",
+          "authority": 52,
+          "estimatedTrafficK": 217,
+          "commonKeywords": 155,
+          "sampleUrls": [
+            "https://myntra.com/guide/amazon-product-listing-optimization",
+            "https://myntra.com/guide/amazon-seller-tips-India",
+            "https://myntra.com/guide/online-shopping-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 40,
+          "estimatedTrafficK": 281,
+          "commonKeywords": 136,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/amazon-product-listing-optimization",
+            "https://snapdeal.com/guide/amazon-seller-tips-India",
+            "https://snapdeal.com/guide/online-shopping-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "amazon product listing optimization",
+          "score": 80
+        },
+        {
+          "term": "amazon seller tips India",
+          "score": 73
+        },
+        {
+          "term": "online shopping India",
+          "score": 66
+        },
+        {
+          "term": "amazon advertising India",
+          "score": 59
+        },
+        {
+          "term": "product page conversion optimization",
+          "score": 52
+        },
+        {
+          "term": "fast delivery ecommerce India",
+          "score": 45
+        },
+        {
+          "term": "marketplace SEO",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 20
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 27,
+          "avgPosition": 8.3
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 21,
+          "avgPosition": 9.3
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "flipkart.com",
@@ -4886,7 +7056,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "amazon.in",
+          "authority": 46,
+          "estimatedTrafficK": 163,
+          "commonKeywords": 154,
+          "sampleUrls": [
+            "https://amazon.in/guide/flipkart-product-optimization",
+            "https://amazon.in/guide/online-marketplace-India",
+            "https://amazon.in/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 66,
+          "estimatedTrafficK": 198,
+          "commonKeywords": 150,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/flipkart-product-optimization",
+            "https://snapdeal.com/guide/online-marketplace-India",
+            "https://snapdeal.com/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "meesho.com",
+          "authority": 71,
+          "estimatedTrafficK": 196,
+          "commonKeywords": 162,
+          "sampleUrls": [
+            "https://meesho.com/guide/flipkart-product-optimization",
+            "https://meesho.com/guide/online-marketplace-India",
+            "https://meesho.com/guide/flipkart-advertising"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "flipkart product optimization",
+          "score": 80
+        },
+        {
+          "term": "online marketplace India",
+          "score": 73
+        },
+        {
+          "term": "flipkart advertising",
+          "score": 66
+        },
+        {
+          "term": "product listing best practices",
+          "score": 59
+        },
+        {
+          "term": "flipkart shipping partners",
+          "score": 52
+        },
+        {
+          "term": "ecommerce SEO India",
+          "score": 45
+        },
+        {
+          "term": "big billion days deals",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 22
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 34,
+          "avgPosition": 9.3
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 20,
+          "avgPosition": 4.1
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "flipkart.com",
@@ -5137,7 +7432,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "amazon.in",
+          "authority": 47,
+          "estimatedTrafficK": 269,
+          "commonKeywords": 100,
+          "sampleUrls": [
+            "https://amazon.in/guide/flipkart-product-optimization",
+            "https://amazon.in/guide/online-marketplace-India",
+            "https://amazon.in/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 57,
+          "estimatedTrafficK": 283,
+          "commonKeywords": 194,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/flipkart-product-optimization",
+            "https://snapdeal.com/guide/online-marketplace-India",
+            "https://snapdeal.com/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "meesho.com",
+          "authority": 59,
+          "estimatedTrafficK": 335,
+          "commonKeywords": 105,
+          "sampleUrls": [
+            "https://meesho.com/guide/flipkart-product-optimization",
+            "https://meesho.com/guide/online-marketplace-India",
+            "https://meesho.com/guide/flipkart-advertising"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "flipkart product optimization",
+          "score": 80
+        },
+        {
+          "term": "online marketplace India",
+          "score": 73
+        },
+        {
+          "term": "flipkart advertising",
+          "score": 66
+        },
+        {
+          "term": "product listing best practices",
+          "score": 59
+        },
+        {
+          "term": "flipkart shipping partners",
+          "score": 52
+        },
+        {
+          "term": "ecommerce SEO India",
+          "score": 45
+        },
+        {
+          "term": "big billion days deals",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 16
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 17,
+          "avgPosition": 6.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 28,
+          "avgPosition": 10.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "flipkart.com",
@@ -5388,7 +7808,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "amazon.in",
+          "authority": 48,
+          "estimatedTrafficK": 188,
+          "commonKeywords": 93,
+          "sampleUrls": [
+            "https://amazon.in/guide/flipkart-product-optimization",
+            "https://amazon.in/guide/online-marketplace-India",
+            "https://amazon.in/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 46,
+          "estimatedTrafficK": 319,
+          "commonKeywords": 193,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/flipkart-product-optimization",
+            "https://snapdeal.com/guide/online-marketplace-India",
+            "https://snapdeal.com/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "meesho.com",
+          "authority": 48,
+          "estimatedTrafficK": 347,
+          "commonKeywords": 93,
+          "sampleUrls": [
+            "https://meesho.com/guide/flipkart-product-optimization",
+            "https://meesho.com/guide/online-marketplace-India",
+            "https://meesho.com/guide/flipkart-advertising"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "flipkart product optimization",
+          "score": 80
+        },
+        {
+          "term": "online marketplace India",
+          "score": 73
+        },
+        {
+          "term": "flipkart advertising",
+          "score": 66
+        },
+        {
+          "term": "product listing best practices",
+          "score": 59
+        },
+        {
+          "term": "flipkart shipping partners",
+          "score": 52
+        },
+        {
+          "term": "ecommerce SEO India",
+          "score": 45
+        },
+        {
+          "term": "big billion days deals",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 20
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 7
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 33,
+          "avgPosition": 4.3
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 26,
+          "avgPosition": 2.7
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "flipkart.com",
@@ -5639,7 +8184,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "amazon.in",
+          "authority": 59,
+          "estimatedTrafficK": 126,
+          "commonKeywords": 162,
+          "sampleUrls": [
+            "https://amazon.in/guide/flipkart-product-optimization",
+            "https://amazon.in/guide/online-marketplace-India",
+            "https://amazon.in/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 67,
+          "estimatedTrafficK": 170,
+          "commonKeywords": 183,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/flipkart-product-optimization",
+            "https://snapdeal.com/guide/online-marketplace-India",
+            "https://snapdeal.com/guide/flipkart-advertising"
+          ]
+        },
+        {
+          "domain": "meesho.com",
+          "authority": 56,
+          "estimatedTrafficK": 335,
+          "commonKeywords": 166,
+          "sampleUrls": [
+            "https://meesho.com/guide/flipkart-product-optimization",
+            "https://meesho.com/guide/online-marketplace-India",
+            "https://meesho.com/guide/flipkart-advertising"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "flipkart product optimization",
+          "score": 80
+        },
+        {
+          "term": "online marketplace India",
+          "score": 73
+        },
+        {
+          "term": "flipkart advertising",
+          "score": 66
+        },
+        {
+          "term": "product listing best practices",
+          "score": 59
+        },
+        {
+          "term": "flipkart shipping partners",
+          "score": 52
+        },
+        {
+          "term": "ecommerce SEO India",
+          "score": 45
+        },
+        {
+          "term": "big billion days deals",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 22
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 21,
+          "avgPosition": 5.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 29,
+          "avgPosition": 3.0
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "myntra.com",
@@ -5890,7 +8560,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "ajio.com",
+          "authority": 65,
+          "estimatedTrafficK": 341,
+          "commonKeywords": 163,
+          "sampleUrls": [
+            "https://ajio.com/guide/myntra-seller-tips",
+            "https://ajio.com/guide/apparel-product-photography",
+            "https://ajio.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "flipkart.com",
+          "authority": 60,
+          "estimatedTrafficK": 314,
+          "commonKeywords": 50,
+          "sampleUrls": [
+            "https://flipkart.com/guide/myntra-seller-tips",
+            "https://flipkart.com/guide/apparel-product-photography",
+            "https://flipkart.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "amazon.in",
+          "authority": 56,
+          "estimatedTrafficK": 86,
+          "commonKeywords": 147,
+          "sampleUrls": [
+            "https://amazon.in/guide/myntra-seller-tips",
+            "https://amazon.in/guide/apparel-product-photography",
+            "https://amazon.in/guide/fashion-trends-India-2025"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "myntra seller tips",
+          "score": 80
+        },
+        {
+          "term": "apparel product photography",
+          "score": 73
+        },
+        {
+          "term": "fashion trends India 2025",
+          "score": 66
+        },
+        {
+          "term": "clothing store SEO",
+          "score": 59
+        },
+        {
+          "term": "myntra app optimization",
+          "score": 52
+        },
+        {
+          "term": "omnichannel fashion retail",
+          "score": 45
+        },
+        {
+          "term": "myntra promotions",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 23
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 30,
+          "avgPosition": 4.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 32,
+          "avgPosition": 7.5
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "myntra.com",
@@ -6141,7 +8936,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "ajio.com",
+          "authority": 43,
+          "estimatedTrafficK": 285,
+          "commonKeywords": 47,
+          "sampleUrls": [
+            "https://ajio.com/guide/myntra-seller-tips",
+            "https://ajio.com/guide/apparel-product-photography",
+            "https://ajio.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "flipkart.com",
+          "authority": 64,
+          "estimatedTrafficK": 223,
+          "commonKeywords": 134,
+          "sampleUrls": [
+            "https://flipkart.com/guide/myntra-seller-tips",
+            "https://flipkart.com/guide/apparel-product-photography",
+            "https://flipkart.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "amazon.in",
+          "authority": 72,
+          "estimatedTrafficK": 185,
+          "commonKeywords": 77,
+          "sampleUrls": [
+            "https://amazon.in/guide/myntra-seller-tips",
+            "https://amazon.in/guide/apparel-product-photography",
+            "https://amazon.in/guide/fashion-trends-India-2025"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "myntra seller tips",
+          "score": 80
+        },
+        {
+          "term": "apparel product photography",
+          "score": 73
+        },
+        {
+          "term": "fashion trends India 2025",
+          "score": 66
+        },
+        {
+          "term": "clothing store SEO",
+          "score": 59
+        },
+        {
+          "term": "myntra app optimization",
+          "score": 52
+        },
+        {
+          "term": "omnichannel fashion retail",
+          "score": 45
+        },
+        {
+          "term": "myntra promotions",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 21
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 17,
+          "avgPosition": 6.5
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 31,
+          "avgPosition": 10.3
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "myntra.com",
@@ -6392,7 +9312,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "ajio.com",
+          "authority": 55,
+          "estimatedTrafficK": 96,
+          "commonKeywords": 49,
+          "sampleUrls": [
+            "https://ajio.com/guide/myntra-seller-tips",
+            "https://ajio.com/guide/apparel-product-photography",
+            "https://ajio.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "flipkart.com",
+          "authority": 40,
+          "estimatedTrafficK": 84,
+          "commonKeywords": 159,
+          "sampleUrls": [
+            "https://flipkart.com/guide/myntra-seller-tips",
+            "https://flipkart.com/guide/apparel-product-photography",
+            "https://flipkart.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "amazon.in",
+          "authority": 74,
+          "estimatedTrafficK": 293,
+          "commonKeywords": 149,
+          "sampleUrls": [
+            "https://amazon.in/guide/myntra-seller-tips",
+            "https://amazon.in/guide/apparel-product-photography",
+            "https://amazon.in/guide/fashion-trends-India-2025"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "myntra seller tips",
+          "score": 80
+        },
+        {
+          "term": "apparel product photography",
+          "score": 73
+        },
+        {
+          "term": "fashion trends India 2025",
+          "score": 66
+        },
+        {
+          "term": "clothing store SEO",
+          "score": 59
+        },
+        {
+          "term": "myntra app optimization",
+          "score": 52
+        },
+        {
+          "term": "omnichannel fashion retail",
+          "score": 45
+        },
+        {
+          "term": "myntra promotions",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 24
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 15,
+          "avgPosition": 9.2
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 19,
+          "avgPosition": 6.6
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "myntra.com",
@@ -6643,7 +9688,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "ajio.com",
+          "authority": 40,
+          "estimatedTrafficK": 113,
+          "commonKeywords": 107,
+          "sampleUrls": [
+            "https://ajio.com/guide/myntra-seller-tips",
+            "https://ajio.com/guide/apparel-product-photography",
+            "https://ajio.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "flipkart.com",
+          "authority": 70,
+          "estimatedTrafficK": 245,
+          "commonKeywords": 102,
+          "sampleUrls": [
+            "https://flipkart.com/guide/myntra-seller-tips",
+            "https://flipkart.com/guide/apparel-product-photography",
+            "https://flipkart.com/guide/fashion-trends-India-2025"
+          ]
+        },
+        {
+          "domain": "amazon.in",
+          "authority": 54,
+          "estimatedTrafficK": 283,
+          "commonKeywords": 56,
+          "sampleUrls": [
+            "https://amazon.in/guide/myntra-seller-tips",
+            "https://amazon.in/guide/apparel-product-photography",
+            "https://amazon.in/guide/fashion-trends-India-2025"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "myntra seller tips",
+          "score": 80
+        },
+        {
+          "term": "apparel product photography",
+          "score": 73
+        },
+        {
+          "term": "fashion trends India 2025",
+          "score": 66
+        },
+        {
+          "term": "clothing store SEO",
+          "score": 59
+        },
+        {
+          "term": "myntra app optimization",
+          "score": 52
+        },
+        {
+          "term": "omnichannel fashion retail",
+          "score": 45
+        },
+        {
+          "term": "myntra promotions",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 23
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 22,
+          "avgPosition": 7.7
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 30,
+          "avgPosition": 3.3
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "meesho.com",
@@ -6894,7 +10064,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "glowroad.com",
+          "authority": 54,
+          "estimatedTrafficK": 186,
+          "commonKeywords": 66,
+          "sampleUrls": [
+            "https://glowroad.com/guide/meesho-seller-tips",
+            "https://glowroad.com/guide/start-reselling-online",
+            "https://glowroad.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "shop101.com",
+          "authority": 62,
+          "estimatedTrafficK": 228,
+          "commonKeywords": 105,
+          "sampleUrls": [
+            "https://shop101.com/guide/meesho-seller-tips",
+            "https://shop101.com/guide/start-reselling-online",
+            "https://shop101.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 42,
+          "estimatedTrafficK": 111,
+          "commonKeywords": 111,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/meesho-seller-tips",
+            "https://snapdeal.com/guide/start-reselling-online",
+            "https://snapdeal.com/guide/social-commerce-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "meesho seller tips",
+          "score": 80
+        },
+        {
+          "term": "start reselling online",
+          "score": 73
+        },
+        {
+          "term": "social commerce India",
+          "score": 66
+        },
+        {
+          "term": "meesho logistics",
+          "score": 59
+        },
+        {
+          "term": "product sourcing for resellers",
+          "score": 52
+        },
+        {
+          "term": "meesho marketing tips",
+          "score": 45
+        },
+        {
+          "term": "zero commission marketplace",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 26
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 31,
+          "avgPosition": 10.3
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 26,
+          "avgPosition": 8.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "meesho.com",
@@ -7145,7 +10440,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "glowroad.com",
+          "authority": 47,
+          "estimatedTrafficK": 154,
+          "commonKeywords": 192,
+          "sampleUrls": [
+            "https://glowroad.com/guide/meesho-seller-tips",
+            "https://glowroad.com/guide/start-reselling-online",
+            "https://glowroad.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "shop101.com",
+          "authority": 74,
+          "estimatedTrafficK": 326,
+          "commonKeywords": 63,
+          "sampleUrls": [
+            "https://shop101.com/guide/meesho-seller-tips",
+            "https://shop101.com/guide/start-reselling-online",
+            "https://shop101.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 54,
+          "estimatedTrafficK": 52,
+          "commonKeywords": 72,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/meesho-seller-tips",
+            "https://snapdeal.com/guide/start-reselling-online",
+            "https://snapdeal.com/guide/social-commerce-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "meesho seller tips",
+          "score": 80
+        },
+        {
+          "term": "start reselling online",
+          "score": 73
+        },
+        {
+          "term": "social commerce India",
+          "score": 66
+        },
+        {
+          "term": "meesho logistics",
+          "score": 59
+        },
+        {
+          "term": "product sourcing for resellers",
+          "score": 52
+        },
+        {
+          "term": "meesho marketing tips",
+          "score": 45
+        },
+        {
+          "term": "zero commission marketplace",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 18
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 18,
+          "avgPosition": 4.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 30,
+          "avgPosition": 2.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "meesho.com",
@@ -7396,7 +10816,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "glowroad.com",
+          "authority": 41,
+          "estimatedTrafficK": 326,
+          "commonKeywords": 130,
+          "sampleUrls": [
+            "https://glowroad.com/guide/meesho-seller-tips",
+            "https://glowroad.com/guide/start-reselling-online",
+            "https://glowroad.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "shop101.com",
+          "authority": 49,
+          "estimatedTrafficK": 307,
+          "commonKeywords": 162,
+          "sampleUrls": [
+            "https://shop101.com/guide/meesho-seller-tips",
+            "https://shop101.com/guide/start-reselling-online",
+            "https://shop101.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 53,
+          "estimatedTrafficK": 180,
+          "commonKeywords": 56,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/meesho-seller-tips",
+            "https://snapdeal.com/guide/start-reselling-online",
+            "https://snapdeal.com/guide/social-commerce-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "meesho seller tips",
+          "score": 80
+        },
+        {
+          "term": "start reselling online",
+          "score": 73
+        },
+        {
+          "term": "social commerce India",
+          "score": 66
+        },
+        {
+          "term": "meesho logistics",
+          "score": 59
+        },
+        {
+          "term": "product sourcing for resellers",
+          "score": 52
+        },
+        {
+          "term": "meesho marketing tips",
+          "score": 45
+        },
+        {
+          "term": "zero commission marketplace",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 23
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 16,
+          "avgPosition": 5.8
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 24,
+          "avgPosition": 2.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "meesho.com",
@@ -7647,7 +11192,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "glowroad.com",
+          "authority": 45,
+          "estimatedTrafficK": 100,
+          "commonKeywords": 41,
+          "sampleUrls": [
+            "https://glowroad.com/guide/meesho-seller-tips",
+            "https://glowroad.com/guide/start-reselling-online",
+            "https://glowroad.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "shop101.com",
+          "authority": 43,
+          "estimatedTrafficK": 330,
+          "commonKeywords": 159,
+          "sampleUrls": [
+            "https://shop101.com/guide/meesho-seller-tips",
+            "https://shop101.com/guide/start-reselling-online",
+            "https://shop101.com/guide/social-commerce-India"
+          ]
+        },
+        {
+          "domain": "snapdeal.com",
+          "authority": 78,
+          "estimatedTrafficK": 95,
+          "commonKeywords": 196,
+          "sampleUrls": [
+            "https://snapdeal.com/guide/meesho-seller-tips",
+            "https://snapdeal.com/guide/start-reselling-online",
+            "https://snapdeal.com/guide/social-commerce-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "meesho seller tips",
+          "score": 80
+        },
+        {
+          "term": "start reselling online",
+          "score": 73
+        },
+        {
+          "term": "social commerce India",
+          "score": 66
+        },
+        {
+          "term": "meesho logistics",
+          "score": 59
+        },
+        {
+          "term": "product sourcing for resellers",
+          "score": 52
+        },
+        {
+          "term": "meesho marketing tips",
+          "score": 45
+        },
+        {
+          "term": "zero commission marketplace",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 20
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 30,
+          "avgPosition": 2.1
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 21,
+          "avgPosition": 7.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "itzfizz.com",
@@ -7898,7 +11568,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "schbang.com",
+          "authority": 54,
+          "estimatedTrafficK": 147,
+          "commonKeywords": 82,
+          "sampleUrls": [
+            "https://schbang.com/guide/SEO-services-for-SMEs",
+            "https://schbang.com/guide/social-media-management-services",
+            "https://schbang.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "watconsult.com",
+          "authority": 78,
+          "estimatedTrafficK": 270,
+          "commonKeywords": 145,
+          "sampleUrls": [
+            "https://watconsult.com/guide/SEO-services-for-SMEs",
+            "https://watconsult.com/guide/social-media-management-services",
+            "https://watconsult.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "webchutney.com",
+          "authority": 55,
+          "estimatedTrafficK": 63,
+          "commonKeywords": 48,
+          "sampleUrls": [
+            "https://webchutney.com/guide/SEO-services-for-SMEs",
+            "https://webchutney.com/guide/social-media-management-services",
+            "https://webchutney.com/guide/ecommerce-SEO-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "SEO services for SMEs",
+          "score": 80
+        },
+        {
+          "term": "social media management services",
+          "score": 73
+        },
+        {
+          "term": "ecommerce SEO services",
+          "score": 66
+        },
+        {
+          "term": "performance marketing agency",
+          "score": 59
+        },
+        {
+          "term": "local SEO services",
+          "score": 52
+        },
+        {
+          "term": "website development agency India",
+          "score": 45
+        },
+        {
+          "term": "content marketing agency India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 27
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 24,
+          "avgPosition": 8.3
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 32,
+          "avgPosition": 4.7
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "itzfizz.com",
@@ -8149,7 +11944,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "schbang.com",
+          "authority": 68,
+          "estimatedTrafficK": 196,
+          "commonKeywords": 124,
+          "sampleUrls": [
+            "https://schbang.com/guide/SEO-services-for-SMEs",
+            "https://schbang.com/guide/social-media-management-services",
+            "https://schbang.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "watconsult.com",
+          "authority": 57,
+          "estimatedTrafficK": 318,
+          "commonKeywords": 58,
+          "sampleUrls": [
+            "https://watconsult.com/guide/SEO-services-for-SMEs",
+            "https://watconsult.com/guide/social-media-management-services",
+            "https://watconsult.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "webchutney.com",
+          "authority": 72,
+          "estimatedTrafficK": 290,
+          "commonKeywords": 177,
+          "sampleUrls": [
+            "https://webchutney.com/guide/SEO-services-for-SMEs",
+            "https://webchutney.com/guide/social-media-management-services",
+            "https://webchutney.com/guide/ecommerce-SEO-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "SEO services for SMEs",
+          "score": 80
+        },
+        {
+          "term": "social media management services",
+          "score": 73
+        },
+        {
+          "term": "ecommerce SEO services",
+          "score": 66
+        },
+        {
+          "term": "performance marketing agency",
+          "score": 59
+        },
+        {
+          "term": "local SEO services",
+          "score": 52
+        },
+        {
+          "term": "website development agency India",
+          "score": 45
+        },
+        {
+          "term": "content marketing agency India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 25
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 34,
+          "avgPosition": 11.9
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 30,
+          "avgPosition": 7.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "itzfizz.com",
@@ -8400,7 +12320,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "schbang.com",
+          "authority": 52,
+          "estimatedTrafficK": 209,
+          "commonKeywords": 175,
+          "sampleUrls": [
+            "https://schbang.com/guide/SEO-services-for-SMEs",
+            "https://schbang.com/guide/social-media-management-services",
+            "https://schbang.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "watconsult.com",
+          "authority": 57,
+          "estimatedTrafficK": 167,
+          "commonKeywords": 149,
+          "sampleUrls": [
+            "https://watconsult.com/guide/SEO-services-for-SMEs",
+            "https://watconsult.com/guide/social-media-management-services",
+            "https://watconsult.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "webchutney.com",
+          "authority": 71,
+          "estimatedTrafficK": 172,
+          "commonKeywords": 106,
+          "sampleUrls": [
+            "https://webchutney.com/guide/SEO-services-for-SMEs",
+            "https://webchutney.com/guide/social-media-management-services",
+            "https://webchutney.com/guide/ecommerce-SEO-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "SEO services for SMEs",
+          "score": 80
+        },
+        {
+          "term": "social media management services",
+          "score": 73
+        },
+        {
+          "term": "ecommerce SEO services",
+          "score": 66
+        },
+        {
+          "term": "performance marketing agency",
+          "score": 59
+        },
+        {
+          "term": "local SEO services",
+          "score": 52
+        },
+        {
+          "term": "website development agency India",
+          "score": 45
+        },
+        {
+          "term": "content marketing agency India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 13
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 22,
+          "avgPosition": 2.2
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 23,
+          "avgPosition": 4.0
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "itzfizz.com",
@@ -8651,7 +12696,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "schbang.com",
+          "authority": 79,
+          "estimatedTrafficK": 300,
+          "commonKeywords": 146,
+          "sampleUrls": [
+            "https://schbang.com/guide/SEO-services-for-SMEs",
+            "https://schbang.com/guide/social-media-management-services",
+            "https://schbang.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "watconsult.com",
+          "authority": 47,
+          "estimatedTrafficK": 311,
+          "commonKeywords": 140,
+          "sampleUrls": [
+            "https://watconsult.com/guide/SEO-services-for-SMEs",
+            "https://watconsult.com/guide/social-media-management-services",
+            "https://watconsult.com/guide/ecommerce-SEO-services"
+          ]
+        },
+        {
+          "domain": "webchutney.com",
+          "authority": 70,
+          "estimatedTrafficK": 85,
+          "commonKeywords": 151,
+          "sampleUrls": [
+            "https://webchutney.com/guide/SEO-services-for-SMEs",
+            "https://webchutney.com/guide/social-media-management-services",
+            "https://webchutney.com/guide/ecommerce-SEO-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "SEO services for SMEs",
+          "score": 80
+        },
+        {
+          "term": "social media management services",
+          "score": 73
+        },
+        {
+          "term": "ecommerce SEO services",
+          "score": 66
+        },
+        {
+          "term": "performance marketing agency",
+          "score": 59
+        },
+        {
+          "term": "local SEO services",
+          "score": 52
+        },
+        {
+          "term": "website development agency India",
+          "score": 45
+        },
+        {
+          "term": "content marketing agency India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 16
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 31,
+          "avgPosition": 5.2
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 23,
+          "avgPosition": 7.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "loyora.com",
@@ -8902,7 +13072,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "livspace.com",
+          "authority": 66,
+          "estimatedTrafficK": 212,
+          "commonKeywords": 66,
+          "sampleUrls": [
+            "https://livspace.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://livspace.com/guide/commercial-interior-design",
+            "https://livspace.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "homelane.com",
+          "authority": 76,
+          "estimatedTrafficK": 106,
+          "commonKeywords": 132,
+          "sampleUrls": [
+            "https://homelane.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://homelane.com/guide/commercial-interior-design",
+            "https://homelane.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "designcafe.com",
+          "authority": 79,
+          "estimatedTrafficK": 296,
+          "commonKeywords": 186,
+          "sampleUrls": [
+            "https://designcafe.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://designcafe.com/guide/commercial-interior-design",
+            "https://designcafe.com/guide/restaurant-interior-design"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "custom furniture manufacturers Bangalore",
+          "score": 80
+        },
+        {
+          "term": "commercial interior design",
+          "score": 73
+        },
+        {
+          "term": "restaurant interior design",
+          "score": 66
+        },
+        {
+          "term": "office furniture solutions",
+          "score": 59
+        },
+        {
+          "term": "furniture for schools",
+          "score": 52
+        },
+        {
+          "term": "fitted wardrobes Bangalore",
+          "score": 45
+        },
+        {
+          "term": "bespoke wooden furniture Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 22
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 22,
+          "avgPosition": 6.8
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 18,
+          "avgPosition": 7.1
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "loyora.com",
@@ -9153,7 +13448,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "livspace.com",
+          "authority": 78,
+          "estimatedTrafficK": 339,
+          "commonKeywords": 60,
+          "sampleUrls": [
+            "https://livspace.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://livspace.com/guide/commercial-interior-design",
+            "https://livspace.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "homelane.com",
+          "authority": 45,
+          "estimatedTrafficK": 59,
+          "commonKeywords": 135,
+          "sampleUrls": [
+            "https://homelane.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://homelane.com/guide/commercial-interior-design",
+            "https://homelane.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "designcafe.com",
+          "authority": 44,
+          "estimatedTrafficK": 308,
+          "commonKeywords": 191,
+          "sampleUrls": [
+            "https://designcafe.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://designcafe.com/guide/commercial-interior-design",
+            "https://designcafe.com/guide/restaurant-interior-design"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "custom furniture manufacturers Bangalore",
+          "score": 80
+        },
+        {
+          "term": "commercial interior design",
+          "score": 73
+        },
+        {
+          "term": "restaurant interior design",
+          "score": 66
+        },
+        {
+          "term": "office furniture solutions",
+          "score": 59
+        },
+        {
+          "term": "furniture for schools",
+          "score": 52
+        },
+        {
+          "term": "fitted wardrobes Bangalore",
+          "score": 45
+        },
+        {
+          "term": "bespoke wooden furniture Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 25
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 27,
+          "avgPosition": 2.2
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 31,
+          "avgPosition": 6.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "loyora.com",
@@ -9404,7 +13824,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "livspace.com",
+          "authority": 43,
+          "estimatedTrafficK": 65,
+          "commonKeywords": 144,
+          "sampleUrls": [
+            "https://livspace.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://livspace.com/guide/commercial-interior-design",
+            "https://livspace.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "homelane.com",
+          "authority": 61,
+          "estimatedTrafficK": 151,
+          "commonKeywords": 177,
+          "sampleUrls": [
+            "https://homelane.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://homelane.com/guide/commercial-interior-design",
+            "https://homelane.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "designcafe.com",
+          "authority": 62,
+          "estimatedTrafficK": 255,
+          "commonKeywords": 99,
+          "sampleUrls": [
+            "https://designcafe.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://designcafe.com/guide/commercial-interior-design",
+            "https://designcafe.com/guide/restaurant-interior-design"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "custom furniture manufacturers Bangalore",
+          "score": 80
+        },
+        {
+          "term": "commercial interior design",
+          "score": 73
+        },
+        {
+          "term": "restaurant interior design",
+          "score": 66
+        },
+        {
+          "term": "office furniture solutions",
+          "score": 59
+        },
+        {
+          "term": "furniture for schools",
+          "score": 52
+        },
+        {
+          "term": "fitted wardrobes Bangalore",
+          "score": 45
+        },
+        {
+          "term": "bespoke wooden furniture Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 24
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 7
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 22,
+          "avgPosition": 5.0
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 34,
+          "avgPosition": 4.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "loyora.com",
@@ -9655,7 +14200,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "livspace.com",
+          "authority": 73,
+          "estimatedTrafficK": 336,
+          "commonKeywords": 141,
+          "sampleUrls": [
+            "https://livspace.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://livspace.com/guide/commercial-interior-design",
+            "https://livspace.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "homelane.com",
+          "authority": 72,
+          "estimatedTrafficK": 99,
+          "commonKeywords": 142,
+          "sampleUrls": [
+            "https://homelane.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://homelane.com/guide/commercial-interior-design",
+            "https://homelane.com/guide/restaurant-interior-design"
+          ]
+        },
+        {
+          "domain": "designcafe.com",
+          "authority": 66,
+          "estimatedTrafficK": 83,
+          "commonKeywords": 148,
+          "sampleUrls": [
+            "https://designcafe.com/guide/custom-furniture-manufacturers-Bangalore",
+            "https://designcafe.com/guide/commercial-interior-design",
+            "https://designcafe.com/guide/restaurant-interior-design"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "custom furniture manufacturers Bangalore",
+          "score": 80
+        },
+        {
+          "term": "commercial interior design",
+          "score": 73
+        },
+        {
+          "term": "restaurant interior design",
+          "score": 66
+        },
+        {
+          "term": "office furniture solutions",
+          "score": 59
+        },
+        {
+          "term": "furniture for schools",
+          "score": 52
+        },
+        {
+          "term": "fitted wardrobes Bangalore",
+          "score": 45
+        },
+        {
+          "term": "bespoke wooden furniture Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 19
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 8
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 2
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 19,
+          "avgPosition": 6.8
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 27,
+          "avgPosition": 9.7
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "waterstonindia.com",
@@ -9906,7 +14576,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "kajariaceramics.com",
+          "authority": 46,
+          "estimatedTrafficK": 275,
+          "commonKeywords": 54,
+          "sampleUrls": [
+            "https://kajariaceramics.com/guide/sanitaryware-online-India",
+            "https://kajariaceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://kajariaceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "somanyceramics.com",
+          "authority": 67,
+          "estimatedTrafficK": 119,
+          "commonKeywords": 198,
+          "sampleUrls": [
+            "https://somanyceramics.com/guide/sanitaryware-online-India",
+            "https://somanyceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://somanyceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "hindware.com",
+          "authority": 72,
+          "estimatedTrafficK": 184,
+          "commonKeywords": 110,
+          "sampleUrls": [
+            "https://hindware.com/guide/sanitaryware-online-India",
+            "https://hindware.com/guide/premium-tiles-showroom-Bangalore",
+            "https://hindware.com/guide/bathroom-fittings-online"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "sanitaryware online India",
+          "score": 80
+        },
+        {
+          "term": "premium tiles showroom Bangalore",
+          "score": 73
+        },
+        {
+          "term": "bathroom fittings online",
+          "score": 66
+        },
+        {
+          "term": "tile trends 2025",
+          "score": 59
+        },
+        {
+          "term": "sanitaryware brands India",
+          "score": 52
+        },
+        {
+          "term": "bathroom renovation tips",
+          "score": 45
+        },
+        {
+          "term": "waterproof tile installation",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 19
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 29,
+          "avgPosition": 3.7
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 23,
+          "avgPosition": 4.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "waterstonindia.com",
@@ -10157,7 +14952,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "kajariaceramics.com",
+          "authority": 73,
+          "estimatedTrafficK": 192,
+          "commonKeywords": 168,
+          "sampleUrls": [
+            "https://kajariaceramics.com/guide/sanitaryware-online-India",
+            "https://kajariaceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://kajariaceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "somanyceramics.com",
+          "authority": 62,
+          "estimatedTrafficK": 171,
+          "commonKeywords": 145,
+          "sampleUrls": [
+            "https://somanyceramics.com/guide/sanitaryware-online-India",
+            "https://somanyceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://somanyceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "hindware.com",
+          "authority": 52,
+          "estimatedTrafficK": 126,
+          "commonKeywords": 136,
+          "sampleUrls": [
+            "https://hindware.com/guide/sanitaryware-online-India",
+            "https://hindware.com/guide/premium-tiles-showroom-Bangalore",
+            "https://hindware.com/guide/bathroom-fittings-online"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "sanitaryware online India",
+          "score": 80
+        },
+        {
+          "term": "premium tiles showroom Bangalore",
+          "score": 73
+        },
+        {
+          "term": "bathroom fittings online",
+          "score": 66
+        },
+        {
+          "term": "tile trends 2025",
+          "score": 59
+        },
+        {
+          "term": "sanitaryware brands India",
+          "score": 52
+        },
+        {
+          "term": "bathroom renovation tips",
+          "score": 45
+        },
+        {
+          "term": "waterproof tile installation",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 16
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 15,
+          "avgPosition": 4.1
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 27,
+          "avgPosition": 7.1
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "waterstonindia.com",
@@ -10408,7 +15328,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "kajariaceramics.com",
+          "authority": 50,
+          "estimatedTrafficK": 90,
+          "commonKeywords": 63,
+          "sampleUrls": [
+            "https://kajariaceramics.com/guide/sanitaryware-online-India",
+            "https://kajariaceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://kajariaceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "somanyceramics.com",
+          "authority": 58,
+          "estimatedTrafficK": 170,
+          "commonKeywords": 77,
+          "sampleUrls": [
+            "https://somanyceramics.com/guide/sanitaryware-online-India",
+            "https://somanyceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://somanyceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "hindware.com",
+          "authority": 71,
+          "estimatedTrafficK": 296,
+          "commonKeywords": 130,
+          "sampleUrls": [
+            "https://hindware.com/guide/sanitaryware-online-India",
+            "https://hindware.com/guide/premium-tiles-showroom-Bangalore",
+            "https://hindware.com/guide/bathroom-fittings-online"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "sanitaryware online India",
+          "score": 80
+        },
+        {
+          "term": "premium tiles showroom Bangalore",
+          "score": 73
+        },
+        {
+          "term": "bathroom fittings online",
+          "score": 66
+        },
+        {
+          "term": "tile trends 2025",
+          "score": 59
+        },
+        {
+          "term": "sanitaryware brands India",
+          "score": 52
+        },
+        {
+          "term": "bathroom renovation tips",
+          "score": 45
+        },
+        {
+          "term": "waterproof tile installation",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 24
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 19,
+          "avgPosition": 8.9
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 15,
+          "avgPosition": 9.4
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "waterstonindia.com",
@@ -10659,7 +15704,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "kajariaceramics.com",
+          "authority": 66,
+          "estimatedTrafficK": 243,
+          "commonKeywords": 163,
+          "sampleUrls": [
+            "https://kajariaceramics.com/guide/sanitaryware-online-India",
+            "https://kajariaceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://kajariaceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "somanyceramics.com",
+          "authority": 72,
+          "estimatedTrafficK": 166,
+          "commonKeywords": 150,
+          "sampleUrls": [
+            "https://somanyceramics.com/guide/sanitaryware-online-India",
+            "https://somanyceramics.com/guide/premium-tiles-showroom-Bangalore",
+            "https://somanyceramics.com/guide/bathroom-fittings-online"
+          ]
+        },
+        {
+          "domain": "hindware.com",
+          "authority": 56,
+          "estimatedTrafficK": 344,
+          "commonKeywords": 181,
+          "sampleUrls": [
+            "https://hindware.com/guide/sanitaryware-online-India",
+            "https://hindware.com/guide/premium-tiles-showroom-Bangalore",
+            "https://hindware.com/guide/bathroom-fittings-online"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "sanitaryware online India",
+          "score": 80
+        },
+        {
+          "term": "premium tiles showroom Bangalore",
+          "score": 73
+        },
+        {
+          "term": "bathroom fittings online",
+          "score": 66
+        },
+        {
+          "term": "tile trends 2025",
+          "score": 59
+        },
+        {
+          "term": "sanitaryware brands India",
+          "score": 52
+        },
+        {
+          "term": "bathroom renovation tips",
+          "score": 45
+        },
+        {
+          "term": "waterproof tile installation",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 21
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 33,
+          "avgPosition": 8.6
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 21,
+          "avgPosition": 10.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "paakashala.com",
@@ -10910,7 +16080,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "adigas.com",
+          "authority": 76,
+          "estimatedTrafficK": 263,
+          "commonKeywords": 75,
+          "sampleUrls": [
+            "https://adigas.com/guide/paakashala-menu-online",
+            "https://adigas.com/guide/order-vegetarian-food-Bangalore",
+            "https://adigas.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "a2brestaurant.com",
+          "authority": 50,
+          "estimatedTrafficK": 329,
+          "commonKeywords": 158,
+          "sampleUrls": [
+            "https://a2brestaurant.com/guide/paakashala-menu-online",
+            "https://a2brestaurant.com/guide/order-vegetarian-food-Bangalore",
+            "https://a2brestaurant.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "saravanabhavan.com",
+          "authority": 46,
+          "estimatedTrafficK": 234,
+          "commonKeywords": 165,
+          "sampleUrls": [
+            "https://saravanabhavan.com/guide/paakashala-menu-online",
+            "https://saravanabhavan.com/guide/order-vegetarian-food-Bangalore",
+            "https://saravanabhavan.com/guide/paakashala-catering-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "paakashala menu online",
+          "score": 80
+        },
+        {
+          "term": "order vegetarian food Bangalore",
+          "score": 73
+        },
+        {
+          "term": "paakashala catering services",
+          "score": 66
+        },
+        {
+          "term": "south Indian restaurant Bangalore",
+          "score": 59
+        },
+        {
+          "term": "vegetarian restaurant franchise",
+          "score": 52
+        },
+        {
+          "term": "paakashala home delivery",
+          "score": 45
+        },
+        {
+          "term": "restaurant SEO Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 16
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 23,
+          "avgPosition": 5.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 30,
+          "avgPosition": 11.1
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "paakashala.com",
@@ -11161,7 +16456,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "adigas.com",
+          "authority": 44,
+          "estimatedTrafficK": 141,
+          "commonKeywords": 41,
+          "sampleUrls": [
+            "https://adigas.com/guide/paakashala-menu-online",
+            "https://adigas.com/guide/order-vegetarian-food-Bangalore",
+            "https://adigas.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "a2brestaurant.com",
+          "authority": 41,
+          "estimatedTrafficK": 82,
+          "commonKeywords": 89,
+          "sampleUrls": [
+            "https://a2brestaurant.com/guide/paakashala-menu-online",
+            "https://a2brestaurant.com/guide/order-vegetarian-food-Bangalore",
+            "https://a2brestaurant.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "saravanabhavan.com",
+          "authority": 70,
+          "estimatedTrafficK": 208,
+          "commonKeywords": 115,
+          "sampleUrls": [
+            "https://saravanabhavan.com/guide/paakashala-menu-online",
+            "https://saravanabhavan.com/guide/order-vegetarian-food-Bangalore",
+            "https://saravanabhavan.com/guide/paakashala-catering-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "paakashala menu online",
+          "score": 80
+        },
+        {
+          "term": "order vegetarian food Bangalore",
+          "score": 73
+        },
+        {
+          "term": "paakashala catering services",
+          "score": 66
+        },
+        {
+          "term": "south Indian restaurant Bangalore",
+          "score": 59
+        },
+        {
+          "term": "vegetarian restaurant franchise",
+          "score": 52
+        },
+        {
+          "term": "paakashala home delivery",
+          "score": 45
+        },
+        {
+          "term": "restaurant SEO Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 22
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 7
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 15,
+          "avgPosition": 3.0
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 23,
+          "avgPosition": 4.8
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "paakashala.com",
@@ -11412,7 +16832,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "adigas.com",
+          "authority": 74,
+          "estimatedTrafficK": 70,
+          "commonKeywords": 145,
+          "sampleUrls": [
+            "https://adigas.com/guide/paakashala-menu-online",
+            "https://adigas.com/guide/order-vegetarian-food-Bangalore",
+            "https://adigas.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "a2brestaurant.com",
+          "authority": 43,
+          "estimatedTrafficK": 148,
+          "commonKeywords": 198,
+          "sampleUrls": [
+            "https://a2brestaurant.com/guide/paakashala-menu-online",
+            "https://a2brestaurant.com/guide/order-vegetarian-food-Bangalore",
+            "https://a2brestaurant.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "saravanabhavan.com",
+          "authority": 71,
+          "estimatedTrafficK": 319,
+          "commonKeywords": 199,
+          "sampleUrls": [
+            "https://saravanabhavan.com/guide/paakashala-menu-online",
+            "https://saravanabhavan.com/guide/order-vegetarian-food-Bangalore",
+            "https://saravanabhavan.com/guide/paakashala-catering-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "paakashala menu online",
+          "score": 80
+        },
+        {
+          "term": "order vegetarian food Bangalore",
+          "score": 73
+        },
+        {
+          "term": "paakashala catering services",
+          "score": 66
+        },
+        {
+          "term": "south Indian restaurant Bangalore",
+          "score": 59
+        },
+        {
+          "term": "vegetarian restaurant franchise",
+          "score": 52
+        },
+        {
+          "term": "paakashala home delivery",
+          "score": 45
+        },
+        {
+          "term": "restaurant SEO Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 18
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 29,
+          "avgPosition": 3.6
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 32,
+          "avgPosition": 8.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "paakashala.com",
@@ -11663,7 +17208,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "adigas.com",
+          "authority": 52,
+          "estimatedTrafficK": 315,
+          "commonKeywords": 133,
+          "sampleUrls": [
+            "https://adigas.com/guide/paakashala-menu-online",
+            "https://adigas.com/guide/order-vegetarian-food-Bangalore",
+            "https://adigas.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "a2brestaurant.com",
+          "authority": 75,
+          "estimatedTrafficK": 96,
+          "commonKeywords": 108,
+          "sampleUrls": [
+            "https://a2brestaurant.com/guide/paakashala-menu-online",
+            "https://a2brestaurant.com/guide/order-vegetarian-food-Bangalore",
+            "https://a2brestaurant.com/guide/paakashala-catering-services"
+          ]
+        },
+        {
+          "domain": "saravanabhavan.com",
+          "authority": 50,
+          "estimatedTrafficK": 246,
+          "commonKeywords": 117,
+          "sampleUrls": [
+            "https://saravanabhavan.com/guide/paakashala-menu-online",
+            "https://saravanabhavan.com/guide/order-vegetarian-food-Bangalore",
+            "https://saravanabhavan.com/guide/paakashala-catering-services"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "paakashala menu online",
+          "score": 80
+        },
+        {
+          "term": "order vegetarian food Bangalore",
+          "score": 73
+        },
+        {
+          "term": "paakashala catering services",
+          "score": 66
+        },
+        {
+          "term": "south Indian restaurant Bangalore",
+          "score": 59
+        },
+        {
+          "term": "vegetarian restaurant franchise",
+          "score": 52
+        },
+        {
+          "term": "paakashala home delivery",
+          "score": 45
+        },
+        {
+          "term": "restaurant SEO Bangalore",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 25
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 16,
+          "avgPosition": 8.4
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 32,
+          "avgPosition": 2.8
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "bigbasket.com",
@@ -11914,7 +17584,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bigbasket-competitor1.com",
+          "authority": 52,
+          "estimatedTrafficK": 118,
+          "commonKeywords": 132,
+          "sampleUrls": [
+            "https://bigbasket-competitor1.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor1.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor1.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor2.com",
+          "authority": 51,
+          "estimatedTrafficK": 101,
+          "commonKeywords": 125,
+          "sampleUrls": [
+            "https://bigbasket-competitor2.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor2.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor2.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor3.com",
+          "authority": 74,
+          "estimatedTrafficK": 197,
+          "commonKeywords": 84,
+          "sampleUrls": [
+            "https://bigbasket-competitor3.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor3.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor3.com/guide/grocery-subscription-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "buy groceries online",
+          "score": 80
+        },
+        {
+          "term": "bigbasket offers",
+          "score": 73
+        },
+        {
+          "term": "grocery subscription India",
+          "score": 66
+        },
+        {
+          "term": "quick commerce groceries",
+          "score": 59
+        },
+        {
+          "term": "bigbasket express delivery",
+          "score": 52
+        },
+        {
+          "term": "online supermarket India",
+          "score": 45
+        },
+        {
+          "term": "grocery coupons India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 19
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 6
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 1
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 4
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 22,
+          "avgPosition": 11.9
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 25,
+          "avgPosition": 9.7
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "bigbasket.com",
@@ -12165,7 +17960,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bigbasket-competitor1.com",
+          "authority": 51,
+          "estimatedTrafficK": 81,
+          "commonKeywords": 79,
+          "sampleUrls": [
+            "https://bigbasket-competitor1.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor1.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor1.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor2.com",
+          "authority": 57,
+          "estimatedTrafficK": 74,
+          "commonKeywords": 103,
+          "sampleUrls": [
+            "https://bigbasket-competitor2.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor2.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor2.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor3.com",
+          "authority": 47,
+          "estimatedTrafficK": 111,
+          "commonKeywords": 58,
+          "sampleUrls": [
+            "https://bigbasket-competitor3.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor3.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor3.com/guide/grocery-subscription-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "buy groceries online",
+          "score": 80
+        },
+        {
+          "term": "bigbasket offers",
+          "score": 73
+        },
+        {
+          "term": "grocery subscription India",
+          "score": 66
+        },
+        {
+          "term": "quick commerce groceries",
+          "score": 59
+        },
+        {
+          "term": "bigbasket express delivery",
+          "score": 52
+        },
+        {
+          "term": "online supermarket India",
+          "score": 45
+        },
+        {
+          "term": "grocery coupons India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 19
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 26,
+          "avgPosition": 11.5
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 34,
+          "avgPosition": 9.2
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "bigbasket.com",
@@ -12416,7 +18336,132 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bigbasket-competitor1.com",
+          "authority": 77,
+          "estimatedTrafficK": 205,
+          "commonKeywords": 117,
+          "sampleUrls": [
+            "https://bigbasket-competitor1.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor1.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor1.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor2.com",
+          "authority": 72,
+          "estimatedTrafficK": 173,
+          "commonKeywords": 104,
+          "sampleUrls": [
+            "https://bigbasket-competitor2.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor2.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor2.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor3.com",
+          "authority": 65,
+          "estimatedTrafficK": 282,
+          "commonKeywords": 164,
+          "sampleUrls": [
+            "https://bigbasket-competitor3.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor3.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor3.com/guide/grocery-subscription-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "buy groceries online",
+          "score": 80
+        },
+        {
+          "term": "bigbasket offers",
+          "score": 73
+        },
+        {
+          "term": "grocery subscription India",
+          "score": 66
+        },
+        {
+          "term": "quick commerce groceries",
+          "score": 59
+        },
+        {
+          "term": "bigbasket express delivery",
+          "score": 52
+        },
+        {
+          "term": "online supermarket India",
+          "score": 45
+        },
+        {
+          "term": "grocery coupons India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 29
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 4
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 3
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 3
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 29,
+          "avgPosition": 3.0
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 17,
+          "avgPosition": 7.9
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   },
   {
     "domain": "bigbasket.com",
@@ -12667,6 +18712,131 @@
         "level": "H2",
         "title": "FAQ"
       }
-    ]
+    ],
+    "competitorsTab": {
+      "domains": [
+        {
+          "domain": "bigbasket-competitor1.com",
+          "authority": 74,
+          "estimatedTrafficK": 192,
+          "commonKeywords": 112,
+          "sampleUrls": [
+            "https://bigbasket-competitor1.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor1.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor1.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor2.com",
+          "authority": 72,
+          "estimatedTrafficK": 58,
+          "commonKeywords": 163,
+          "sampleUrls": [
+            "https://bigbasket-competitor2.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor2.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor2.com/guide/grocery-subscription-India"
+          ]
+        },
+        {
+          "domain": "bigbasket-competitor3.com",
+          "authority": 44,
+          "estimatedTrafficK": 150,
+          "commonKeywords": 106,
+          "sampleUrls": [
+            "https://bigbasket-competitor3.com/guide/buy-groceries-online",
+            "https://bigbasket-competitor3.com/guide/bigbasket-offers",
+            "https://bigbasket-competitor3.com/guide/grocery-subscription-India"
+          ]
+        }
+      ],
+      "notes": "Auto-generated competitor set based on domain category and LSI keywords."
+    },
+    "heatmapsTab": {
+      "headingsFrequency": [
+        {
+          "heading": "H1",
+          "count": 1
+        },
+        {
+          "heading": "H2",
+          "count": 4
+        }
+      ],
+      "termHeat": [
+        {
+          "term": "buy groceries online",
+          "score": 80
+        },
+        {
+          "term": "bigbasket offers",
+          "score": 73
+        },
+        {
+          "term": "grocery subscription India",
+          "score": 66
+        },
+        {
+          "term": "quick commerce groceries",
+          "score": 59
+        },
+        {
+          "term": "bigbasket express delivery",
+          "score": 52
+        },
+        {
+          "term": "online supermarket India",
+          "score": 45
+        },
+        {
+          "term": "grocery coupons India",
+          "score": 38
+        }
+      ],
+      "serpFeatureCoverage": [
+        {
+          "feature": "FAQ",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "PeopleAlsoAsk",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "ExternalCitations",
+          "presence": true,
+          "count": 24
+        },
+        {
+          "feature": "SiteLinks",
+          "presence": true,
+          "count": 5
+        },
+        {
+          "feature": "Videos",
+          "presence": true,
+          "count": 2
+        },
+        {
+          "feature": "Images",
+          "presence": true,
+          "count": 5
+        }
+      ],
+      "headingSerpMatrix": [
+        {
+          "heading": "H1",
+          "serpMentions": 20,
+          "avgPosition": 5.6
+        },
+        {
+          "heading": "H2",
+          "serpMentions": 15,
+          "avgPosition": 6.7
+        }
+      ],
+      "notes": "Synthetic heatmap metrics derived from headings, LSI terms, and FAQ/link presence."
+    }
   }
 ]
