@@ -1,21 +1,31 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { ChevronRight, Search as SearchIcon, X } from "lucide-react";
 
 function IconHintButton({ onClick, label = "Paste to editor", size = 12, className = "" }) {
+  // NOTE: Use a non-button interactive element to avoid nesting <button> inside <button>
+  const onKeyDown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      onClick?.(e);
+    }
+  };
+
   return (
     <div className={`relative group ${className}`}>
-      <button
-        type="button"
+      <div
+        role="button"
+        tabIndex={0}
         onClick={onClick}
+        onKeyDown={onKeyDown}
         aria-label={label}
-        className="grid place-items-center h-8 w-8 rounded-md border border-[var(--border)] bg-white/90 text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none
+        className="grid place-items-center h-8 w-8 rounded-md border border-[var(--border)] bg-white/90 text-gray-700 shadow-sm hover:bg-gray-50 cursor-pointer focus:outline-none focus:ring-2 focus:ring-amber-400/60
                    dark:bg-[var(--bg-panel)] dark:text-[var(--text-primary)] dark:hover:bg-[var(--bg-hover)]"
       >
         <Image src="/assets/copy.svg" width={size} height={size} alt="Paste" className="opacity-80" />
-      </button>
+      </div>
       <span
         className="pointer-events-none absolute -top-7 right-0 rounded-md border border-[var(--border)] bg-white px-2 py-0.5 text-[10px] font-medium text-gray-700 shadow-sm opacity-0 transition-opacity duration-75 whitespace-nowrap
                    group-hover:opacity-100 group-focus-within:opacity-100
@@ -44,9 +54,9 @@ function BadgeScore({ score }) {
 
 function LinkRow({ rankScore, domain, sources, onPaste }) {
   return (
-    <div className="rounded-2xl border border-[var(--border)] bg-white shadow-sm
-                    dark:bg-[var(--bg-panel)]">
+    <div className="rounded-2xl border border-[var(--border)] bg-white shadow-sm dark:bg-[var(--bg-panel)]">
       <button
+        type="button"
         className="w-full px-4 py-3 flex items-center justify-between gap-3 text-left rounded-2xl
                    hover:bg-gray-50 dark:hover:bg-[var(--bg-hover)]"
       >
@@ -83,7 +93,11 @@ function DrawerHeader({ title, onClose, countText }) {
         <div className="text-[13px] font-semibold text-gray-900 dark:text-[var(--text-primary)]">{title}</div>
         {countText ? <div className="text-[11px] text-gray-500 dark:text-[var(--muted)] mt-0.5">{countText}</div> : null}
       </div>
-      <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:text-[var(--muted)] dark:hover:text-[var(--text-primary)]">
+      <button
+        type="button"
+        onClick={onClose}
+        className="text-gray-400 hover:text-gray-600 dark:text-[var(--muted)] dark:hover:text-[var(--text-primary)]"
+      >
         <X size={16} />
       </button>
     </div>
@@ -118,6 +132,7 @@ export default function SeoAdvancedLinks({ onPasteToEditor, currentPage, cfgLoad
     >
       <div className="flex items-center gap-6 border-b border-[var(--border)] px-1">
         <button
+          type="button"
           onClick={() => setLinkTab("external")}
           className={`relative px-1 pb-2 text-[13px] font-semibold transition-colors
             ${linkTab === "external" ? "text-gray-900 dark:text-[var(--text-primary)]" : "text-gray-500 dark:text-[var(--muted)]"}`}
@@ -128,6 +143,7 @@ export default function SeoAdvancedLinks({ onPasteToEditor, currentPage, cfgLoad
           )}
         </button>
         <button
+          type="button"
           onClick={() => setLinkTab("internal")}
           className={`relative px-1 pb-2 text-[13px] font-semibold transition-colors
             ${linkTab === "internal" ? "text-gray-900 dark:text-[var(--text-primary)]" : "text-gray-500 dark:text-[var(--muted)]"}`}
