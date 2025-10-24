@@ -424,10 +424,10 @@ const serpCounts = serpCountsMemo.map((n) => Math.max(0, Math.round(n * prog)));
 const serpCoverage = Math.max(0, SERP_COVERAGE * prog);
 
 const oppCounts = [
-  Math.max(0, Math.round((selected?.issues?.critical ?? 274)) * prog),
-  Math.max(0, Math.round((selected?.issues?.warning ?? 883)) * prog),
-  Math.max(0, Math.round((selected?.issues?.recommendations ?? 77)) * prog),
-  Math.max(0, Math.round((selected?.issues?.contentOpps ?? 5)) * prog),
+  Math.round(Math.max(0, (selected?.issues?.critical ?? 274) * prog)),
+  Math.round(Math.max(0, (selected?.issues?.warning ?? 883) * prog)),
+  Math.round(Math.max(0, (selected?.issues?.recommendations ?? 77) * prog)),
+  Math.round(Math.max(0, (selected?.issues?.contentOpps ?? 5) * prog)),
 ];
 
 const oppCardsProgress = Math.max(0, prog);
