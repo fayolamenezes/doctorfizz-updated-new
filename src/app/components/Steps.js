@@ -109,8 +109,7 @@ export default function Steps({ currentStep = 1 }) {
             backgroundRepeat: "repeat-x",
             backgroundPosition: "0 center",
             pointerEvents: "none",
-            transition:
-              "left 250ms ease, width 250ms ease, top 250ms ease",
+            transition: "left 250ms ease, width 250ms ease, top 250ms ease",
           }}
         />
         {/* progress overlay */}
@@ -137,6 +136,7 @@ export default function Steps({ currentStep = 1 }) {
         {steps.map((step, i) => {
           const isCompleted = step.id < currentStep;
           const isActive = step.id === currentStep;
+          const isInactive = !isActive && !isCompleted; // future step → fade
 
           return (
             <div
@@ -152,7 +152,8 @@ export default function Steps({ currentStep = 1 }) {
                     isActive
                       ? "bg-[image:var(--infoHighlight-gradient)] text-white scale-105 shadow-sm pulse"
                       : "bg-gray-200 step-circle--inactive"
-                  }`}
+                  }
+                  ${isInactive ? "opacity-50" : "opacity-100"}`}
               >
                 {isCompleted ? (
                   <svg
@@ -201,7 +202,8 @@ export default function Steps({ currentStep = 1 }) {
                     isActive
                       ? "font-medium text-gray-900 dark:text-white"
                       : "text-gray-600 dark:text-gray-300"
-                  }`}
+                  }
+                  ${isInactive ? "opacity-50" : "opacity-100"}`}
               >
                 {step.label}
               </span>

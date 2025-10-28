@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
@@ -56,9 +57,12 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
   const getWaveRotation = () => {
     if (!isShaking) return 0;
     switch (wavePhase % 4) {
-      case 1: return -30;
-      case 3: return 30;
-      default: return 0;
+      case 1:
+        return -30;
+      case 3:
+        return 30;
+      default:
+        return 0;
     }
   };
 
@@ -100,19 +104,26 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
     if (!site.trim()) return;
 
     if (!isValidWebsite(site.trim())) {
-      setError("Please enter a valid website URL (e.g., company.com or http://company.com)");
+      setError(
+        "Please enter a valid website URL (e.g., company.com or http://company.com)"
+      );
       return;
     }
 
     setError("");
-    const displayUrl = site.trim().startsWith("http") ? site.trim() : `https://${site.trim()}`;
+    const displayUrl = site.trim().startsWith("http")
+      ? site.trim()
+      : `https://${site.trim()}`;
 
     setMessages([displayUrl]);
     setTimeout(() => setCurrentState("submitted"), 300);
 
     onWebsiteSubmit?.(site.trim());
     try {
-      localStorage.setItem("websiteData", JSON.stringify({ site: site.trim() }));
+      localStorage.setItem(
+        "websiteData",
+        JSON.stringify({ site: site.trim() })
+      );
     } catch {}
     setSite("");
   };
@@ -150,21 +161,46 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
           className="box-border mx-auto w-full max-w-screen-sm md:max-w-[820px] rounded-2xl bg-transparent p-3 sm:p-4 md:p-6"
           style={{ height: panelHeight ? `${panelHeight}px` : "auto" }}
         >
-          <div ref={scrollRef} className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar">
+          <div
+            ref={scrollRef}
+            className="h-full w-full overflow-y-auto overflow-x-hidden no-scrollbar"
+          >
             <div className="flex flex-col gap-5 sm:gap-6 md:gap-8">
               {currentState === "initial" && (
                 <div className="flex flex-col items-center gap-1.5 sm:gap-2 mt-1">
                   <div
-                    className={`leading-none transition-transform ${isShaking ? "duration-100 ease-linear" : "duration-300 ease-out"}`}
+                    className={`leading-none transition-transform ${
+                      isShaking
+                        ? "duration-100 ease-linear"
+                        : "duration-300 ease-out"
+                    }`}
                     style={{
                       fontSize: "clamp(40px, 10vw, 72px)",
-                      transform: `rotate(${getWaveRotation()}deg) ${isShaking && wavePhase % 2 === 1 ? "scale(1.06)" : "scale(1)"}`,
+                      transform: `rotate(${getWaveRotation()}deg) ${
+                        isShaking && wavePhase % 2 === 1
+                          ? "scale(1.06)"
+                          : "scale(1)"
+                      }`,
                       transformOrigin: "bottom center",
                       color: "#9ca3af",
                     }}
                     aria-hidden
                   >
-                    ✋
+                    {/* swapped the emoji for the SVG — same wrapper & sizing */}
+                    <Image
+                      src="/assets/hand.svg"
+                      alt="Waving hand"
+                      width={72}
+                      height={72}
+                      priority
+                      style={{
+                        width: "1.2em",
+                        height: "1.2em",
+                        display: "block",
+                        opacity: 0.9,
+                      }}
+                      draggable={false}
+                    />
                   </div>
                   <h2 className="text-[13px] sm:text-[15px] md:text-[16px] font-semibold text-gray-500 tracking-wide">
                     Hello!!!
@@ -172,17 +208,23 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
                 </div>
               )}
 
-              <div className="mx-auto w-full max-w-prose">
+              {/* COPY BLOCK — align left with input container */}
+              <div className="w-full">
                 <h3 className="text-[15px] sm:text-[16px] md:text-[18px] font-bold text-gray-900 mb-1.5 sm:mb-2.5">
                   Welcome, Sam!
                 </h3>
                 <p className="text-[12px] sm:text-[13px] md:text-[15px] text-gray-700 leading-relaxed break-words">
-                  Add your first project by entering your website and I&apos;ll build a live{" "}
-                  <span className="font-bold text-gray-900">SEO dashboard</span> for you.
+                  Add your first project by entering your website and I&apos;ll
+                  build a live{" "}
+                  <span className="font-bold text-gray-900">
+                    SEO<br className="hidden sm:inline" /> dashboard
+                  </span>{" "}
+                  for you.
                 </p>
                 <p className="text-[11px] sm:text-[12px] md:text-[13px] text-gray-400 mt-2 sm:mt-3">
-                  For more information please! Go to <span className="font-semibold text-gray-700">DASHBOARD</span> & click{" "}
-                  <span className="font-semibold text-gray-700">INFO</span> tab
+                  <span className="font-semibold text-gray-700">
+                    For more information please go to INFO tab
+                  </span>
                 </p>
               </div>
 
@@ -195,7 +237,7 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
               ))}
 
               {currentState === "submitted" && (
-                <div className="mx-auto w-full max-w-prose">
+                <div className="w-full">
                   <h3 className="text-[15px] sm:text-[16px] md:text-[18px] font-bold text-gray-900 mb-1.5 sm:mb-2.5">
                     Here’s your site report — take a quick look on the Info Tab.
                   </h3>
@@ -203,8 +245,18 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
                     If not, you can also try a different URL?
                   </p>
                   <div className="flex items-center gap-6 sm:gap-10 mt-4 sm:mt-5 text-[12px] sm:text-[13px]">
-                    <button onClick={handleNo} className="text-gray-700 hover:text-gray-900 font-medium">NO</button>
-                    <button onClick={handleTryDifferent} className="text-[#d45427] hover:brightness-110 font-medium">YES, Try different URL!</button>
+                    <button
+                      onClick={handleNo}
+                      className="text-gray-700 hover:text-gray-900 font-medium"
+                    >
+                      NO
+                    </button>
+                    <button
+                      onClick={handleTryDifferent}
+                      className="text-[#d45427] hover:brightness-110 font-medium"
+                    >
+                      YES, Try different URL!
+                    </button>
                   </div>
                 </div>
               )}
@@ -239,13 +291,19 @@ export default function Step1Slide1({ onNext, onWebsiteSubmit }) {
                     <ArrowRight size={16} />
                   </button>
                 </div>
-                {error && <p className="text-[11px] sm:text-[12px] text-red-500 text-center mt-2">{error}</p>}
+                {error && (
+                  <p className="text-[11px] sm:text-[12px] text-red-500 text-center mt-2">
+                    {error}
+                  </p>
+                )}
               </div>
             </div>
           ) : (
             <div className="py-5 md:py-6 flex flex-col items-center gap-2.5 sm:gap-3.5">
               <p className="text-[12px] sm:text-[13px] text-gray-600">
-                All set? Click <span className="font-semibold text-gray-900">‘Next’</span> to continue.
+                All set? Click{" "}
+                <span className="font-semibold text-gray-900">‘Next’</span> to
+                continue.
               </p>
               <button
                 onClick={handleNext}
