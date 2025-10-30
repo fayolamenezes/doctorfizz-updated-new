@@ -1,46 +1,57 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { ArrowRight, ArrowLeft, ChevronDown, Plus } from "lucide-react";
+import { ArrowRight, ArrowLeft, ChevronDown } from "lucide-react";
 
 export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit }) {
   // selections
   const [selectedLanguage, setSelectedLanguage] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [addedSelections, setAddedSelections] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+  const [selectedState, setSelectedState] = useState("");
+  const [selectedCity, setSelectedCity] = useState("");
 
   // UI state
-  const [showSummary, setShowSummary] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
 
   // fixed height like Step1Slide1 / StepSlide2
-  const panelRef = useRef(null);      // outer rounded panel
-  const scrollRef = useRef(null);     // inner scroll region
-  const bottomBarRef = useRef(null);  // bottom CTA area
+  const panelRef = useRef(null);
+  const scrollRef = useRef(null);
+  const bottomBarRef = useRef(null);
   const [panelHeight, setPanelHeight] = useState(null);
 
   // submit guard
   const lastSubmittedData = useRef(null);
 
+  // Lists (sample data; extend/replace with real lists)
   const languages = [
     "English","Spanish","French","German","Italian","Portuguese",
     "Chinese (Mandarin)","Japanese","Korean","Hindi","Bengali","Russian",
-    "Arabic","Turkish","Vietnamese","Polish","Persian","Dutch","Thai",
-    "Swedish","Norwegian","Finnish","Danish","Czech","Hungarian","Greek",
-    "Romanian","Ukrainian","Hebrew","Malay/Indonesian","Filipino/Tagalog"
+    "Arabic","Turkish","Vietnamese","Polish","Persian","Dutch","Thai"
   ];
 
-  const locations = [
-    "United States","Canada","Mexico","United Kingdom","Germany","France","Italy","Spain","Netherlands",
-    "Sweden","Norway","Denmark","Finland","Poland","Czech Republic","Switzerland","Belgium","Austria",
-    "Ireland","Portugal","Greece","Russia","Ukraine","Romania","Hungary","China","India","Japan",
-    "South Korea","Singapore","Hong Kong","Taiwan","Indonesia","Malaysia","Thailand","Vietnam",
-    "Philippines","Israel","Turkey","United Arab Emirates","Saudi Arabia","Qatar","South Africa",
-    "Egypt","Nigeria","Morocco","Kenya","Australia","New Zealand","Brazil","Argentina","Chile",
-    "Colombia","Peru","Bangalore","Mumbai","Delhi","California","New York","London","Paris","Berlin"
-  ];
+  // Country → State → City map (demo)
+  const geo = {
+    India: {
+      Karnataka: ["Bengaluru", "Mysuru"],
+      Maharashtra: ["Mumbai", "Pune"],
+      Delhi: ["New Delhi"],
+    },
+    "United States": {
+      California: ["San Francisco", "Los Angeles"],
+      "New York": ["New York City", "Buffalo"],
+    },
+    "United Kingdom": {
+      England: ["London", "Manchester"],
+      Scotland: ["Edinburgh", "Glasgow"],
+    },
+  };
 
-  /* ---------------- Fixed panel height (Step1/Step2 pattern) ---------------- */
+  const countries = Object.keys(geo);
+  const states = selectedCountry ? Object.keys(geo[selectedCountry] || {}) : [];
+  const cities =
+    selectedCountry && selectedState ? geo[selectedCountry]?.[selectedState] || [] : [];
+
+  /* ---------------- Fixed panel height ---------------- */
   const recomputePanelHeight = () => {
     if (!panelRef.current) return;
     const vpH = window.innerHeight;
@@ -64,54 +75,63 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
 
   useEffect(() => {
     recomputePanelHeight();
-  }, [showSummary, addedSelections.length]);
+  }, [selectedLanguage, selectedCountry, selectedState, selectedCity]);
 
-  /* ---------------- Selections / Submission ---------------- */
-  const handleAdd = () => {
-    const lang = selectedLanguage || "Other";
-    const loc  = selectedLocation  || "Other";
-    const entry = { id: Date.now(), language: lang, location: loc };
-    setAddedSelections((prev) => [...prev, entry]);
-    setSelectedLanguage("");
-    setSelectedLocation("");
-    setOpenDropdown(null);
-  };
+  // show summary & enable Next only when all four chosen
+  const selectionsComplete =
+    !!(selectedLanguage && selectedCountry && selectedState && selectedCity);
 
+  // submit to parent whenever selection changes
   useEffect(() => {
-    if (addedSelections.length) {
-      const payload = { selections: addedSelections };
-      const now = JSON.stringify(payload);
-      if (now !== JSON.stringify(lastSubmittedData.current)) {
-        lastSubmittedData.current = payload;
-        onLanguageLocationSubmit?.(payload);
-      }
-      setShowSummary(true);
-    } else {
-      setShowSummary(false);
+    const payload = {
+      language: selectedLanguage || "",
+      country: selectedCountry || "",
+      state: selectedState || "",
+      city: selectedCity || "",
+    };
+    const now = JSON.stringify(payload);
+    if (now !== JSON.stringify(lastSubmittedData.current)) {
+      lastSubmittedData.current = payload;
+      onLanguageLocationSubmit?.(payload);
     }
-  }, [addedSelections, onLanguageLocationSubmit]);
-
-  // scroll to top when summary appears
-  useEffect(() => {
-    if (scrollRef.current && showSummary) {
-      scrollRef.current.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  }, [showSummary]);
+  }, [selectedLanguage, selectedCountry, selectedState, selectedCity, onLanguageLocationSubmit]);
 
   /* ---------------- Handlers ---------------- */
   const handleNext = () => onNext?.();
   const handleBack = () => onBack?.();
 
-  const handleDropdownToggle = (name) => {
+  const handleDropdownToggle = (name, disabled) => {
+    if (disabled) return;
     setOpenDropdown((prev) => (prev === name ? null : name));
   };
 
+  // parent→child clears
+  const onSelectLanguage = (l) => {
+    setSelectedLanguage(l);
+    setOpenDropdown(null);
+  };
+  const onSelectCountry = (c) => {
+    setSelectedCountry(c);
+    setSelectedState("");
+    setSelectedCity("");
+    setOpenDropdown(null);
+  };
+  const onSelectState = (s) => {
+    setSelectedState(s);
+    setSelectedCity("");
+    setOpenDropdown(null);
+  };
+  const onSelectCity = (ct) => {
+    setSelectedCity(ct);
+    setOpenDropdown(null);
+  };
+
   const handleReset = () => {
-    setAddedSelections([]);
     setSelectedLanguage("");
-    setSelectedLocation("");
+    setSelectedCountry("");
+    setSelectedState("");
+    setSelectedCity("");
     lastSubmittedData.current = null;
-    setShowSummary(false);
   };
 
   // close dropdowns if clicked outside
@@ -122,6 +142,13 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
     document.addEventListener("click", onDocClick);
     return () => document.removeEventListener("click", onDocClick);
   }, []);
+
+  // helpers
+  const btnBase =
+    "w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-2.5 sm:py-3 text-left flex items-center justify-between transition-colors";
+  const labelCls = "text-[12px] sm:text-[13px] md:text-[14px]";
+  const ddListCls =
+    "absolute top-full left-0 right-0 bg-[var(--input)] border border-[var(--border)] rounded-lg mt-1 shadow-2xl max-h-56 overflow-y-auto z-20";
 
   return (
     <div className="w-full h-full flex flex-col bg-transparent slides-accent overflow-x-hidden">
@@ -147,7 +174,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
               </div>
               <div className="spacer-line w-[80%] self-start h-[1px] bg-[#d45427] mt-[-1%]" />
 
-              {/* Heading & copy (match StepSlide2 sizing) */}
+              {/* Heading & copy */}
               <div className="space-y-2.5 sm:space-y-3 max-w-[640px]">
                 <h1 className="text-[16px] sm:text-[18px] md:text-[22px] lg:text-[26px] font-bold text-[var(--text)]">
                   Select the languages and locations relevant to your business
@@ -157,132 +184,180 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
                 </p>
               </div>
 
-              {/* Right-aligned summary bubble(s) */}
-              {showSummary && (
-                <div className="w-full self-end flex flex-col items-end gap-2">
-                  {addedSelections.map((s) => (
-                    <div
-                      key={s.id}
-                      className="bg-[var(--input)] max-w-[340px] w-full rounded-2xl shadow-sm border border-[var(--border)] px-4 sm:px-5 md:px-6 py-3 sm:py-4 text-left"
-                    >
+              {/* Four pickers */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 w-full max-w-[880px] relative pb-6">
+                {/* Language */}
+                <div
+                  className="relative dropdown-container overflow-visible"
+                  style={{ zIndex: openDropdown === "lang" ? 1000 : 1 }}
+                >
+                  <button
+                    onClick={() => handleDropdownToggle("lang", false)}
+                    type="button"
+                    className={`${btnBase} hover:border-[var(--border)] focus:outline-none focus:border-[var(--border)]`}
+                  >
+                    <span className={`${selectedLanguage ? "text-[var(--text)]" : "text-[var(--muted)]"} ${labelCls}`}>
+                      {selectedLanguage || "Select Language"}
+                    </span>
+                    <ChevronDown size={20} className={`transition-transform ${openDropdown === "lang" ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {openDropdown === "lang" && (
+                    <div className={ddListCls}>
+                      {languages.map((l) => (
+                        <button
+                          key={l}
+                          onClick={() => onSelectLanguage(l)}
+                          type="button"
+                          className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] text-[12px] sm:text-[13px] md:text-[14px] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
+                        >
+                          {l}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Country */}
+                <div
+                  className="relative dropdown-container overflow-visible"
+                  style={{ zIndex: openDropdown === "country" ? 1000 : 1 }}
+                >
+                  <button
+                    onClick={() => handleDropdownToggle("country", !selectedLanguage)}
+                    type="button"
+                    disabled={!selectedLanguage}
+                    className={`${btnBase} ${!selectedLanguage ? "opacity-60 cursor-not-allowed" : "hover:border-[var(--border)]"} focus:outline-none focus:border-[var(--border)]`}
+                  >
+                    <span className={`${selectedCountry ? "text-[var(--text)]" : "text-[var(--muted)]"} ${labelCls}`}>
+                      {selectedCountry || "Select Country"}
+                    </span>
+                    <ChevronDown size={20} className={`transition-transform ${openDropdown === "country" ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {openDropdown === "country" && (
+                    <div className={ddListCls}>
+                      {countries.map((c) => (
+                        <button
+                          key={c}
+                          onClick={() => onSelectCountry(c)}
+                          type="button"
+                          className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] text-[12px] sm:text-[13px] md:text-[14px] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
+                        >
+                          {c}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* State */}
+                <div
+                  className="relative dropdown-container overflow-visible"
+                  style={{ zIndex: openDropdown === "state" ? 1000 : 1 }}
+                >
+                  <button
+                    onClick={() => handleDropdownToggle("state", !selectedCountry)}
+                    type="button"
+                    disabled={!selectedCountry}
+                    className={`${btnBase} ${!selectedCountry ? "opacity-60 cursor-not-allowed" : "hover:border-[var(--border)]"} focus:outline-none focus:border-[var(--border)]`}
+                  >
+                    <span className={`${selectedState ? "text-[var(--text)]" : "text-[var(--muted)]"} ${labelCls}`}>
+                      {selectedState || "Select State"}
+                    </span>
+                    <ChevronDown size={20} className={`transition-transform ${openDropdown === "state" ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {openDropdown === "state" && (
+                    <div className={ddListCls}>
+                      {states.map((s) => (
+                        <button
+                          key={s}
+                          onClick={() => onSelectState(s)}
+                          type="button"
+                          className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] text-[12px] sm:text-[13px] md:text-[14px] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* City */}
+                <div
+                  className="relative dropdown-container overflow-visible"
+                  style={{ zIndex: openDropdown === "city" ? 1000 : 1 }}
+                >
+                  <button
+                    onClick={() => handleDropdownToggle("city", !selectedState)}
+                    type="button"
+                    disabled={!selectedState}
+                    className={`${btnBase} ${!selectedState ? "opacity-60 cursor-not-allowed" : "hover:border-[var(--border)]"} focus:outline-none focus:border-[var(--border)]`}
+                  >
+                    <span className={`${selectedCity ? "text-[var(--text)]" : "text-[var(--muted)]"} ${labelCls}`}>
+                      {selectedCity || "Select City"}
+                    </span>
+                    <ChevronDown size={20} className={`transition-transform ${openDropdown === "city" ? "rotate-180" : ""}`} />
+                  </button>
+
+                  {openDropdown === "city" && (
+                    <div className={ddListCls}>
+                      {cities.map((ct) => (
+                        <button
+                          key={ct}
+                          onClick={() => onSelectCity(ct)}
+                          type="button"
+                          className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] text-[12px] sm:text-[13px] md:text-[14px] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
+                        >
+                          {ct}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Summary BELOW the dropdowns, right-aligned */}
+              {selectionsComplete && (
+                <>
+                  <div className="w-full flex justify-end">
+                    <div className="bg-[var(--input)] max-w-[360px] w-full sm:w-auto rounded-2xl shadow-sm border border-[var(--border)] px-5 py-4 text-left">
                       <div className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--text)]">
-                        <span className="font-semibold">Language:</span> {s.language}
+                        <span className="font-semibold">Language :</span> {selectedLanguage}
                       </div>
                       <div className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--text)]">
-                        <span className="font-semibold">Location:</span> {s.location}
+                        <span className="font-semibold">Country :</span> {selectedCountry}
+                      </div>
+                      <div className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--text)]">
+                        <span className="font-semibold">State :</span> {selectedState}
+                      </div>
+                      <div className="text-[13px] sm:text-[14px] md:text-[15px] text-[var(--text)]">
+                        <span className="font-semibold">City :</span> {selectedCity}
                       </div>
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {/* Pickers (when not summarized) */}
-              {!showSummary && (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_auto] gap-4 sm:gap-5 w-full max-w-[880px] relative pb-10 sm:pb-12 lg:pb-0">
-                  {/* Language */}
-                  <div
-                    className="relative dropdown-container overflow-visible"
-                    style={{ zIndex: openDropdown === "lang" ? 1000 : 1 }}
-                  >
-                    <button
-                      onClick={() => handleDropdownToggle("lang")}
-                      type="button"
-                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-2.5 sm:py-3 text-left flex items-center justify-between hover:border-[var(--border)] focus:outline-none focus:border-[var(--border)] transition-colors"
-                    >
-                      <span className={`${selectedLanguage ? "text-[var(--text)]" : "text-[var(--muted)]"} text-[12px] sm:text-[13px] md:text-[14px]`}>
-                        {selectedLanguage || "Select Language"}
-                      </span>
-                      <ChevronDown
-                        size={20}
-                        className={`transition-transform ${openDropdown === "lang" ? "rotate-180" : ""}`}
-                      />
-                    </button>
-
-                    {openDropdown === "lang" && (
-                      <div className="absolute top-full left-0 right-0 bg-[var(--input)] border border-[var(--border)] rounded-lg mt-1 shadow-2xl max-h-56 overflow-y-auto z-20">
-                        {languages.map((l) => (
-                          <button
-                            key={l}
-                            onClick={() => { setSelectedLanguage(l); setOpenDropdown(null); }}
-                            type="button"
-                            className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] text-[12px] sm:text-[13px] md:text-[14px] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
-                          >
-                            {l}
-                          </button>
-                        ))}
-                      </div>
-                    )}
                   </div>
 
-                  {/* Location */}
-                  <div
-                    className="relative dropdown-container overflow-visible"
-                    style={{ zIndex: openDropdown === "loc" ? 1000 : 1 }}
-                  >
-                    <button
-                      onClick={() => handleDropdownToggle("loc")}
-                      type="button"
-                      className="w-full bg-[var(--input)] border border-[var(--border)] rounded-lg px-4 py-2.5 sm:py-3 text-left flex items-center justify-between hover:border-[var(--border)] focus:outline-none focus:border-[var(--border)] transition-colors"
-                    >
-                      <span className={`${selectedLocation ? "text-[var(--text)]" : "text-[var(--muted)]"} text-[12px] sm:text-[13px] md:text-[14px]`}>
-                        {selectedLocation || "Select Location"}
-                      </span>
-                      <ChevronDown
-                        size={20}
-                        className={`transition-transform ${openDropdown === "loc" ? "rotate-180" : ""}`}
-                      />
-                    </button>
-
-                    {openDropdown === "loc" && (
-                      <div className="absolute top-full left-0 right-0 bg-[var(--input)] border border-[var(--border)] rounded-lg mt-1 shadow-2xl max-h-56 overflow-y-auto z-20">
-                        {locations.map((c) => (
-                          <button
-                            key={c}
-                            onClick={() => { setSelectedLocation(c); setOpenDropdown(null); }}
-                            type="button"
-                            className="w-full text-left px-4 py-2.5 sm:py-3 hover:bg-[var(--menuHover)] focus:bg-[var(--menuFocus)] text-[var(--text)] text-[12px] sm:text-[13px] md:text-[14px] border-b border-[var(--border)] last:border-b-0 focus:outline-none transition-colors"
-                          >
-                            {c}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                  {/* Confirmation text left-aligned below the card */}
+                  <div className="mt-5 self-start">
+                    <h3 className="text-[15px] sm:text-[16px] md:text-[18px] font-bold text-[var(--text)] mb-2.5 sm:mb-3">
+                      Here’s your site report — take a quick look on the
+                      <br /> Info Tab.
+                    </h3>
+                    <p className="text-[12px] sm:text-[13px] md:text-[15px] text-[var(--muted)]">
+                      If not, Want to do some changes?
+                    </p>
+                    <div className="mt-3 text-[12px] sm:text-[13px]">
+                      <button
+                        onClick={handleReset}
+                        className="text-gray-500 hover:text-gray-700 font-semibold"
+                        type="button"
+                      >
+                        YES!
+                      </button>
+                    </div>
                   </div>
-
-                  {/* Add button */}
-                  <div className="flex items-stretch">
-                    <button
-                      onClick={handleAdd}
-                      type="button"
-                      className="w-full lg:w-auto bg-[image:var(--infoHighlight-gradient)] rounded-lg px-6 py-2.5 sm:py-3 flex items-center justify-center gap-2 text-[12px] sm:text-[13px] md:text-[14px] text-[var(--input)]"
-                    >
-                      <Plus size={16} />
-                      <span>Add</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-
-              {/* System message / CTA (after summary) */}
-              {showSummary && (
-                <div className="max-w-[640px] text-left self-start">
-                  <h3 className="text-[15px] sm:text-[16px] md:text-[18px] font-bold text-[var(--text)] mb-2.5 sm:mb-3">
-                    Here’s your site report — take a quick look on the Info Tab.
-                  </h3>
-                  <p className="text-[12px] sm:text-[13px] md:text-[15px] text-[var(--muted)]">
-                    If not, Want to do some changes?
-                  </p>
-
-                  <div className="flex items-center gap-8 sm:gap-10 mt-4 sm:mt-5 text-[12px] sm:text-[13px]">
-                    <button
-                      onClick={handleReset}
-                      className="text-[#d45427] hover:brightness-110 font-medium"
-                      type="button"
-                    >
-                      YES!
-                    </button>
-                  </div>
-                </div>
+                </>
               )}
 
               <div className="h-2" />
@@ -304,7 +379,7 @@ export default function StepSlide3({ onNext, onBack, onLanguageLocationSubmit })
               <ArrowLeft size={16} /> Back
             </button>
 
-            {showSummary && (
+            {selectionsComplete && (
               <button
                 onClick={handleNext}
                 type="button"
