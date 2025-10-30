@@ -2,7 +2,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { ArrowRight, ArrowLeft, ChevronDown, Plus, X } from "lucide-react";
+import { ArrowRight, ArrowLeft, Plus, X, Check } from "lucide-react";
 
 export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   /* ---------------- State ---------------- */
@@ -31,7 +31,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
 
   const lastSubmittedData = useRef(null);
 
-  /* ---------------- Utilities: determine target site like the dashboard ---------------- */
+  /* ---------------- Utilities ---------------- */
   const normalizeHost = useCallback((input) => {
     if (!input || typeof input !== "string") return null;
     let s = input.trim().toLowerCase();
@@ -46,14 +46,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   }, []);
 
   const getStoredSite = useCallback(() => {
-    const keys = [
-      "websiteData",
-      "site",
-      "website",
-      "selectedWebsite",
-      "drfizzm.site",
-      "drfizzm.website",
-    ];
+    const keys = ["websiteData", "site", "website", "selectedWebsite", "drfizzm.site", "drfizzm.website"];
     for (const k of keys) {
       try {
         const raw = localStorage.getItem(k) ?? sessionStorage.getItem(k);
@@ -137,7 +130,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       } catch (err) {
         if (isMounted) {
           setLoadError(err?.message || "Failed to load competitor data");
-          // Show sensible fallback AFTER loading completes (no initial flicker)
           setBusinessSuggestions(["Comp-1", "Comp-2", "Comp-3", "Comp-4", "More"]);
           setSearchSuggestions(["Comp-1", "Comp-2", "Comp-3", "Comp-4", "More"]);
         }
@@ -185,7 +177,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
 
   /* ---------------- Handlers ---------------- */
   const toggleBusiness = (label) => {
-    if (label === "More" && isLoading) return; // block during loading
+    if (label === "More" && isLoading) return;
     if (label === "More") {
       setAddingBusiness(true);
       setTimeout(() => document.getElementById("biz-more-input")?.focus(), 50);
@@ -197,7 +189,7 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
   };
 
   const toggleSearch = (label) => {
-    if (label === "More" && isLoading) return; // block during loading
+    if (label === "More" && isLoading) return;
     if (label === "More") {
       setAddingSearch(true);
       setTimeout(() => document.getElementById("search-more-input")?.focus(), 50);
@@ -207,11 +199,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
       prev.includes(label) ? prev.filter((c) => c !== label) : [...prev, label]
     );
   };
-
-  const removeBusiness = (label) =>
-    setSelectedBusinessCompetitors((prev) => prev.filter((c) => c !== label));
-  const removeSearch = (label) =>
-    setSelectedSearchCompetitors((prev) => prev.filter((c) => c !== label));
 
   const addCustomBusiness = () => {
     const v = bizInput.trim();
@@ -268,6 +255,40 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
     }
   }, [showSummary]);
 
+  /* ---------------- Reusable chip renderer ---------------- */
+  const Chip = ({ label, isSelected, onClick, disabled }) => (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      type="button"
+      className={`group inline-flex items-center gap-1 px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
+        isSelected
+          ? "bg-white text-[var(--text)] border-[#d45427]"
+          : "bg-[#F7F7F7] text-gray-500 border-[var(--border)] hover:bg-[#EDEDED]"
+      } ${disabled ? "opacity-60 cursor-not-allowed" : ""}`}
+    >
+      <span>{label}</span>
+
+      {label !== "More" && (
+        <>
+          {!isSelected && <Plus size={16} className="ml-1" />}
+          {isSelected && (
+            <span className="relative ml-1 inline-flex w-4 h-4 items-center justify-center">
+              <Check
+                size={16}
+                className="absolute opacity-100 group-hover:opacity-0 transition-opacity duration-150"
+              />
+              <X
+                size={16}
+                className="absolute opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+              />
+            </span>
+          )}
+        </>
+      )}
+    </button>
+  );
+
   /* ---------------- UI ---------------- */
   return (
     <div className="w-full h-full flex flex-col bg-transparent overflow-x-hidden">
@@ -323,7 +344,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 </h3>
 
                 <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
-                  {/* Loading skeletons: render only while loading so nothing ‘real’ flashes */}
                   {isLoading && businessSuggestions.length === 0
                     ? Array.from({ length: 6 }).map((_, i) => (
                         <span key={`biz-skel-${i}`} className="chip-skel" />
@@ -360,52 +380,16 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                         }
 
                         return (
-                          <button
+                          <Chip
                             key={`biz-${label}`}
+                            label={label}
+                            isSelected={isSelected}
                             onClick={() => toggleBusiness(label)}
                             disabled={isLoading && label === "More"}
-                            className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
-                              isSelected
-                                ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
-                                : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
-                            } ${isLoading && label === "More" ? "opacity-60 cursor-not-allowed" : ""}`}
-                          >
-                            {label}
-                            {isSelected ? (
-                              <ChevronDown size={16} className="inline ml-1 -rotate-180" />
-                            ) : label !== "More" ? (
-                              <Plus size={16} className="inline ml-1" />
-                            ) : null}
-                          </button>
+                          />
                         );
                       })}
                 </div>
-
-                {/* Selected BUSINESS */}
-                {selectedBusinessCompetitors.length > 0 && (
-                  <div className="pt-1">
-                    <h4 className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[var(--text)] mb-2.5 sm:mb-3">
-                      Selected Business Competitors ({selectedBusinessCompetitors.length})
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedBusinessCompetitors.map((label, idx) => (
-                        <div
-                          key={`biz-pill-${label}-${idx}`}
-                          className="group relative inline-flex items-center text-white rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-[12px] sm:text-[13px] md:text-[14px] transition-all duration-300 px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 hover:pr-12"
-                        >
-                          <span>{label}</span>
-                          <button
-                            onClick={() => removeBusiness(label)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 text-[var(--input)]"
-                            title="Remove"
-                          >
-                            <X size={18} />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
 
               {/* SEARCH SECTION */}
@@ -415,7 +399,6 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                 </h3>
 
                 <div className="flex flex-wrap gap-2.5 sm:gap-3 items-center">
-                  {/* Loading skeletons */}
                   {isLoading && searchSuggestions.length === 0
                     ? Array.from({ length: 6 }).map((_, i) => (
                         <span key={`ser-skel-${i}`} className="chip-skel" />
@@ -452,53 +435,31 @@ export default function StepSlide5({ onNext, onBack, onCompetitorSubmit }) {
                         }
 
                         return (
-                          <button
+                          <Chip
                             key={`search-${label}`}
+                            label={label}
+                            isSelected={isSelected}
                             onClick={() => toggleSearch(label)}
                             disabled={isLoading && label === "More"}
-                            className={`px-3 sm:px-4 py-2 rounded-xl border text-[12px] sm:text-[13px] md:text-[14px] font-medium transition-all duration-200 ${
-                              isSelected
-                                ? "bg-[var(--input)] text-[var(--text)] border-[#d45427]"
-                                : "bg-[var(--input)] text-[var(--muted)] border-[var(--border)] hover:bg-[var(--border)]"
-                            } ${isLoading && label === "More" ? "opacity-60 cursor-not-allowed" : ""}`}
-                          >
-                            {label}
-                            {isSelected ? (
-                              <ChevronDown size={16} className="inline ml-1 -rotate-180" />
-                            ) : label !== "More" ? (
-                              <Plus size={16} className="inline ml-1" />
-                            ) : null}
-                          </button>
+                          />
                         );
                       })}
                 </div>
-
-                {/* Selected SEARCH */}
-                {selectedSearchCompetitors.length > 0 && (
-                  <div className="pt-1">
-                    <h4 className="text-[12px] sm:text-[13px] md:text-[14px] font-medium text-[var(--text)] mb-2.5 sm:mb-3">
-                      Selected Search Engine Competitors ({selectedSearchCompetitors.length})
-                    </h4>
-                    <div className="flex flex-wrap gap-2">
-                      {selectedSearchCompetitors.map((label, idx) => (
-                        <div
-                          key={`search-pill-${label}-${idx}`}
-                          className="group relative inline-flex items-center text-white rounded-xl font-medium bg-[image:var(--infoHighlight-gradient)] text-[12px] sm:text-[13px] md:text-[14px] transition-all duration-300 px-4 sm:px-5 md:px-6 py-2.5 sm:py-3 hover:pr-12"
-                        >
-                          <span>{label}</span>
-                          <button
-                            onClick={() => removeSearch(label)}
-                            className="absolute right-2 top-1/2 -translate-y-1/2 opacity-0 scale-50 group-hover:opacity-100 group-hover:scale-100 transition-all duration-200 text-[var(--input)]"
-                            title="Remove"
-                          >
-                            <X size={18} />
-                          </button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
               </div>
+
+              {/* Summary copy (same as Step 4) */}
+              {showSummary && (
+                <div className="max-w-[640px] text-left self-start mt-5 sm:mt-6">
+                  <h3 className="text-[15px] sm:text-[16px] md:text-[18px] font-bold text-[var(--text)] mb-2.5 sm:mb-3">
+                    Here’s your site report — take a quick look on
+                    <br />
+                    the Info Tab.
+                  </h3>
+                  <p className="text-[12px] sm:text-[13px] md:text-[15px] text-[var(--muted)]">
+                    You can always view more information in Info Tab
+                  </p>
+                </div>
+              )}
 
               <div className="h-2" />
             </div>
